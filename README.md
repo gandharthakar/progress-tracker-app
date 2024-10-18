@@ -1,2 +1,3 @@
-# mern-ts-new
-This is trial MERN Stack with TypeScript
+# GT Progress Tracker App
+
+#### This is very simple app where you can track you task progress visually.
