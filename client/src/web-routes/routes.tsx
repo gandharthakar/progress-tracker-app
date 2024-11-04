@@ -5,6 +5,7 @@ import {
 // Pages & Components.
 import App from "../App";
 import Homepage from "@/pages/Homepage";
+import Trial from "@/pages/trial";
 
 const WebRoutes = createBrowserRouter([
     {
@@ -15,7 +16,11 @@ const WebRoutes = createBrowserRouter([
                 path: '',
                 element: <Homepage />
             }
-        ]
+        ],
+    },
+    {
+        path: "/try",
+        element: <Trial />
     }
 ]);
 

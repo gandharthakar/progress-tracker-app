@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+require('dotenv').config();
 
 const { DATABASE_URI_LOCAL, DATABASE_URI_ATLAS } = process.env;
 

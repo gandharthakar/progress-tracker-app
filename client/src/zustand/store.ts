@@ -16,3 +16,15 @@ export const useThemeStore = create<ThemeStore>((set) => ({
         set({ dark_theme_mode: false });
     }
 }));
+
+interface GlobalCheckboxStore {
+    checkedCount: number;
+    incrementCount: (value: number) => void;
+    decrementCount: (value: number) => void;
+}
+
+export const useGlobalCheckboxStore = create<GlobalCheckboxStore>((set) => ({
+    checkedCount: 0,
+    incrementCount: (value) => set((state) => ({ checkedCount: state.checkedCount + value })),
+    decrementCount: (value) => set((state) => ({ checkedCount: state.checkedCount - value })),
+}));
