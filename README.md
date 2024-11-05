@@ -1,3 +1,3 @@
-# GT Progress Tracker App
+# Progress Tracker App
 
-#### This is very simple app where you can track you task progress visually.
+#### This is very simple tool where you can track your dailly tasks & its progress visually.

@@ -97,7 +97,7 @@ const Trial = () => {
     const handleCheck = () => {
         const data = { workspace_id: dataDes.workspace_id, completed_tasks: sel };
         localStorage.setItem("track_record", JSON.stringify(data));
-        let arr = [];
+        const arr = [];
         for (let i = 0; i < dataDes.sections.length; i++) {
             for (let x = 0; x < dataDes.sections[i].tasks.length; x++) {
                 arr.push(dataDes.sections[i].tasks[x]);
@@ -121,6 +121,7 @@ const Trial = () => {
                 incrementCount(1);
             })
         }
+        //eslint-disable-next-line
     }, []);
 
     useEffect(() => {
@@ -129,7 +130,7 @@ const Trial = () => {
             const prslsi = JSON.parse(lsi);
             setChecked(prslsi.completed_tasks.length);
         }
-        let arr = [];
+        const arr = [];
         for (let i = 0; i < dataDes.sections.length; i++) {
             for (let x = 0; x < dataDes.sections[i].tasks.length; x++) {
                 arr.push(dataDes.sections[i].tasks[x]);
@@ -142,6 +143,7 @@ const Trial = () => {
             { id: 0, value: fin, color: '#18181b', label: "Completed" },
             { id: 1, value: fin2, color: '#3f3f46', label: "Pending" },
         ]);
+        //eslint-disable-next-line
     }, [fin, fin2]);
 
     return (

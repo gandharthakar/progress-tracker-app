@@ -1,7 +1,7 @@
 {
-  "name": "gt-progress-tracker-app",
+  "name": "progress-tracker-app",
   "version": "1.0.0",
-  "description": "This is very simple app where you can track you task progress visually.",
+  "description": "This is very simple tool where you can track your dailly tasks & its progress visually.",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:gandharthakar/gt-progress-tracker.git"
+    "url": "git+ssh://git@github.com:gandharthakar/progress-tracker-app.git"
   },
   "author": "Gandhar Thakar",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gandharthakar/gt-progress-tracker/issues"
+    "url": "https://github.com/gandharthakar/progress-tracker-app/issues"
   },
-  "homepage": "https://github.com/gandharthakar/gt-progress-tracker#readme",
+  "homepage": "https://github.com/gandharthakar/progress-tracker-app#readme",
   "dependencies": {
     "@babel/cli": "^7.25.7",
     "@babel/preset-typescript": "^7.25.7",

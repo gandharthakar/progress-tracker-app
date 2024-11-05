@@ -1,27 +1,27 @@
 import { create } from "zustand";
-import { ThemeStore } from "@/types/zustandTypes";
+import { ThemeStore, GlobalCheckboxStore } from "@/types/zustandTypes";
+
+const getTheme = () => {
+    const lsitm = localStorage.getItem('theme');
+    if (lsitm) {
+        const prs_lsitm = JSON.parse(lsitm);
+        return prs_lsitm;
+    } else {
+        return 'system';
+    }
+}
 
 export const useThemeStore = create<ThemeStore>((set) => ({
-    dark_theme_mode: false,
-    set_dark_mode: () => {
-        const docHTML = document.querySelector('html');
-        docHTML?.classList.add('dark');
-        localStorage.setItem('theme-dark-mode', JSON.stringify(true));
-        set({ dark_theme_mode: true });
+    theme: getTheme(), // Initial theme, can be adjusted
+    toggleTheme: () => {
+        set((state) => ({
+            theme: state.theme === 'light' ? 'dark' : 'light',
+        }));
     },
-    unset_dark_mode: () => {
-        const docHTML = document.querySelector('html');
-        docHTML?.classList.remove('dark');
-        localStorage.setItem('theme-dark-mode', JSON.stringify(false));
-        set({ dark_theme_mode: false });
-    }
+    setTheme: (theme) => {
+        set({ theme });
+    },
 }));
-
-interface GlobalCheckboxStore {
-    checkedCount: number;
-    incrementCount: (value: number) => void;
-    decrementCount: (value: number) => void;
-}
 
 export const useGlobalCheckboxStore = create<GlobalCheckboxStore>((set) => ({
     checkedCount: 0,

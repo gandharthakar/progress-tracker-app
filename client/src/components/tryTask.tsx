@@ -57,6 +57,7 @@ const TryTask = (props: Props) => {
         if (task_id == d.task_id) {
             setSel(d.tasks);
         }
+        //eslint-disable-next-line
     }, []);
 
     return (

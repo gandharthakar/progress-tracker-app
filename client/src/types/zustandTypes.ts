@@ -1,5 +1,11 @@
 export type ThemeStore = {
-    dark_theme_mode: boolean,
-    set_dark_mode: () => void,
-    unset_dark_mode: () => void,
+    theme: 'light' | 'dark' | 'system';
+    toggleTheme: () => void;
+    setTheme: (theme: ThemeStore['theme']) => void;
+}
+
+export interface GlobalCheckboxStore {
+    checkedCount: number;
+    incrementCount: (value: number) => void;
+    decrementCount: (value: number) => void;
 }

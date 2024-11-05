@@ -1,9 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --radius: 0.5rem
-  }
+    :root {
+        --radius: 0.5rem;
+    }
+
+    * {
+        @apply font-poppins;
+    }
+
+    .site-container {
+        @apply max-w-[1240px] px-[20px] mx-auto;
+    }
+}
+
+@layer components {
+    .site-main-menu {
+        @apply flex justify-start items-start flex-col md:flex-row md:items-center md:justify-center gap-x-[35px] gap-y-[10px];
+    }
+
+    .site-main-menu li .nav-link {
+        @apply font-poppins text-[14px] md:text-[16px] font-semibold text-zinc-400 dark:text-zinc-400;
+    }
+
+    .site-main-menu li .nav-link:hover,
+    .site-main-menu li .nav-link:active,
+    .site-main-menu li .nav-link.active {
+        @apply text-zinc-950 dark:text-zinc-100;
+    }
+
+    .site-main-menu li.active .nav-link {
+        @apply text-zinc-950 dark:text-zinc-100;
+    }
+
+    .grid-bg {
+        --grid-color: #e4e4e7;
+        --grid-line-size: 0.5px;
+        background-image: linear-gradient(var(--grid-color) var(--grid-line-size), transparent var(--grid-line-size)), linear-gradient(to right, var(--grid-color) var(--grid-line-size), transparent var(--grid-line-size));
+        background-size: 55px 55px;
+        background-color: rgba(71, 212, 255, 0);
+    }
+
+    .dark .grid-bg {
+        --grid-color: #18181b;
+    }
 }
