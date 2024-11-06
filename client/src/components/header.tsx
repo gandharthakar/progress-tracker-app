@@ -1,32 +1,14 @@
 import { NavLink } from "react-router-dom";
-import { useThemeStore } from "@/zustand/store";
 import AccountProfile from "./accountProfile";
 import { useEffect, useRef, useState } from "react";
 import { IoMenuOutline } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
+import SiteLogo from "./siteLogo";
 
 const Header = () => {
 
-    const { theme } = useThemeStore();
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
-
-    const detectTheme = () => {
-        if (theme === 'system') {
-            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            if (systemTheme == 'dark') {
-                return 'dark'
-            } else {
-                return 'light'
-            }
-        } else {
-            if (theme === 'dark') {
-                return 'dark';
-            } else {
-                return 'light';
-            }
-        }
-    }
 
     const toggleSiteMenu = () => {
         if (isMenuOpen) {
@@ -40,14 +22,16 @@ const Header = () => {
 
         const menuHandler = (e: any) => {
             if (menuRef.current !== null) {
-                if (!menuRef.current.contains(e.target)) {
+                if (menuRef.current && !menuRef.current.contains(e.target)) {
                     setIsMenuOpen(false);
                 }
             }
         };
 
         document.addEventListener('mousedown', menuHandler);
-
+        return () => {
+            document.removeEventListener('mousedown', menuHandler);
+        };
     }, []);
 
     return (
@@ -57,28 +41,7 @@ const Header = () => {
                     <div className="flex items-center gap-x-[15px] py-[15px]">
                         <div>
                             <NavLink to="/" title="Home">
-                                {
-                                    detectTheme() == 'dark' ?
-                                        (
-                                            <img
-                                                src="/pt-app-logo-white.svg"
-                                                alt="Logo"
-                                                width={100}
-                                                height={32.98}
-                                                className="h-auto w-[100px]"
-                                            />
-                                        )
-                                        :
-                                        (
-                                            <img
-                                                src="/pt-app-logo-black.svg"
-                                                alt="Logo"
-                                                width={100}
-                                                height={32.98}
-                                                className="h-auto w-[100px]"
-                                            />
-                                        )
-                                }
+                                <SiteLogo />
                             </NavLink>
                         </div>
                         <nav ref={menuRef} className={`${isMenuOpen ? 'block' : 'hidden md:block'} mx-0 md:mx-auto p-[20px] md:p-0 absolute left-0 top-[70px] w-full bg-white dark:bg-zinc-900 md:bg-transparent md:dark:bg-transparent md:top-0 md:w-auto md:relative`}>
@@ -88,6 +51,7 @@ const Header = () => {
                                         to="/how-it-works"
                                         title="How it Works"
                                         className="nav-link"
+                                        onClick={() => setIsMenuOpen(false)}
                                     >
                                         How It Works
                                     </NavLink>
@@ -97,6 +61,7 @@ const Header = () => {
                                         to="/about"
                                         title="About"
                                         className="nav-link"
+                                        onClick={() => setIsMenuOpen(false)}
                                     >
                                         About
                                     </NavLink>
@@ -106,6 +71,7 @@ const Header = () => {
                                         to="/contact"
                                         title="Contact"
                                         className="nav-link"
+                                        onClick={() => setIsMenuOpen(false)}
                                     >
                                         Contact
                                     </NavLink>
