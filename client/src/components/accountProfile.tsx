@@ -77,12 +77,12 @@ const AccountProfile = () => {
                     (
 
                         <NavLink
-                            to="/register"
-                            title="Sign Up"
+                            to="/auth/login"
+                            title="Sign In"
                             className={`${buttonVariants({ variant: "default" })} relative w-[40px] md:w-auto`}
                         >
                             <div className="hidden md:flex gap-x-[10px] items-center">
-                                Sign Up
+                                Sign In
                                 <LuArrowRight size={18} />
                             </div>
                             <div className="visible md:hidden">
