@@ -50,3 +50,9 @@
         --grid-color: #18181b;
     }
 }
+
+@layer utilities {
+    .about-content p {
+        @apply block pb-[20px] font-roboto_mono text-[14px] md:text-[16px] text-zinc-600 dark:text-zinc-400;
+    }
+}

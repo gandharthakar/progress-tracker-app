@@ -74,7 +74,7 @@ const dataDes = {
 
 const Trial = () => {
 
-    const [checked, setChecked] = useState<number>(1);
+    const [checked, setChecked] = useState<number>(0);
     const [unchecked, setUnchecked] = useState<number>(100);
     const [fin, setFin] = useState<number>(0);
     const [fin2, setFin2] = useState<number>(0);
