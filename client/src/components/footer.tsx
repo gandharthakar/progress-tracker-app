@@ -4,6 +4,7 @@ import { FaInstagramSquare } from "react-icons/fa";
 import { FaWhatsappSquare } from "react-icons/fa";
 import ThemeSwitcher from "./themeSwitcher";
 import SiteLogo from "./siteLogo";
+import { NavLink } from "react-router-dom";
 
 
 const Footer = () => {
@@ -51,7 +52,9 @@ const Footer = () => {
                         </div>
                         <div>
                             <div className="pb-[20px]">
-                                <SiteLogo />
+                                <NavLink to="/" title="Home">
+                                    <SiteLogo />
+                                </NavLink>
                             </div>
                             <div className="block xsm-1:hidden pb-[20px]">
                                 <div>

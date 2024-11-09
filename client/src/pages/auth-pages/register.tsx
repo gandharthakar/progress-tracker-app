@@ -91,7 +91,7 @@ const Register = () => {
                                         placeholder="Peter John"
                                         {...register("fullName")}
                                     />
-                                    {errors.fullName && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.fullName?.message}</div>)}
+                                    {errors.fullName && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.fullName?.message}</div>)}
                                 </div>
                                 <div className="pb-[15px]">
                                     <label
@@ -106,7 +106,7 @@ const Register = () => {
                                         placeholder="test@example.com"
                                         {...register("email")}
                                     />
-                                    {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.email?.message}</div>)}
+                                    {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.email?.message}</div>)}
                                 </div>
                                 <div className="pb-[15px]">
                                     <label
@@ -133,7 +133,7 @@ const Register = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    {errors.password && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.password?.message}</div>)}
+                                    {errors.password && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.password?.message}</div>)}
                                 </div>
                                 <div className="pb-[15px]">
                                     <label
@@ -160,7 +160,7 @@ const Register = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    {errors.confirmPassword && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.confirmPassword?.message}</div>)}
+                                    {errors.confirmPassword && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.confirmPassword?.message}</div>)}
                                 </div>
                                 <div>
                                     <Button

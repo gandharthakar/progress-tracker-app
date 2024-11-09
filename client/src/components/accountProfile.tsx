@@ -9,14 +9,14 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { CiSettings } from "react-icons/ci";
 import { RiDashboard3Line } from "react-icons/ri";
 
 const AccountProfile = () => {
 
-    const isLoggedInUser: boolean = false;
+    const isLoggedInUser: boolean = true;
 
     const handleLogOut = () => {
         console.log("Hey");
@@ -35,26 +35,26 @@ const AccountProfile = () => {
                                             <span className="uppercase">a</span>
                                         </div>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-[150px]">
+                                    <DropdownMenuContent align="end" className="w-[170px] apddm">
                                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem className="menu-item cursor-pointer">
                                             <NavLink
-                                                to="/contact"
-                                                title="Dashboard"
+                                                to={`/user/workspace/${1}`}
+                                                title="My Workspace"
                                             >
-                                                <div className="flex gap-x-[5px]">
+                                                <div className="flex gap-x-[5px] py-[5px]">
                                                     <RiDashboard3Line size={20} className="!w-[20px] !h-[20px]" />
-                                                    <span>Dashboard</span>
+                                                    <span>My Workspace</span>
                                                 </div>
                                             </NavLink>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem className="menu-item cursor-pointer">
                                             <NavLink
-                                                to="/about"
+                                                to={`/user/settings/${1}`}
                                                 title="Settings"
                                             >
-                                                <div className="flex gap-x-[5px]">
+                                                <div className="flex gap-x-[5px] py-[5px]">
                                                     <CiSettings size={20} className="!w-[20px] !h-[20px]" />
                                                     <span>Settings</span>
                                                 </div>
@@ -62,7 +62,8 @@ const AccountProfile = () => {
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem
-                                            className="text-red-600 hover:text-red-600"
+                                            title="Logout"
+                                            className="menu-item cursor-pointer text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
                                             onClick={handleLogOut}
                                         >
                                             <RiLogoutBoxRLine size={16} />

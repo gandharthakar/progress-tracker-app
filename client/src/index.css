@@ -17,6 +17,10 @@
     .site-container {
         @apply max-w-[1240px] px-[20px] mx-auto;
     }
+
+    .apddm .menu-item.active {
+        @apply text-zinc-900 bg-zinc-100 dark:text-zinc-50 dark:bg-zinc-800;
+    }
 }
 
 @layer components {
@@ -48,6 +52,19 @@
 
     .dark .grid-bg {
         --grid-color: #18181b;
+    }
+
+    .digonal-lines-bg {
+        --line-bg-color: #a1a1aa;
+        --line-degree-angle: 45deg;
+        --line-thickness: 0.5px;
+        background-image: repeating-linear-gradient(var(--line-degree-angle), var(--line-bg-color) 0, var(--line-bg-color) var(--line-thickness), transparent 0, transparent 50%);
+        background-size: 55px 55px;
+        background-color: rgba(71, 212, 255, 0);
+    }
+
+    .dark .digonal-lines-bg {
+        --line-bg-color: #3f3f46;
     }
 }
 

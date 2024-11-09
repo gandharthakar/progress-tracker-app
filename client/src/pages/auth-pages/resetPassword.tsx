@@ -91,7 +91,7 @@ const ResetPassword = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    {errors.password && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.password?.message}</div>)}
+                                    {errors.password && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.password?.message}</div>)}
                                 </div>
                                 <div className="pb-[15px]">
                                     <label
@@ -118,7 +118,7 @@ const ResetPassword = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    {errors.confirmPassword && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.confirmPassword?.message}</div>)}
+                                    {errors.confirmPassword && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.confirmPassword?.message}</div>)}
                                 </div>
                                 <div>
                                     <Button

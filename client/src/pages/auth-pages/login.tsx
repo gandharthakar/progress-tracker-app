@@ -78,7 +78,7 @@ const Login = () => {
                                         placeholder="test@example.com"
                                         {...register("email")}
                                     />
-                                    {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.email?.message}</div>)}
+                                    {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.email?.message}</div>)}
                                 </div>
                                 <div className="pb-[15px]">
                                     <label
@@ -105,7 +105,7 @@ const Login = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    {errors.password && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.password?.message}</div>)}
+                                    {errors.password && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.password?.message}</div>)}
                                 </div>
                                 <div>
                                     <Button

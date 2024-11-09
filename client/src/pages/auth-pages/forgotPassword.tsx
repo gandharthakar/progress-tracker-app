@@ -72,7 +72,7 @@ const ForgotPassword = () => {
                                         placeholder="test@example.com"
                                         {...register("email")}
                                     />
-                                    {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600">{errors.email?.message}</div>)}
+                                    {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.email?.message}</div>)}
                                 </div>
                                 <div>
                                     <Button
