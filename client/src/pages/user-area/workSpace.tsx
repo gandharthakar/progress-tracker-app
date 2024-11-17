@@ -45,7 +45,7 @@ const WorkSpace = () => {
                 </h1>
                 <div className="pt-[5px]">
                     <p className="font-roboto_mono text-[14px] md:text-[16px] text-zinc-700 dark:text-zinc-300">
-                        Create & locate all your workspace here.
+                        Create & locate all your workspaces here.
                     </p>
                 </div>
             </div>

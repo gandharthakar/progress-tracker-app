@@ -10,27 +10,9 @@ const demo_workspaces: SiteWorkspaceCompProps[] = [
     {
         workspace_id: "workspace_2",
         workspace_title: "My Workspace 2",
-        workspace_description: "This is my workspace description written by me.",
+        workspace_description: "",
         user_id: "1"
     },
-    {
-        workspace_id: "workspace_3",
-        workspace_title: "My Workspace 3",
-        workspace_description: "This is my workspace description written by me.",
-        user_id: "1"
-    },
-    {
-        workspace_id: "workspace_4",
-        workspace_title: "My Workspace 4",
-        workspace_description: "This is my workspace description written by me.",
-        user_id: "1"
-    },
-    {
-        workspace_id: "workspace_5",
-        workspace_title: "My Workspace 5",
-        workspace_description: "This is my workspace description written by me.",
-        user_id: "1"
-    }
 ];
 
 export default demo_workspaces;

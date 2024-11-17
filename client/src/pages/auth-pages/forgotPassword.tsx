@@ -4,30 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { userForgotPasswordFormVS, userForgotPasswordFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
 
 const ForgotPassword = () => {
 
     const isLoading = false;
 
-    const validationSchema = z.object({
-        email: z.string({
-            required_error: "Please enter email address.",
-            invalid_type_error: "Email must be in string format."
-        }).email({
-            message: "Please enter valid email address."
-        }).min(1),
-
-    })
-
-    type validationSchema = z.infer<typeof validationSchema>;
-
-    const { register, handleSubmit, formState: { errors } } = useForm<validationSchema>({
-        resolver: zodResolver(validationSchema)
+    const { register, handleSubmit, formState: { errors } } = useForm<userForgotPasswordFormVS>({
+        resolver: zodResolver(userForgotPasswordFormValidationSchema)
     });
 
-    const handleFormSubmit: SubmitHandler<validationSchema> = (formdata) => {
+    const handleFormSubmit: SubmitHandler<userForgotPasswordFormVS> = (formdata) => {
         console.log(formdata);
     }
 

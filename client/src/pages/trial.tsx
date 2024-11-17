@@ -196,6 +196,9 @@ const Trial = () => {
                                                                                     :
                                                                                     (<div>No Labels Found.</div>)
                                                                             }
+                                                                            <div className="border border-zinc-800 border-solid w-full h-[5px] mt-[5px]">
+                                                                                <div className="bg-zinc-800 h-[4px] w-0" style={{ width: `${calculatePercentage(sel.filter((item) => item.includes(task.task_id)).length, dataDes.labels.length)}%` }}></div>
+                                                                            </div>
                                                                         </div>
                                                                     ))
                                                                 }

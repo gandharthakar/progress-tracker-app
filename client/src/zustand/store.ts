@@ -7,6 +7,7 @@ const getTheme = () => {
         const prs_lsitm = JSON.parse(lsitm);
         return prs_lsitm;
     } else {
+        localStorage.setItem('theme', JSON.stringify('system'));
         return 'system';
     }
 }

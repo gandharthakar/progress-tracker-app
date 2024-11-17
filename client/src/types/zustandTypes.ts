@@ -1,7 +1,7 @@
 export type ThemeStore = {
-    theme: 'light' | 'dark' | 'system';
-    toggleTheme: () => void;
-    setTheme: (theme: ThemeStore['theme']) => void;
+    theme: 'light' | 'dark' | 'system' | string;
+    toggleTheme: () => void,
+    setTheme: (theme: ThemeStore['theme']) => void,
 }
 
 export interface GlobalCheckboxStore {

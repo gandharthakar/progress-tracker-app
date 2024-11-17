@@ -18,6 +18,9 @@ import WorkSpace from "@/pages/user-area/workSpace";
 // Layouts
 import BaseLayout from "@/layouts/baseLayout";
 import UserAreaLayout from "@/layouts/userAreaLayout";
+import GeneralSettings from "@/pages/user-area/settings/generalSettings";
+import PasswordSettings from "@/pages/user-area/settings/passwordSettings";
+import ThemeSettings from "@/pages/user-area/settings/themeSettings";
 
 const WebRoutes = createBrowserRouter([
     {
@@ -69,9 +72,21 @@ const WebRoutes = createBrowserRouter([
         element: <UserAreaLayout />,
         children: [
             {
-                path: 'workspace/:user_id',
+                path: 'my-workspaces/:user_id',
                 element: <WorkSpace />,
             },
+            {
+                path: 'settings/:user_id',
+                element: <GeneralSettings />
+            },
+            {
+                path: 'settings/password/:user_id',
+                element: <PasswordSettings />
+            },
+            {
+                path: 'settings/theme/:user_id',
+                element: <ThemeSettings />
+            }
         ]
     },
     {

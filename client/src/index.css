@@ -72,4 +72,16 @@
     .about-content p {
         @apply block pb-[20px] font-roboto_mono text-[14px] md:text-[16px] text-zinc-600 dark:text-zinc-400;
     }
+    .user-settings-nav {
+        @apply flex gap-x-[15px] gap-y-[5px] flex-row mdl-1:flex-col overflow-x-auto mdl-1:overflow-visible;
+    }
+    .user-settings-nav li {
+        @apply w-auto mdl-1:w-full;
+    }
+    .user-settings-nav li .nav-link {
+        @apply inline-block mdl-1:block px-[15px] mdl-1:px-[20px] py-[7px] mdl-1:py-[10px] font-poppins text-[14px] md:text-[16px] text-zinc-900 bg-transparent hover:underline dark:text-zinc-200 rounded-[7px];
+    }
+    .user-settings-nav li.active .nav-link {
+        @apply bg-zinc-100 dark:bg-zinc-900 font-semibold hover:no-underline;
+    }
 }

@@ -5,35 +5,19 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { userLoginFormVS, userLoginFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
 
 const Login = () => {
 
     const [showPwd, setShowPwd] = useState<boolean>(false);
     const isLoading = false;
 
-    const validationSchema = z.object({
-        email: z.string({
-            required_error: "Please enter email address.",
-            invalid_type_error: "Email must be in string format."
-        }).email({
-            message: "Please enter valid email address."
-        }).min(1),
-
-        password: z.string({
-            invalid_type_error: "Password must be in string format."
-        }).min(8).max(16),
-
-    })
-
-    type validationSchema = z.infer<typeof validationSchema>;
-
-    const { register, handleSubmit, formState: { errors } } = useForm<validationSchema>({
-        resolver: zodResolver(validationSchema)
+    const { register, handleSubmit, formState: { errors } } = useForm<userLoginFormVS>({
+        resolver: zodResolver(userLoginFormValidationSchema)
     });
 
-    const handleFormSubmit: SubmitHandler<validationSchema> = (formdata) => {
+    const handleFormSubmit: SubmitHandler<userLoginFormVS> = (formdata) => {
         console.log(formdata);
     }
 

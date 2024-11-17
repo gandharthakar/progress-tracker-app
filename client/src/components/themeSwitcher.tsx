@@ -16,64 +16,50 @@ const ThemeSwitcher = () => {
         localStorage.setItem('theme', JSON.stringify(selectedTheme));
     };
 
-    const handleChange = ({ matches }: any) => {
+    // const handleChange = ({ matches }: any) => {
+    //     const docHTML = document.querySelector('html');
+    //     console.log(matches);
+    //     if (matches) {
+    //         docHTML?.classList.add('dark');
+    //     } else {
+    //         docHTML?.classList.remove('dark');
+    //     }
+    // }
+
+    const detectDarkTheme = () => {
         const docHTML = document.querySelector('html');
-        if (matches) {
-            // setTheme('dark');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        if (systemTheme == 'dark') {
             docHTML?.classList.add('dark');
         } else {
-            // setTheme('light');
             docHTML?.classList.remove('dark');
         }
     }
 
-    // Check system preference and set theme accordingly
     useEffect(() => {
-        const docHTML = document.querySelector('html');
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         const lsitm = localStorage.getItem('theme');
         if (lsitm) {
             const prs_lsitm = JSON.parse(lsitm);
-
             if (prs_lsitm === 'system') {
-                if (systemTheme == 'dark') {
-                    // setTheme('dark');
-                    docHTML?.classList.add('dark');
-                } else {
-                    // setTheme('light');
-                    docHTML?.classList.remove('dark');
-                }
-
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", handleChange);
+                setTheme('system');
+                detectDarkTheme();
+                // window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", handleChange);
             }
-        } else {
-            if (systemTheme === 'dark') {
-                // setTheme('dark');
-                docHTML?.classList.add('dark');
-            } else {
-                // setTheme('light');
-                docHTML?.classList.remove('dark');
-            }
-
-            localStorage.setItem('theme', JSON.stringify('system'));
-            setTheme('system');
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", handleChange);
         }
-
-        return () => {
-            window.removeEventListener("change", handleChange);
-        };
-        //eslint-disable-next-line
+        // return () => {
+        //     window.removeEventListener("change", handleChange);
+        // };
     }, []);
 
     useEffect(() => {
-
         const docHTML = document.querySelector('html');
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         const lsitm = localStorage.getItem('theme');
+
         if (lsitm) {
             const prs_lsitm = JSON.parse(lsitm);
-            if (prs_lsitm !== 'system') {
+            if (prs_lsitm === 'system') {
+                detectDarkTheme();
+            } else {
                 if (prs_lsitm === 'light') {
                     setTheme('light');
                     docHTML?.classList.remove('dark');
@@ -81,24 +67,9 @@ const ThemeSwitcher = () => {
                     setTheme('dark');
                     docHTML?.classList.add('dark');
                 }
-            } else {
-                if (systemTheme === 'dark') {
-                    // setTheme('dark');
-                    docHTML?.classList.add('dark');
-                } else {
-                    // setTheme('light');
-                    docHTML?.classList.remove('dark');
-                }
-                setTheme('system');
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", handleChange);
             }
         }
 
-        return () => {
-            window.removeEventListener("change", handleChange);
-        };
-
-        //eslint-disable-next-line
     }, [theme, setTheme]);
 
     return (

@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { userResetPasswordFormVS, userResetPasswordFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
 
 const ResetPassword = () => {
 
@@ -14,27 +14,11 @@ const ResetPassword = () => {
     const [showConfPwd, setShowConfPwd] = useState<boolean>(false);
     const isLoading = false;
 
-    const validationSchema = z.object({
-        password: z.string({
-            invalid_type_error: "Password must be in string format."
-        }).min(8).max(16),
-
-        confirmPassword: z.string({
-            invalid_type_error: "Confirm password must be in string format."
-        }).min(8).max(16)
-
-    }).refine((data) => data.password === data.confirmPassword, {
-        path: ["confirmPassword"],
-        message: "Your password didn't match."
+    const { register, handleSubmit, formState: { errors } } = useForm<userResetPasswordFormVS>({
+        resolver: zodResolver(userResetPasswordFormValidationSchema)
     });
 
-    type validationSchema = z.infer<typeof validationSchema>;
-
-    const { register, handleSubmit, formState: { errors } } = useForm<validationSchema>({
-        resolver: zodResolver(validationSchema)
-    });
-
-    const handleFormSubmit: SubmitHandler<validationSchema> = (formdata) => {
+    const handleFormSubmit: SubmitHandler<userResetPasswordFormVS> = (formdata) => {
         console.log(formdata);
     }
 

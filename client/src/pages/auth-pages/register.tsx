@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { userRegisterFormVS, userRegisterFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
 
 const Register = () => {
 
@@ -14,39 +14,11 @@ const Register = () => {
     const [showConfPwd, setShowConfPwd] = useState<boolean>(false);
     const isLoading = false;
 
-    const validationSchema = z.object({
-        fullName: z.string({
-            required_error: "Please enter Full Name",
-            invalid_type_error: "Full Name must be in string format."
-        }).min(6, { message: "Full name must be contains at least 6 characters." }),
-
-        email: z.string({
-            required_error: "Please enter email address.",
-            invalid_type_error: "Email must be in string format."
-        }).email({
-            message: "Please enter valid email address."
-        }).min(1),
-
-        password: z.string({
-            invalid_type_error: "Password must be in string format."
-        }).min(8).max(16),
-
-        confirmPassword: z.string({
-            invalid_type_error: "Confirm password must be in string format."
-        }).min(8).max(16)
-
-    }).refine((data) => data.password === data.confirmPassword, {
-        path: ["confirmPassword"],
-        message: "Your password didn't match."
+    const { register, handleSubmit, formState: { errors } } = useForm<userRegisterFormVS>({
+        resolver: zodResolver(userRegisterFormValidationSchema)
     });
 
-    type validationSchema = z.infer<typeof validationSchema>;
-
-    const { register, handleSubmit, formState: { errors } } = useForm<validationSchema>({
-        resolver: zodResolver(validationSchema)
-    });
-
-    const handleFormSubmit: SubmitHandler<validationSchema> = (formdata) => {
+    const handleFormSubmit: SubmitHandler<userRegisterFormVS> = (formdata) => {
         console.log(formdata);
     }
 

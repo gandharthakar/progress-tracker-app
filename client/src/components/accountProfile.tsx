@@ -11,8 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import { CiSettings } from "react-icons/ci";
-import { RiDashboard3Line } from "react-icons/ri";
+import { Box, Settings } from "lucide-react";
 
 const AccountProfile = () => {
 
@@ -38,24 +37,24 @@ const AccountProfile = () => {
                                     <DropdownMenuContent align="end" className="w-[170px] apddm">
                                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem className="menu-item cursor-pointer">
+                                        <DropdownMenuItem asChild className="menu-item cursor-pointer">
                                             <NavLink
-                                                to={`/user/workspace/${1}`}
-                                                title="My Workspace"
+                                                to={`/user/my-workspaces/${1}`}
+                                                title="My Workspaces"
                                             >
                                                 <div className="flex gap-x-[5px] py-[5px]">
-                                                    <RiDashboard3Line size={20} className="!w-[20px] !h-[20px]" />
-                                                    <span>My Workspace</span>
+                                                    <Box size={20} className="!w-[20px] !h-[20px]" />
+                                                    <span>My Workspaces</span>
                                                 </div>
                                             </NavLink>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem className="menu-item cursor-pointer">
+                                        <DropdownMenuItem asChild className="menu-item cursor-pointer">
                                             <NavLink
                                                 to={`/user/settings/${1}`}
                                                 title="Settings"
                                             >
                                                 <div className="flex gap-x-[5px] py-[5px]">
-                                                    <CiSettings size={20} className="!w-[20px] !h-[20px]" />
+                                                    <Settings size={20} className="!w-[20px] !h-[20px]" />
                                                     <span>Settings</span>
                                                 </div>
                                             </NavLink>
