@@ -97,19 +97,19 @@ const Trial = () => {
     const handleCheck = () => {
         const data = { workspace_id: dataDes.workspace_id, completed_tasks: sel };
         localStorage.setItem("track_record", JSON.stringify(data));
-        const arr = [];
-        for (let i = 0; i < dataDes.sections.length; i++) {
-            for (let x = 0; x < dataDes.sections[i].tasks.length; x++) {
-                arr.push(dataDes.sections[i].tasks[x]);
-            }
-        }
-        setUnchecked(arr.length * dataDes.labels.length);
-        const fino = Number(calculatePercentage(sel.length, unchecked).toFixed(2));
-        const fino2 = (100 - fino);
-        setPiData([
-            { id: 0, value: fino, color: '#18181b', label: "Completed" },
-            { id: 1, value: fino2, color: '#3f3f46', label: "Pending" },
-        ]);
+        // const arr = [];
+        // for (let i = 0; i < dataDes.sections.length; i++) {
+        //     for (let x = 0; x < dataDes.sections[i].tasks.length; x++) {
+        //         arr.push(dataDes.sections[i].tasks[x]);
+        //     }
+        // }
+        // setUnchecked(arr.length * dataDes.labels.length);
+        // const fino = Number(calculatePercentage(sel.length, unchecked).toFixed(2));
+        // const fino2 = (100 - fino);
+        // setPiData([
+        //     { id: 0, value: fino, color: '#18181b', label: "Completed" },
+        //     { id: 1, value: fino2, color: '#3f3f46', label: "Pending" },
+        // ]);
     }
 
     useEffect(() => {
@@ -123,6 +123,23 @@ const Trial = () => {
         }
         //eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        const arr = [];
+        for (let i = 0; i < dataDes.sections.length; i++) {
+            for (let x = 0; x < dataDes.sections[i].tasks.length; x++) {
+                arr.push(dataDes.sections[i].tasks[x]);
+            }
+        }
+        setUnchecked(arr.length * dataDes.labels.length);
+        const fino = Number(calculatePercentage(sel.length, unchecked).toFixed(2));
+        const fino2 = (100 - fino);
+        setPiData([
+            { id: 0, value: fino, color: '#18181b', label: "Completed" },
+            { id: 1, value: fino2, color: '#3f3f46', label: "Pending" },
+        ]);
+        //eslint-disable-next-line
+    }, [sel]);
 
     useEffect(() => {
         const lsi = localStorage.getItem("track_record");

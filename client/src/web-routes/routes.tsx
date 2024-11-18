@@ -14,15 +14,22 @@ import Login from "@/pages/auth-pages/login";
 import ForgotPassword from "@/pages/auth-pages/forgotPassword";
 import ResetPassword from "@/pages/auth-pages/resetPassword";
 import WorkSpace from "@/pages/user-area/workSpace";
+import GeneralSettings from "@/pages/user-area/settings/generalSettings";
+import PasswordSettings from "@/pages/user-area/settings/passwordSettings";
+import ThemeSettings from "@/pages/user-area/settings/themeSettings";
+import SingleWorkSpace from "@/pages/user-area/singleWorkSpace";
+import PageNotFound from "@/pages/pageNotFound";
 
 // Layouts
 import BaseLayout from "@/layouts/baseLayout";
 import UserAreaLayout from "@/layouts/userAreaLayout";
-import GeneralSettings from "@/pages/user-area/settings/generalSettings";
-import PasswordSettings from "@/pages/user-area/settings/passwordSettings";
-import ThemeSettings from "@/pages/user-area/settings/themeSettings";
+
 
 const WebRoutes = createBrowserRouter([
+    {
+        path: '*',
+        element: <PageNotFound />
+    },
     {
         path: "/",
         element: <App />,
@@ -86,6 +93,10 @@ const WebRoutes = createBrowserRouter([
             {
                 path: 'settings/theme/:user_id',
                 element: <ThemeSettings />
+            },
+            {
+                path: 'workspace/:workspace_id/:user_id',
+                element: <SingleWorkSpace />,
             }
         ]
     },

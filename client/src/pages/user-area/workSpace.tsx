@@ -50,7 +50,7 @@ const WorkSpace = () => {
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-zinc-950 min-h-[90vh] pb-[50px] digonal-lines-bg">
+            <div className="bg-white dark:bg-zinc-950 min-h-[100vh] pb-[50px] digonal-lines-bg">
                 <div className="site-container">
                     <div className="py-[30px]">
                         <div className="flex flex-wrap items-center justify-between gap-x-[20px] gap-y-[15px] p-[20px] md:p-[30px] rounded-[7px] md:rounded-[10px] bg-white dark:bg-zinc-900 border border-solid border-zinc-200 dark:border-zinc-700">
