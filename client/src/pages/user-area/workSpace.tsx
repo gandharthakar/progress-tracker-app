@@ -1,35 +1,32 @@
 import SiteDialog from "@/components/SiteDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import demo_workspaces from "@/utils/demoData";
 import { SiteWorkspaceCompProps } from "@/types/componentsTypes";
 import WorkspaceBox from "@/components/workspaceBox";
+import { workspaceFormVS, workspaceFormValidationSchema } from "@/zod/schemas/userWorkspace";
 
 const WorkSpace = () => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [data, setData] = useState<SiteWorkspaceCompProps[]>([]);
+    const [workspaceDscr, setWorkspaceDscr] = useState<string>('');
+    const isLoading = false;
 
-    const validationSchema = z.object({
-        workspaceName: z.string({
-            required_error: "Please enter Workspace Name",
-            invalid_type_error: "Workspace Name must be in string format."
-        }).min(6, { message: "Workspace name must be contains at least 6 characters." }),
+    const { register, handleSubmit, formState: { errors } } = useForm<workspaceFormVS>({
+        resolver: zodResolver(workspaceFormValidationSchema)
     });
 
-    type validationSchema = z.infer<typeof validationSchema>;
-
-    const { register, handleSubmit, formState: { errors } } = useForm<validationSchema>({
-        resolver: zodResolver(validationSchema)
-    });
-
-    const handleFormSubmit: SubmitHandler<validationSchema> = (formdata) => {
-        console.log(formdata);
+    const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
+        let data = {
+            workspace_name: formdata.workspaceName,
+            workspace_description: workspaceDscr
+        }
+        console.log(data);
     }
 
     useEffect(() => {
@@ -145,14 +142,24 @@ const WorkSpace = () => {
                         <Input
                             type="text"
                             id="cnw_dscr"
+                            value={workspaceDscr}
+                            onChange={(e) => setWorkspaceDscr(e.target.value)}
                         />
                     </div>
                     <div className="text-right">
                         <Button
-                            title="Create"
+                            title={isLoading ? "Creating ..." : "Create"}
                             type="submit"
+                            disabled={isLoading}
                         >
-                            Create
+                            {
+                                isLoading ?
+                                    (<>
+                                        <Loader2 className="animate-spin" />
+                                        Creating ...
+                                    </>)
+                                    : ("Create")
+                            }
                         </Button>
                     </div>
                 </form>

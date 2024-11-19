@@ -93,9 +93,9 @@ const ThemeSettings = () => {
                                             <SelectValue placeholder="Theme" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="light">Light</SelectItem>
-                                            <SelectItem value="dark">Dark</SelectItem>
-                                            <SelectItem value="system">System</SelectItem>
+                                            <SelectItem className="py-[10px]" value="light">Light</SelectItem>
+                                            <SelectItem className="py-[10px]" value="dark">Dark</SelectItem>
+                                            <SelectItem className="py-[10px]" value="system">System</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

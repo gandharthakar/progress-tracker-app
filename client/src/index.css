@@ -84,4 +84,8 @@
     .user-settings-nav li.active .nav-link {
         @apply bg-zinc-100 dark:bg-zinc-900 font-semibold hover:no-underline;
     }
+    .PopoverContent {
+        width: var(--radix-popover-trigger-width);
+        max-height: var(--radix-popover-content-available-height);
+    }
 }

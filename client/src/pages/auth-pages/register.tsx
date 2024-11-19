@@ -149,7 +149,6 @@ const Register = () => {
                                                 </>)
                                                 : ("Register")
                                         }
-
                                     </Button>
                                 </div>
                             </form>

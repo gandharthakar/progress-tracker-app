@@ -15,4 +15,17 @@ const demo_workspaces: SiteWorkspaceCompProps[] = [
     },
 ];
 
+export const demo_sections = [
+    {
+        section_id: "section_1",
+        section_title: "Section 1",
+        section_value: "section_1"
+    },
+    {
+        section_id: "section_2",
+        section_title: "Section 2",
+        section_value: "section_2"
+    }
+];
+
 export default demo_workspaces;
