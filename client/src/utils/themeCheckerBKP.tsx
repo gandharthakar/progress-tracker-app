@@ -87,7 +87,6 @@ const ThemeCheckerBKP = () => {
             window.removeEventListener("change", handleChange);
         };
 
-        //eslint-disable-next-line
     }, [theme, setTheme]);
 
     return (

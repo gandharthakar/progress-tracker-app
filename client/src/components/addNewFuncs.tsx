@@ -36,22 +36,7 @@ import {
 } from "@/components/ui/popover";
 import { taskComboboxType } from "@/types/playGroundTypes";
 import { demo_sections } from "@/utils/demoData";
-
-/* Encode string to slug */
-const convertToSlug = (str: string): string => {
-
-    //replace all special characters | symbols with a space
-    //eslint-disable-next-line
-    str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
-        .toLowerCase();
-
-    // trim spaces at start and end of string
-    str = str.replace(/^\s+|\s+$/gm, '');
-
-    // replace space with dash/hyphen
-    str = str.replace(/\s+/g, '-');
-    return str;
-}
+import { convertToSlug } from "@/utils/helperFunctions";
 
 const AddNewFuncs = () => {
 
@@ -157,7 +142,7 @@ const AddNewFuncs = () => {
     }
 
     useEffect(() => {
-        let dsdata = demo_sections.map((item) => {
+        const dsdata = demo_sections.map((item) => {
             return {
                 label: item.section_title,
                 value: item.section_value,
@@ -165,7 +150,6 @@ const AddNewFuncs = () => {
             }
         });
         setSectionList(dsdata);
-        //eslint-disable-next-line
     }, []);
 
     // Add New Label Modal Form Handling.
@@ -174,7 +158,11 @@ const AddNewFuncs = () => {
     });
 
     const HFS_addLabel: SubmitHandler<labelFormVS> = (formData) => {
-        console.log(formData);
+        const sendData = {
+            label_title: formData.labelTitle,
+            label_value: convertToSlug(formData.labelTitle)
+        }
+        console.log(sendData);
         setIsLabelModalShown(false);
         Swal.fire({
             title: "Success!",
@@ -406,7 +394,37 @@ const AddNewFuncs = () => {
             >
                 <div className="py-[20px] px-[20px]">
                     <form onSubmit={rhfAddLabel.handleSubmit(HFS_addLabel)}>
-
+                        <div className="pb-[15px]">
+                            <label
+                                htmlFor="lbl_ttl"
+                                className="inline-block mb-[5px] font-poppins font-semibold text-[14px] text-zinc-900 dark:text-zinc-200"
+                            >
+                                Label Title
+                            </label>
+                            <Input
+                                type="text"
+                                id="lbl_ttl"
+                                placeholder="eg. Basic"
+                                {...rhfAddLabel.register("labelTitle")}
+                            />
+                            {rhfAddLabel.formState.errors.labelTitle && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{rhfAddLabel.formState.errors.labelTitle.message}</div>)}
+                        </div>
+                        <div className="text-right">
+                            <Button
+                                title={isLoading ? "Creating ..." : "Create"}
+                                type="submit"
+                                disabled={isLoading}
+                            >
+                                {
+                                    isLoading ?
+                                        (<>
+                                            <Loader2 className="animate-spin" />
+                                            Creating ...
+                                        </>)
+                                        : ("Create")
+                                }
+                            </Button>
+                        </div>
                     </form>
                 </div>
             </SiteDialog>

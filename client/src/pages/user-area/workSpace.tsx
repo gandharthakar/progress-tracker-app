@@ -22,7 +22,7 @@ const WorkSpace = () => {
     });
 
     const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
-        let data = {
+        const data = {
             workspace_name: formdata.workspaceName,
             workspace_description: workspaceDscr
         }

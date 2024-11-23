@@ -38,6 +38,7 @@ const ThemeChecker = () => {
         // return () => {
         //     window.removeEventListener("change", handleChange);
         // };
+        //eslint-disable-next-line
     }, []);
 
     useEffect(() => {

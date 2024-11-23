@@ -5,6 +5,7 @@ import {
 // Pages & Components.
 import App from "../App";
 import Homepage from "@/pages/Homepage";
+import TrialAdvance from "@/pages/trialAdvance";
 import Trial from "@/pages/trial";
 import HowItWorks from "@/pages/howItWorks";
 import Contact from "@/pages/contact";
@@ -99,6 +100,10 @@ const WebRoutes = createBrowserRouter([
                 element: <SingleWorkSpace />,
             }
         ]
+    },
+    {
+        path: "/try/:id",
+        element: <TrialAdvance />
     },
     {
         path: "/try",

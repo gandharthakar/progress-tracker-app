@@ -88,4 +88,7 @@
         width: var(--radix-popover-trigger-width);
         max-height: var(--radix-popover-content-available-height);
     }
+    .adjDragLab > [data-rfd-droppable-id] {
+        @apply flex w-full gap-x-[15px] gap-y-[10px] flex-wrap items-center py-[10px] px-[20px];
+    }
 }

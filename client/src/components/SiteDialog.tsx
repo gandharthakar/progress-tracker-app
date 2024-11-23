@@ -45,6 +45,7 @@ const SiteDialog = (props: SiteDialogProps) => {
                 document.removeEventListener('keydown', handleKeyDown);
             };
         }
+        //eslint-disable-next-line
     }, []);
 
     const applyRoundness = () => {
