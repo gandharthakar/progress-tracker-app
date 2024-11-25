@@ -88,7 +88,7 @@ const About = () => {
                                 {
                                     faqsContent.map((item) => (
                                         <AccordionItem key={item.faq_id} value={item.faq_id} className="border-b-zinc-300 dark:border-b-zinc-800">
-                                            <AccordionTrigger className="text-zinc-900 dark:text-zinc-200">
+                                            <AccordionTrigger className="text-zinc-900 dark:text-zinc-200 text-left">
                                                 {item.faq_question}
                                             </AccordionTrigger>
                                             <AccordionContent className="text-zinc-400 dark:text-zinc-400">

@@ -1,5 +1,5 @@
 import { labelType } from "@/types/playGroundTypes";
-import demo_workspaces, { demo_sections, demo_tasks, demo_labels } from "./demoData";
+import demo_workspaces, { demo_sections, demo_tasks, demo_labels } from "@/utils/demoData";
 
 // Encode string to slug
 export const convertToSlug = (str: string): string => {

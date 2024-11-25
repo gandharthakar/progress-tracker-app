@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import SiteLogo from "../siteLogo";
-import UserAreaAccountProfile from "./accountProfile";
+import SiteLogo from "@/components/siteLogo";
+import UserAreaAccountProfile from "@/components/user-area/accountProfile";
 
 const UserAreaHeader = () => {
     return (

@@ -96,9 +96,44 @@ const SingleWorkSpace = () => {
 
     const saveChangesButtonClick = () => {
         if (workspace) {
-            console.log(workspace.sections);
+
+            if (workspace.sections?.length) {
+                const trackIDs = workspace.sections.map((section) => {
+                    if (section.tasks?.length) {
+                        const ids = section.tasks.map((task) => {
+                            return {
+                                task_id: task.task_id,
+                                section_id: section.section_id
+                            }
+                        });
+                        return ids;
+                    }
+                }).flat(1);
+
+                const prepData = {
+                    workspace_id,
+                    user_id,
+                    tracked_tasks_sections: trackIDs,
+                    completed_task: sel
+                }
+                console.log(prepData);
+            }
         }
     }
+
+    useEffect(() => {
+        if (workspace) {
+            const arr = workspace.sections ? workspace.sections.flatMap(section => section.tasks) : [];
+            setUnchecked(arr.length * (workspace.labels?.length || 0));
+            const fino = Number(calculatePercentage(sel.length, unchecked).toFixed(2));
+            const fino2 = (100 - fino);
+            setPieChartData([
+                { id: 0, value: fino, color: pieChartColors[0], label: "Completed" },
+                { id: 1, value: fino2, color: pieChartColors[1], label: "Pending" },
+            ]);
+        }
+        //eslint-disable-next-line
+    }, [sel, workspace, unchecked]);
 
     useEffect(() => {
         if (workspace_id) {
@@ -125,7 +160,7 @@ const SingleWorkSpace = () => {
                 }
             }
         }
-        setChecked(1);
+        setChecked(0);
         setUnchecked(1 * 3);
         setFin(Number(calculatePercentage(checked, unchecked).toFixed(2)));
         setFin2(100 - fin);

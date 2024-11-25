@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom";
-import AccountProfile from "./accountProfile";
+import AccountProfileHome from "@/components/accountProfileHome";
 import { useEffect, useRef, useState } from "react";
 import { IoMenuOutline } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
-import SiteLogo from "./siteLogo";
+import SiteLogo from "@/components/siteLogo";
 
 const Header = () => {
 
@@ -93,8 +93,8 @@ const Header = () => {
                                 }
                             </button>
                         </div>
-                        <div className="">
-                            <AccountProfile />
+                        <div>
+                            <AccountProfileHome cb={() => setIsMenuOpen(false)} />
                         </div>
                     </div>
                 </div>

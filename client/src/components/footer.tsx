@@ -2,8 +2,8 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaWhatsappSquare } from "react-icons/fa";
-import ThemeSwitcher from "./themeSwitcher";
-import SiteLogo from "./siteLogo";
+import ThemeSwitcher from "@/components/themeSwitcher";
+import SiteLogo from "@/components/siteLogo";
 import { NavLink } from "react-router-dom";
 
 
@@ -11,7 +11,7 @@ const Footer = () => {
     return (
         <>
             <div className="border-t-[1px] border-solid border-zinc-300 bg-theme-grey-1 dark:bg-zinc-900 dark:border-zinc-800">
-                <div className="site-container pt-[20px] pb-[20px] md:pb-[60px]">
+                <div className="site-container pt-[30px] pb-[30px] md:pb-[60px]">
                     <div className="flex flex-wrap gap-x-[20px] gap-y-[20px] justify-between flex-col xsm-1:flex-row-reverse">
                         <div className="hidden xsm-1:block">
                             <div>
@@ -52,9 +52,11 @@ const Footer = () => {
                         </div>
                         <div>
                             <div className="pb-[20px]">
-                                <NavLink to="/" title="Home">
-                                    <SiteLogo />
-                                </NavLink>
+                                <div className="inline-block">
+                                    <NavLink to="/" title="Home">
+                                        <SiteLogo />
+                                    </NavLink>
+                                </div>
                             </div>
                             <div className="block xsm-1:hidden pb-[20px]">
                                 <div>

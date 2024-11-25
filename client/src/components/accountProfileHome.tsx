@@ -13,9 +13,10 @@ import {
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Box, Settings } from "lucide-react";
 
-const AccountProfile = () => {
+const AccountProfileHome = (props: { cb?: () => void }) => {
 
-    const isLoggedInUser: boolean = true;
+    const { cb } = props;
+    const isLoggedInUser: boolean = false;
 
     const handleLogOut = () => {
         console.log("Hey");
@@ -28,7 +29,11 @@ const AccountProfile = () => {
                     (
                         <>
                             <div className="h-[40px]">
-                                <DropdownMenu>
+                                <DropdownMenu onOpenChange={(open) => {
+                                    if (open === true) {
+                                        if (cb) cb();
+                                    }
+                                }}>
                                     <DropdownMenuTrigger>
                                         <div className="bg-white dark:bg-zinc-800 w-[40px] h-[40px] border border-solid border-zinc-200 dark:border-zinc-600 flex items-center justify-center rounded-full font-poppins text-[18px] font-semibold text-zinc-500 dark:text-zinc-300">
                                             <span className="uppercase">a</span>
@@ -95,4 +100,4 @@ const AccountProfile = () => {
     )
 }
 
-export default AccountProfile;
+export default AccountProfileHome;

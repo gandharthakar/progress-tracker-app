@@ -3,7 +3,7 @@ import {
 } from "react-router-dom";
 
 // Pages & Components.
-import App from "../App";
+import App from "@/App";
 import Homepage from "@/pages/Homepage";
 import TrialAdvance from "@/pages/trialAdvance";
 import Trial from "@/pages/trial";

@@ -4,7 +4,7 @@ import { demo_labels } from "@/utils/demoData";
 import { GripVertical, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import LabelActions from "./labelActions";
+import LabelActions from "@/components/user-area/labelActions";
 import { reorder } from "@/utils/helperFunctions";
 import { useParams } from "react-router-dom";
 
