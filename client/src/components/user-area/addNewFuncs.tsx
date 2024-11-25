@@ -4,11 +4,11 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Loader2, Plus, Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import SiteDialog from "./SiteDialog";
+import SiteDialog from "@/components/SiteDialog";
 import Swal from 'sweetalert2';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -37,10 +37,12 @@ import {
 import { taskComboboxType } from "@/types/playGroundTypes";
 import { demo_sections } from "@/utils/demoData";
 import { convertToSlug } from "@/utils/helperFunctions";
+import { useParams } from "react-router-dom";
 
 const AddNewFuncs = () => {
 
     const isLoading = false;
+    const { workspace_id, user_id } = useParams();
 
     // Add New Modals States.
     const [isSectionModalShown, setIsSectionModalShown] = useState<boolean>(false);
@@ -55,7 +57,9 @@ const AddNewFuncs = () => {
     const HFS_addSection: SubmitHandler<sectionFormVS> = (formData) => {
         const sendData = {
             section_name: formData.sectionName,
-            section_value: convertToSlug(formData.sectionName)
+            section_value: convertToSlug(formData.sectionName),
+            workspace_id,
+            user_id
         }
         console.log(sendData);
         rhfAddSection.reset();
@@ -124,7 +128,9 @@ const AddNewFuncs = () => {
         if (isValidForm) {
             const sendData = {
                 task_title: taskTitle,
-                section_id: sectionListID
+                workspace_id,
+                section_id: sectionListID,
+                user_id
             }
             console.log(sendData);
             setTaskTitle("");
@@ -142,7 +148,8 @@ const AddNewFuncs = () => {
     }
 
     useEffect(() => {
-        const dsdata = demo_sections.map((item) => {
+        const filteredSection = demo_sections.filter((section) => section.workspace_id === workspace_id);
+        const dsdata = filteredSection.map((item) => {
             return {
                 label: item.section_title,
                 value: item.section_value,
@@ -160,7 +167,9 @@ const AddNewFuncs = () => {
     const HFS_addLabel: SubmitHandler<labelFormVS> = (formData) => {
         const sendData = {
             label_title: formData.labelTitle,
-            label_value: convertToSlug(formData.labelTitle)
+            label_value: convertToSlug(formData.labelTitle),
+            workspace_id,
+            user_id
         }
         console.log(sendData);
         setIsLabelModalShown(false);

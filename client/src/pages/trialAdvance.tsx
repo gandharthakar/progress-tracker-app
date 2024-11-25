@@ -5,14 +5,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { GripVertical } from 'lucide-react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
-const calculatePercentage = (marksObtained: number, maxMarks: number): number => {
-    if (maxMarks === 0) {
-        return 0;
-    }
-    const percentage = (marksObtained / maxMarks) * 100;
-    return percentage;
-}
+import { calculatePercentage } from "@/utils/helperFunctions";
 
 interface Label {
     _id: string;

@@ -21,7 +21,9 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			colors: {},
+			colors: {
+				"theme-grey-1": "#f4f4f4"
+			},
 			fontFamily: {
 				poppins: ['Poppins', 'sans-serif'],
 				roboto_mono: ['Roboto Mono', 'serif']

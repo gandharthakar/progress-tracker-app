@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 const Footer = () => {
     return (
         <>
-            <div className="border-t-[1px] border-solid border-zinc-300 bg-white dark:bg-zinc-950 dark:border-zinc-800">
+            <div className="border-t-[1px] border-solid border-zinc-300 bg-theme-grey-1 dark:bg-zinc-900 dark:border-zinc-800">
                 <div className="site-container pt-[20px] pb-[20px] md:pb-[60px]">
                     <div className="flex flex-wrap gap-x-[20px] gap-y-[20px] justify-between flex-col xsm-1:flex-row-reverse">
                         <div className="hidden xsm-1:block">
@@ -29,22 +29,22 @@ const Footer = () => {
                             </h5>
                             <ul className="flex flex-wrap gap-x-[10px] md:gap-x-[10px] gap-y-[5px] items-center">
                                 <li>
-                                    <a href="https://www.facebook.com/" title="Follow us on Facebook" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                    <a href="https://www.facebook.com/" title="Follow us on Facebook" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                         <FaFacebookSquare size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://x.com/" title="Follow us on X" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                    <a href="https://x.com/" title="Follow us on X" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                         <FaSquareXTwitter size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.instagram.com/" title="Follow us on Instagram" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                    <a href="https://www.instagram.com/" title="Follow us on Instagram" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                         <FaInstagramSquare size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://web.whatsapp.com/" title="Chat with us on WhatsApp" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                    <a href="https://web.whatsapp.com/" title="Chat with us on WhatsApp" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                         <FaWhatsappSquare size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                     </a>
                                 </li>
@@ -72,22 +72,22 @@ const Footer = () => {
                                 </h5>
                                 <ul className="flex flex-wrap gap-x-[10px] md:gap-x-[10px] gap-y-[5px] items-center">
                                     <li>
-                                        <a href="https://www.facebook.com/" title="Follow us on Facebook" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                        <a href="https://www.facebook.com/" title="Follow us on Facebook" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                             <FaFacebookSquare size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://x.com/" title="Follow us on X" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                        <a href="https://x.com/" title="Follow us on X" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                             <FaSquareXTwitter size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://www.instagram.com/" title="Follow us on Instagram" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                        <a href="https://www.instagram.com/" title="Follow us on Instagram" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                             <FaInstagramSquare size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://web.whatsapp.com/" title="Chat with us on WhatsApp" className="text-zinc-800 dark:text-zinc-300" target="_blank">
+                                        <a href="https://web.whatsapp.com/" title="Chat with us on WhatsApp" className="transition-all delay-75 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" target="_blank">
                                             <FaWhatsappSquare size={16} className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                                         </a>
                                     </li>

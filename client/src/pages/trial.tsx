@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import { useGlobalCheckboxStore } from "@/zustand/store";
-
-const calculatePercentage = (marksObtained: number, maxMarks: number): number => {
-    if (maxMarks === 0) {
-        throw new Error("Maximum marks cannot be zero.");
-    }
-    const percentage = (marksObtained / maxMarks) * 100;
-    return percentage;
-}
+import { calculatePercentage } from "@/utils/helperFunctions";
 
 const dataDes = {
     user_id: "user_1",

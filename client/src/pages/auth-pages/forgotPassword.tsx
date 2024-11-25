@@ -77,7 +77,6 @@ const ForgotPassword = () => {
                                                 </>)
                                                 : ("Submit")
                                         }
-
                                     </Button>
                                 </div>
                             </form>

@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import LabelActions from "./labelActions";
 import { reorder } from "@/utils/helperFunctions";
+import { useParams } from "react-router-dom";
 
 const LabelWrapper = () => {
 
     const isLoading = false;
+    const { workspace_id, user_id } = useParams();
     const [labelData, setLabelData] = useState<labelType[]>([]);
     const [isLabelOrderChanged, setIsLabelOrderChanged] = useState<boolean>(false);
 
@@ -33,18 +35,20 @@ const LabelWrapper = () => {
     }
 
     useEffect(() => {
-        setLabelData(demo_labels);
+        const filtered_labels = demo_labels.filter((label) => label.workspace_id === workspace_id);
+        setLabelData(filtered_labels);
     }, []);
 
     return (
         <>
-            <div className="flex w-full max-w-full select-none flex-col items-start justify-between rounded-[10px] border transition-all duration-200 ease-in-out hover:ring-zinc-400 border-zinc-200 hover:border-zinc-300 dark:border-zinc-800 dark:hover:border-zinc-700">
-                <div className="bg-zinc-50 dark:bg-zinc-900 flex w-full items-center justify-between gap-2 rounded-t-[10px] py-[10px] px-[20px]">
+            <input type="hidden" value={user_id} />
+            <div className="flex w-full max-w-full select-none flex-col items-start justify-between rounded-[10px] border transition-all duration-200 ease-in-out hover:ring-zinc-400 border-zinc-300 hover:border-zinc-300 dark:border-zinc-800 dark:hover:border-zinc-700">
+                <div className="bg-theme-grey-1 dark:bg-zinc-900 flex w-full items-center justify-between gap-2 rounded-t-[10px] py-[10px] px-[20px]">
                     <h1 className="inline-block font-roboto_mono text-[14px] md:text-[16px] text-zinc-800 font-semibold dark:text-zinc-300">
                         Labels
                     </h1>
                 </div>
-                <div className="w-full border-t border-zinc-200 dark:border-zinc-800"></div>
+                <div className="w-full border-t border-zinc-300 dark:border-zinc-800"></div>
                 <div className="adjDragLab">
                     {
                         labelData.length ?
@@ -88,11 +92,11 @@ const LabelWrapper = () => {
                 {
                     isLabelOrderChanged && (
                         <>
-                            <div className="w-full border-t border-zinc-200 dark:border-zinc-800"></div>
+                            <div className="w-full border-t border-zinc-300 dark:border-zinc-800"></div>
                             <div className="w-full text-right py-[5px] px-[20px]">
                                 <Button
                                     type="button"
-                                    title={isLoading ? "Updating ..." : "Update"}
+                                    title={isLoading ? "Saving ..." : "Save Order"}
                                     disabled={isLoading}
                                     size="sm"
                                     onClick={saveLabelOrder}
@@ -101,9 +105,9 @@ const LabelWrapper = () => {
                                         isLoading ?
                                             (<>
                                                 <Loader2 className="animate-spin" />
-                                                Updating ...
+                                                Saving ...
                                             </>)
-                                            : ("Update")
+                                            : ("Save Order")
                                     }
                                 </Button>
                             </div>

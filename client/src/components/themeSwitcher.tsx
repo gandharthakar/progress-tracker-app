@@ -75,7 +75,7 @@ const ThemeSwitcher = () => {
 
     return (
         <>
-            <Tabs defaultValue={theme} className="w-[150px]">
+            <Tabs defaultValue={theme} className="w-[130px]">
                 <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="light" onClick={() => handleThemeChange('light')}>
                         <MdOutlineLightMode size={18} />

@@ -11,7 +11,7 @@
     }
 
     * {
-        @apply font-poppins;
+        @apply font-poppins outline-0;
     }
 
     .site-container {
@@ -66,29 +66,67 @@
     .dark .digonal-lines-bg {
         --line-bg-color: #3f3f46;
     }
+
+    .prog-check {
+        @apply relative;
+    }
+
+    .prog-check .label {
+        @apply flex gap-x-[5px] items-center cursor-pointer;
+    }
+
+    .prog-check .label .checkbox-sq {
+        @apply relative rounded-[2px] w-[16px] h-[16px] border-[1px] border-solid border-zinc-500 dark:border-zinc-400;
+    }
+
+    .prog-check .label .checkbox-sq .checkmark-tick {
+        @apply transition-all delay-75 absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] opacity-0 text-zinc-500 dark:text-zinc-400;
+    }
+
+    .prog-check .pt-checkbox {
+        @apply hidden opacity-0 z-[-1] absolute left-0 top-0;
+    }
+
+    .prog-check .label-text {
+        @apply inline-block font-poppins text-[12px] md:text-[12px] text-zinc-500 dark:text-zinc-400;
+    }
+
+    .prog-check .label:has(.pt-checkbox:checked) .checkbox-sq {
+        @apply bg-zinc-500 dark:bg-zinc-400;
+    }
+
+    .prog-check .label:has(.pt-checkbox:checked) .checkbox-sq .checkmark-tick {
+        @apply opacity-100 text-zinc-100;
+    }
 }
 
 @layer utilities {
     .about-content p {
         @apply block pb-[20px] font-roboto_mono text-[14px] md:text-[16px] text-zinc-600 dark:text-zinc-400;
     }
+
     .user-settings-nav {
         @apply flex gap-x-[15px] gap-y-[5px] flex-row mdl-1:flex-col overflow-x-auto mdl-1:overflow-visible;
     }
+
     .user-settings-nav li {
         @apply w-auto mdl-1:w-full;
     }
+
     .user-settings-nav li .nav-link {
         @apply inline-block mdl-1:block px-[15px] mdl-1:px-[20px] py-[7px] mdl-1:py-[10px] font-poppins text-[14px] md:text-[16px] text-zinc-900 bg-transparent hover:underline dark:text-zinc-200 rounded-[7px];
     }
+
     .user-settings-nav li.active .nav-link {
-        @apply bg-zinc-100 dark:bg-zinc-900 font-semibold hover:no-underline;
+        @apply bg-theme-grey-1 dark:bg-zinc-900 font-semibold hover:no-underline;
     }
+
     .PopoverContent {
         width: var(--radix-popover-trigger-width);
         max-height: var(--radix-popover-content-available-height);
     }
-    .adjDragLab > [data-rfd-droppable-id] {
+
+    .adjDragLab>[data-rfd-droppable-id] {
         @apply flex w-full gap-x-[15px] gap-y-[10px] flex-wrap items-center py-[10px] px-[20px];
     }
 }

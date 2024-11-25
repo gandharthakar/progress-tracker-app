@@ -7,13 +7,13 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import SiteDialog from "./SiteDialog";
+import SiteDialog from "@/components/SiteDialog";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { workspaceFormVS, workspaceFormValidationSchema } from "@/zod/schemas/userWorkspace";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Swal from 'sweetalert2';
 
 const WorkspaceBox = (props: SiteWorkspaceCompProps) => {

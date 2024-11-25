@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import demo_workspaces from "@/utils/demoData";
 import { SiteWorkspaceCompProps } from "@/types/componentsTypes";
-import WorkspaceBox from "@/components/workspaceBox";
+import WorkspaceBox from "@/components/user-area/workspaceBox";
 import { workspaceFormVS, workspaceFormValidationSchema } from "@/zod/schemas/userWorkspace";
 
 const WorkSpace = () => {
@@ -36,7 +36,7 @@ const WorkSpace = () => {
 
     return (
         <>
-            <div className="py-[50px] md:py-[100px] px-[20px] text-center bg-zinc-50 dark:bg-zinc-900">
+            <div className="py-[50px] md:py-[100px] px-[20px] text-center bg-theme-grey-1 dark:bg-zinc-900">
                 <h1 className="text-[20px] md:text-[35px] font-poppins font-bold text-zinc-900 dark:text-zinc-200 break-words">
                     Welcome, Amit Kumar
                 </h1>

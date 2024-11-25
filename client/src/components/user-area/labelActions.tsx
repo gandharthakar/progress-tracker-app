@@ -11,9 +11,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { convertToSlug } from "@/utils/helperFunctions";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import SiteDialog from "./SiteDialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import SiteDialog from "@/components/SiteDialog";
 
 const LabelActions = (props: { label_id: string, label_title: string }) => {
 
@@ -88,7 +88,7 @@ const LabelActions = (props: { label_id: string, label_title: string }) => {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Add New Label Modal */}
+            {/* Update Label Modal */}
             <SiteDialog
                 openState={isLabelModalShown}
                 setOpenState={setIsLabelModalShown}
