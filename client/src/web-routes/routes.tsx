@@ -22,9 +22,10 @@ import SingleWorkSpace from "@/pages/user-area/singleWorkSpace";
 import PageNotFound from "@/pages/pageNotFound";
 
 // Layouts
-import BaseLayout from "@/layouts/baseLayout";
+// import BaseLayout from "@/layouts/baseLayout";
 import UserAreaLayout from "@/layouts/userAreaLayout";
-
+import VerifyEmail from "@/pages/auth-pages/verifyEmail";
+import AuthBaseLayout from "@/layouts/authBaseLayout";
 
 const WebRoutes = createBrowserRouter([
     {
@@ -55,11 +56,15 @@ const WebRoutes = createBrowserRouter([
     },
     {
         path: '/auth',
-        element: <BaseLayout />,
+        element: <AuthBaseLayout />,
         children: [
             {
                 path: 'register',
                 element: <Register />
+            },
+            {
+                path: 'verify-email/:token',
+                element: <VerifyEmail />
             },
             {
                 path: 'login',
@@ -70,7 +75,7 @@ const WebRoutes = createBrowserRouter([
                 element: <ForgotPassword />
             },
             {
-                path: 'reset-password/:user_id/:token',
+                path: 'reset-password/:token',
                 element: <ResetPassword />
             },
         ]

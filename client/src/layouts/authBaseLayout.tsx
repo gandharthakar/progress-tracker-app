@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import ThemeChecker from '@/utils/themeChecker';
+import ACLoginRedirect from '@/utils/acLoginRedirect';
 
-const BaseLayout = () => {
+const AuthBaseLayout = () => {
 
     const { pathname } = useLocation();
 
@@ -16,9 +18,11 @@ const BaseLayout = () => {
 
     return (
         <>
+            <ACLoginRedirect />
             <Outlet />
+            <ThemeChecker />
         </>
     );
 };
 
-export default BaseLayout;
+export default AuthBaseLayout;

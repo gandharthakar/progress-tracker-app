@@ -1,5 +1,5 @@
 import SiteLogo from "@/components/siteLogo";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -7,18 +7,81 @@ import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userLoginFormVS, userLoginFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
+import Swal from "sweetalert2";
+import { CommonAPIResponseAuth } from "@/types/tenstack-query/auth/authTypes";
+import { useLoginUser } from "@/tenstack-query/mutations/auth/authMutations";
+import Cookies from 'universal-cookie';
 
 const Login = () => {
 
+    const cookies = new Cookies();
+    const navigate = useNavigate();
     const [showPwd, setShowPwd] = useState<boolean>(false);
-    const isLoading = false;
 
-    const { register, handleSubmit, formState: { errors } } = useForm<userLoginFormVS>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<userLoginFormVS>({
         resolver: zodResolver(userLoginFormValidationSchema)
     });
 
+    const callbackOnSuc = (resp: (CommonAPIResponseAuth | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 2000
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (resp.token) {
+                            cookies.set("Auth", resp.token, { path: '/' });
+                            navigate(`/`);
+                        }
+                    }
+                });
+                reset();
+                // Redirect to verification page.
+                const st = setTimeout(() => {
+                    cookies.set("Auth", resp.token, { path: '/' });
+                    navigate(`/`);
+                    clearTimeout(st);
+                }, 2000);
+            }
+        }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponseAuth | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponseAuth | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const { mutate, isPending } = useLoginUser({ onSuccessCB: (resp) => callbackOnSuc(resp), errorCB: (resp) => callbackErr(resp), onErrorCB: (resp) => callbackOnErr(resp) });
+
     const handleFormSubmit: SubmitHandler<userLoginFormVS> = (formdata) => {
-        console.log(formdata);
+        mutate({
+            user_email: formdata.email,
+            user_password: formdata.password
+        });
     }
 
     return (
@@ -94,12 +157,12 @@ const Login = () => {
                                 <div>
                                     <Button
                                         type="submit"
-                                        title={isLoading ? "Please Wait ..." : "Login"}
+                                        title={isPending ? "Please Wait ..." : "Login"}
                                         className="w-full text-center"
-                                        disabled={isLoading}
+                                        disabled={isPending}
                                     >
                                         {
-                                            isLoading ?
+                                            isPending ?
                                                 (<>
                                                     <Loader2 className="animate-spin" />
                                                     Please wait ...

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { LuArrowRight } from "react-icons/lu";
 import { FiUserPlus } from "react-icons/fi";
@@ -12,15 +12,37 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Box, Settings } from "lucide-react";
+import { useEffect, useState } from "react";
+import Cookies from 'universal-cookie';
+import { jwtDecode } from "jwt-decode";
+import { UserLoginTokenType } from "@/types/tenstack-query/auth/authTypes";
 
 const AccountProfileHome = (props: { cb?: () => void }) => {
 
     const { cb } = props;
-    const isLoggedInUser: boolean = false;
+    const [isLoggedInUser, setIsLoggedInUser] = useState<boolean>(false);
+    const [userID, setUserID] = useState<string>("");
+    const cookies = new Cookies();
+    const navigate = useNavigate();
 
     const handleLogOut = () => {
-        console.log("Hey");
+        cookies.remove("Auth");
+        navigate("/");
+        setIsLoggedInUser(false);
+        setUserID("");
     }
+
+    useEffect(() => {
+        const gtCo = cookies.get("Auth");
+        if (gtCo) {
+            setIsLoggedInUser(true);
+            const decodeToken: UserLoginTokenType = jwtDecode(gtCo);
+            setUserID(decodeToken.user_id);
+        } else {
+            setIsLoggedInUser(false);
+            setUserID("");
+        }
+    }, []);
 
     return (
         <>
@@ -44,7 +66,7 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem asChild className="menu-item cursor-pointer">
                                             <NavLink
-                                                to={`/user/my-workspaces/${1}`}
+                                                to={`/user/my-workspaces/${userID}`}
                                                 title="My Workspaces"
                                             >
                                                 <div className="flex gap-x-[5px] py-[5px]">
@@ -55,7 +77,7 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
                                         </DropdownMenuItem>
                                         <DropdownMenuItem asChild className="menu-item cursor-pointer">
                                             <NavLink
-                                                to={`/user/settings/${1}`}
+                                                to={`/user/settings/${userID}`}
                                                 title="Settings"
                                             >
                                                 <div className="flex gap-x-[5px] py-[5px]">

@@ -96,7 +96,7 @@ const SingleWorkSpace = () => {
 
     const saveChangesButtonClick = () => {
         if (workspace) {
-
+            console.log(workspace.sections);
             if (workspace.sections?.length) {
                 const trackIDs = workspace.sections.map((section) => {
                     if (section.tasks?.length) {
