@@ -20,11 +20,14 @@ import PasswordSettings from "@/pages/user-area/settings/passwordSettings";
 import ThemeSettings from "@/pages/user-area/settings/themeSettings";
 import SingleWorkSpace from "@/pages/user-area/singleWorkSpace";
 import PageNotFound from "@/pages/pageNotFound";
+import VerifyEmail from "@/pages/auth-pages/verifyEmail";
+import TokenChecker from "@/utils/tokenChecker";
+import ReVerifyEmail from "@/pages/auth-pages/reVerifyEmail";
+import LoginVerificationRedirect from "@/pages/auth-pages/loginVerificationRedirect";
 
 // Layouts
 // import BaseLayout from "@/layouts/baseLayout";
 import UserAreaLayout from "@/layouts/userAreaLayout";
-import VerifyEmail from "@/pages/auth-pages/verifyEmail";
 import AuthBaseLayout from "@/layouts/authBaseLayout";
 
 const WebRoutes = createBrowserRouter([
@@ -78,6 +81,10 @@ const WebRoutes = createBrowserRouter([
                 path: 'reset-password/:token',
                 element: <ResetPassword />
             },
+            {
+                path: 're-verify-email/:token',
+                element: <ReVerifyEmail />
+            },
         ]
     },
     {
@@ -86,25 +93,29 @@ const WebRoutes = createBrowserRouter([
         children: [
             {
                 path: 'my-workspaces/:user_id',
-                element: <WorkSpace />,
+                element: <TokenChecker><WorkSpace /></TokenChecker>,
             },
             {
                 path: 'settings/:user_id',
-                element: <GeneralSettings />
+                element: <TokenChecker><GeneralSettings /></TokenChecker>,
             },
             {
                 path: 'settings/password/:user_id',
-                element: <PasswordSettings />
+                element: <TokenChecker><PasswordSettings /></TokenChecker>,
             },
             {
                 path: 'settings/theme/:user_id',
-                element: <ThemeSettings />
+                element: <TokenChecker><ThemeSettings /></TokenChecker>,
             },
             {
                 path: 'workspace/:workspace_id/:user_id',
-                element: <SingleWorkSpace />,
+                element: <TokenChecker><SingleWorkSpace /></TokenChecker>,
             }
         ]
+    },
+    {
+        path: "/auth/re-verify/redirect",
+        element: <TokenChecker><LoginVerificationRedirect /></TokenChecker>,
     },
     {
         path: "/try/:id",

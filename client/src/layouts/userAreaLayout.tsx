@@ -1,5 +1,6 @@
 import UserAreaHeader from '@/components/user-area/header';
 import ThemeChecker from '@/utils/themeChecker';
+import UIDChecker from '@/utils/uidChecker';
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
@@ -17,6 +18,7 @@ const UserAreaLayout = () => {
 
     return (
         <>
+            <UIDChecker />
             <UserAreaHeader />
             <Outlet />
             <ThemeChecker />

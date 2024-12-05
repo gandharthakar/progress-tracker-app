@@ -22,7 +22,7 @@ import { useVerifyUserEmail } from "@/tenstack-query/mutations/auth/authMutation
 import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
 import Swal from "sweetalert2";
 
-const VerifyEmail = () => {
+const ReVerifyEmail = () => {
 
     const { token } = useParams();
     const navigate = useNavigate();
@@ -117,7 +117,7 @@ const VerifyEmail = () => {
                         <div className="pb-[20px]">
                             <div className="pb-[5px] text-center">
                                 <h1 className="inline-block font-poppins font-bold text-[18px] md:text-[20px] text-zinc-800 dark:text-zinc-200">
-                                    Verify Email Address
+                                    Re-Verify Email Address
                                 </h1>
                             </div>
                             <div className="max-w-[250px] mx-auto text-center">
@@ -181,4 +181,4 @@ const VerifyEmail = () => {
     )
 };
 
-export default VerifyEmail;
+export default ReVerifyEmail;

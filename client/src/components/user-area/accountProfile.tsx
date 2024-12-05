@@ -9,18 +9,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Box, Settings } from "lucide-react";
-import Cookies from "universal-cookie";
 
 const UserAreaAccountProfile = () => {
 
     const { user_id } = useParams();
-    const cookies = new Cookies();
     const navigate = useNavigate();
     const pathName = window.location.href;
     const navLinks = [`/user/my-workspaces/${user_id}`, `/user/settings/${user_id}`];
 
     const handleLogOut = () => {
-        cookies.remove("Auth");
+        localStorage.removeItem("Auth");
         navigate("/");
     }
 

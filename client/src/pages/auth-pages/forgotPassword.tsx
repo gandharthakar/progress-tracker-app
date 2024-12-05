@@ -1,22 +1,78 @@
 import SiteLogo from "@/components/siteLogo";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userForgotPasswordFormVS, userForgotPasswordFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
+import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import Swal from "sweetalert2";
+import { useForgotPassword } from "@/tenstack-query/mutations/auth/authMutations";
 
 const ForgotPassword = () => {
 
-    const isLoading = false;
+    const navigate = useNavigate();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<userForgotPasswordFormVS>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<userForgotPasswordFormVS>({
         resolver: zodResolver(userForgotPasswordFormValidationSchema)
     });
 
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate(`/auth/login`);
+                    }
+                });
+                reset();
+                // Redirect to login page.
+                const st = setTimeout(() => {
+                    navigate(`/auth/login`);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const { mutate, isPending } = useForgotPassword({ onSuccessCB: (resp) => callbackOnSuc(resp), errorCB: (resp) => callbackErr(resp), onErrorCB: (resp) => callbackOnErr(resp) });
+
     const handleFormSubmit: SubmitHandler<userForgotPasswordFormVS> = (formdata) => {
-        console.log(formdata);
+        mutate({
+            user_email: formdata.email
+        })
     }
 
     return (
@@ -65,12 +121,12 @@ const ForgotPassword = () => {
                                 <div>
                                     <Button
                                         type="submit"
-                                        title={isLoading ? "Please Wait ..." : "Submit"}
+                                        title={isPending ? "Please Wait ..." : "Submit"}
                                         className="w-full text-center"
-                                        disabled={isLoading}
+                                        disabled={isPending}
                                     >
                                         {
-                                            isLoading ?
+                                            isPending ?
                                                 (<>
                                                     <Loader2 className="animate-spin" />
                                                     Please wait ...

@@ -29,7 +29,6 @@ const forgotPasswordController = async (req, res) => {
                 response = {
                     success: true,
                     message: "Password reset link has been sent to your registered email address.",
-                    token
                 }
             } else {
                 status = 200;

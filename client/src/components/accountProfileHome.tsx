@@ -13,34 +13,34 @@ import {
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Box, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import Cookies from 'universal-cookie';
 import { jwtDecode } from "jwt-decode";
 import { UserLoginTokenType } from "@/types/tenstack-query/auth/authTypes";
 
 const AccountProfileHome = (props: { cb?: () => void }) => {
 
     const { cb } = props;
+    const navigate = useNavigate();
     const [isLoggedInUser, setIsLoggedInUser] = useState<boolean>(false);
     const [userID, setUserID] = useState<string>("");
-    const cookies = new Cookies();
-    const navigate = useNavigate();
 
     const handleLogOut = () => {
-        cookies.remove("Auth");
+        localStorage.removeItem("Auth");
         navigate("/");
         setIsLoggedInUser(false);
         setUserID("");
     }
 
     useEffect(() => {
-        const gtCo = cookies.get("Auth");
+        const gtCo = localStorage.getItem("Auth");
         if (gtCo) {
+            const prsGtCo = JSON.parse(gtCo);
             setIsLoggedInUser(true);
-            const decodeToken: UserLoginTokenType = jwtDecode(gtCo);
+            const decodeToken: UserLoginTokenType = jwtDecode(prsGtCo);
             setUserID(decodeToken.user_id);
         } else {
             setIsLoggedInUser(false);
             setUserID("");
+            localStorage.removeItem("Auth");
         }
     }, []);
 

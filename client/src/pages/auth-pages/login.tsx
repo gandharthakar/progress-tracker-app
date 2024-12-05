@@ -10,11 +10,9 @@ import { userLoginFormVS, userLoginFormValidationSchema } from "@/zod/schemas/us
 import Swal from "sweetalert2";
 import { CommonAPIResponseAuth } from "@/types/tenstack-query/auth/authTypes";
 import { useLoginUser } from "@/tenstack-query/mutations/auth/authMutations";
-import Cookies from 'universal-cookie';
 
 const Login = () => {
 
-    const cookies = new Cookies();
     const navigate = useNavigate();
     const [showPwd, setShowPwd] = useState<boolean>(false);
 
@@ -33,7 +31,7 @@ const Login = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         if (resp.token) {
-                            cookies.set("Auth", resp.token, { path: '/' });
+                            localStorage.setItem("Auth", JSON.stringify(resp.token));
                             navigate(`/`);
                         }
                     }
@@ -41,7 +39,7 @@ const Login = () => {
                 reset();
                 // Redirect to verification page.
                 const st = setTimeout(() => {
-                    cookies.set("Auth", resp.token, { path: '/' });
+                    localStorage.setItem("Auth", JSON.stringify(resp.token));
                     navigate(`/`);
                     clearTimeout(st);
                 }, 2000);

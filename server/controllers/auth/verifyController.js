@@ -66,7 +66,17 @@ const verifyEmailController = async (req, res) => {
         if (error.message == "jwt expired") {
             response = {
                 success: false,
-                message: "Your token is expired."
+                message: "Your link is expired."
+            }
+        } else if (error.message == "jwt malformed" || error.message == "jwt must be a string") {
+            response = {
+                success: false,
+                message: "Wrong information provided."
+            }
+        } else if (error.message == "invalid signature" || error.message == "invalid token") {
+            response = {
+                success: false,
+                message: "Invalid information provided."
             }
         } else {
             response = {

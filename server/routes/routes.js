@@ -7,6 +7,8 @@ const loginUserController = require("../controllers/auth/loginController");
 const verifyEmailController = require("../controllers/auth/verifyController");
 const forgotPasswordController = require("../controllers/auth/forgotPasswordController");
 const resetPasswordController = require("../controllers/auth/resetPasswordController");
+const authCheckerController = require("../controllers/auth/authCheckerController");
+const userInfoController = require("../controllers/user-area/userInfoController");
 
 // Middlewares.
 const isGmailUserMiddleware = require("../middleware/isGmailUserMiddleware");
@@ -22,5 +24,9 @@ routes.post('/api/auth/verify-email', verifyEmailController);
 routes.post('/api/auth/login', isGmailUserMiddleware, loginUserController);
 routes.post('/api/auth/forgot-password', isGmailUserMiddleware, forgotPasswordController);
 routes.post('/api/auth/reset-password', resetPasswordController);
+routes.post('/api/auth/checker', authCheckerController);
+
+// User Routes.
+routes.post('/api/get-user-info', userInfoController);
 
 module.exports = routes;
