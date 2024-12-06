@@ -9,12 +9,16 @@ import demo_workspaces from "@/utils/demoData";
 import { SiteWorkspaceCompProps } from "@/types/componentsTypes";
 import WorkspaceBox from "@/components/user-area/workspaceBox";
 import { workspaceFormVS, workspaceFormValidationSchema } from "@/zod/schemas/userWorkspace";
+import { UserInfoAPIResponse } from "@/types/tenstack-query/user/userTypes";
+import Swal from "sweetalert2";
+import { useGetUserInfo } from "@/tenstack-query/mutations/user/userMutations";
 
 const WorkSpace = () => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [data, setData] = useState<SiteWorkspaceCompProps[]>([]);
     const [workspaceDscr, setWorkspaceDscr] = useState<string>('');
+    const [userName, setUserName] = useState<string>("User");
     const isLoading = false;
 
     const { register, handleSubmit, formState: { errors } } = useForm<workspaceFormVS>({
@@ -29,16 +33,61 @@ const WorkSpace = () => {
         console.log(data);
     }
 
+    const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                if (resp.user) {
+                    if (resp.user.user_full_name) {
+                        setUserName(resp.user.user_full_name);
+                    }
+                }
+            }
+        }
+    }
+
+    const callbackOnErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const callbackErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const { mutate } = useGetUserInfo({ onSuccessCB: (resp) => callbackOnSuc_gui(resp), errorCB: (resp) => callbackErr_gui(resp), onErrorCB: (resp) => callbackOnErr_gui(resp) });
+
     useEffect(() => {
-        setData(demo_workspaces);
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            mutate({ token: prs_guifls, required_data_code: "115521" });
+        }
+        // setData(demo_workspaces);
         // setData([]);
-    }, []);
+    }, [mutate]);
 
     return (
         <>
             <div className="py-[50px] md:py-[100px] px-[20px] text-center bg-theme-grey-1 dark:bg-zinc-900">
                 <h1 className="text-[20px] md:text-[35px] font-poppins font-bold text-zinc-900 dark:text-zinc-200 break-words">
-                    Welcome, Amit Kumar
+                    Welcome, {userName}
                 </h1>
                 <div className="pt-[5px]">
                     <p className="font-roboto_mono text-[14px] md:text-[16px] text-zinc-700 dark:text-zinc-300">
@@ -101,7 +150,7 @@ const WorkSpace = () => {
                                     </>
                                 )
                                 :
-                                (<div className="font-poppins text-[12px] font-semibold text-zinc-700 dark:text-zinc-300">No Workspaces Found.</div>)
+                                (<div className="block px-[20px] md:px-[30px] font-poppins text-[12px] font-semibold text-zinc-700 dark:text-zinc-300">No Workspaces Found.</div>)
                         }
                     </div>
                 </div>

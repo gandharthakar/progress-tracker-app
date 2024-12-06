@@ -3,7 +3,7 @@ require('dotenv').config();
 const UsersModel = require("../../mongodb/models/userModel");
 const { isGmail } = require("../../libs/helperFunctions");
 
-const verifyEmailController = async (req, res) => {
+const reBerifyEmailController = async (req, res) => {
     let status = 200;
     let response = {
         success: false,
@@ -19,24 +19,18 @@ const verifyEmailController = async (req, res) => {
                 if (isGmail(verTok.user.user_email)) {
                     // Check user already exist.
                     const userAlreadyExist = await UsersModel.findOne({ user_email: verTok.user.user_email });
-                    if (userAlreadyExist == null) {
-                        const userRecord = new UsersModel({
-                            user_full_name: verTok.user.user_full_name,
-                            user_email: verTok.user.user_email,
-                            user_password: verTok.user.user_password,
-                            isEmailVerified: true
-                        });
-                        await userRecord.save();
+                    if (userAlreadyExist !== null) {
+                        await UsersModel.findByIdAndUpdate({ _id: verTok.user.user_id }, { isEmailVerified: true });
                         status = 200;
                         response = {
                             success: true,
-                            message: "User verified & registered successfully."
+                            message: "Email verified successfully."
                         }
                     } else {
                         status = 200;
                         response = {
                             success: false,
-                            message: "User already registered with this email."
+                            message: "User not found."
                         }
                     }
                 } else {
@@ -88,4 +82,4 @@ const verifyEmailController = async (req, res) => {
     }
 }
 
-module.exports = verifyEmailController;
+module.exports = reBerifyEmailController;

@@ -25,3 +25,11 @@ export const resetPassword = async (data: ResetUserPWDType) => {
 export const authChecker = async (data: { token: string }) => {
     return (await axiosInstance.post<CommonAPIResponseAuthCheck>('/api/auth/checker', data)).data;
 }
+
+export const tokenChecker = async (data: { token: string }) => {
+    return (await axiosInstance.post<CommonAPIResponse>('/api/auth/check-token-validity', data)).data;
+}
+
+export const reVerifyUserEmail = async (data: TSQ_EmailVerify) => {
+    return (await axiosInstance.post<TSQ_EmailVerify & CommonAPIResponse>('/api/auth/re-verify-email', data)).data;
+}

@@ -15,20 +15,72 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userResetPasswordFormVS, userResetPasswordFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
+import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import Swal from "sweetalert2";
+import { useUpdatePasswordSettings } from "@/tenstack-query/mutations/user/userMutations";
 
 const PasswordSettings = () => {
 
     const { user_id } = useParams();
     const [showPwd, setShowPwd] = useState<boolean>(false);
     const [showConfPwd, setShowConfPwd] = useState<boolean>(false);
-    const isLoading = false;
 
-    const { register, handleSubmit, formState: { errors } } = useForm<userResetPasswordFormVS>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<userResetPasswordFormVS>({
         resolver: zodResolver(userResetPasswordFormValidationSchema)
     });
 
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                });
+                reset();
+            }
+        }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const { mutate, isPending } = useUpdatePasswordSettings({ onSuccessCB: (resp) => callbackOnSuc(resp), errorCB: (resp) => callbackErr(resp), onErrorCB: (resp) => callbackOnErr(resp) });
+
     const handleFormSubmit: SubmitHandler<userResetPasswordFormVS> = (formdata) => {
-        console.log(formdata);
+        const glsi = localStorage.getItem("Auth");
+        if (glsi) {
+            const prs_glsi = JSON.parse(glsi);
+            mutate({
+                token: prs_glsi,
+                user_password: formdata.password,
+                confirm_user_password: formdata.confirmPassword
+            });
+        }
     }
 
     return (
@@ -144,11 +196,11 @@ const PasswordSettings = () => {
                                     <div className="text-right">
                                         <Button
                                             type="submit"
-                                            title={isLoading ? "Updating ..." : "Update"}
-                                            disabled={isLoading}
+                                            title={isPending ? "Updating ..." : "Update"}
+                                            disabled={isPending}
                                         >
                                             {
-                                                isLoading ?
+                                                isPending ?
                                                     (<>
                                                         <Loader2 className="animate-spin" />
                                                         Updating ...

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ACLoginRedirect = () => {
+const ACLoginRedirect = ({ children }: { children: React.ReactNode }) => {
 
     const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const ACLoginRedirect = () => {
         }
     }, [navigate]);
 
-    return <></>;
+    return <>{children}</>;
 };
 
 export default ACLoginRedirect;

@@ -10,6 +10,7 @@ import { userLoginFormVS, userLoginFormValidationSchema } from "@/zod/schemas/us
 import Swal from "sweetalert2";
 import { CommonAPIResponseAuth } from "@/types/tenstack-query/auth/authTypes";
 import { useLoginUser } from "@/tenstack-query/mutations/auth/authMutations";
+// import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
 
@@ -32,15 +33,21 @@ const Login = () => {
                     if (result.isConfirmed) {
                         if (resp.token) {
                             localStorage.setItem("Auth", JSON.stringify(resp.token));
-                            navigate(`/`);
+                            // const decodeToken: UserLoginTokenType = jwtDecode(resp.token);
+                            // navigate(`/user/my-workspaces/${decodeToken}`);
+                            navigate("/");
                         }
                     }
                 });
                 reset();
                 // Redirect to verification page.
                 const st = setTimeout(() => {
-                    localStorage.setItem("Auth", JSON.stringify(resp.token));
-                    navigate(`/`);
+                    if (resp.token) {
+                        localStorage.setItem("Auth", JSON.stringify(resp.token));
+                        // const decodeToken: UserLoginTokenType = jwtDecode(resp.token);
+                        // navigate(`/user/my-workspaces/${decodeToken}`);
+                        navigate("/");
+                    }
                     clearTimeout(st);
                 }, 2000);
             }

@@ -14,24 +14,127 @@ import { Loader2, TriangleAlert } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { updateUserGeneralSettingsFormVS, updateUserGeneralSettingsFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import SiteDialog from "@/components/SiteDialog";
+import { UserInfoAPIResponse } from "@/types/tenstack-query/user/userTypes";
+import Swal from "sweetalert2";
+import { useGetUserInfo, useUpdateGeneralSettings } from "@/tenstack-query/mutations/user/userMutations";
+import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
 
 const GeneralSettings = () => {
 
     const { user_id } = useParams();
-    const isLoading = false;
     const [showModal, setShowModal] = useState<boolean>(false);
     const [isEmlWilChng, setIsEmlWilChng] = useState<boolean>(true);
 
-    const { register, handleSubmit, formState: { errors } } = useForm<updateUserGeneralSettingsFormVS>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<updateUserGeneralSettingsFormVS>({
         resolver: zodResolver(updateUserGeneralSettingsFormValidationSchema)
     });
 
-    const handleFormSubmit: SubmitHandler<updateUserGeneralSettingsFormVS> = (formdata) => {
-        console.log(formdata);
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                })
+            }
+        }
     }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const { mutate, isPending } = useUpdateGeneralSettings({ onSuccessCB: (resp) => callbackOnSuc(resp), errorCB: (resp) => callbackErr(resp), onErrorCB: (resp) => callbackOnErr(resp) });
+
+    const handleFormSubmit: SubmitHandler<updateUserGeneralSettingsFormVS> = (formdata) => {
+        const glsi = localStorage.getItem("Auth");
+        if (glsi) {
+            const prs_glsi = JSON.parse(glsi);
+            mutate({
+                token: prs_glsi,
+                user_email: formdata.email,
+                user_full_name: formdata.fullName
+            });
+        }
+    }
+
+    const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                if (resp.user) {
+                    if (resp.user.user_full_name) {
+                        setValue("fullName", resp.user.user_full_name);
+                    }
+                    if (resp.user.user_email) {
+                        setValue("email", resp.user.user_email);
+                    }
+                }
+            }
+        }
+    }
+
+    const callbackOnErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const callbackErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const getUInfo = useGetUserInfo({ onSuccessCB: (resp) => callbackOnSuc_gui(resp), errorCB: (resp) => callbackErr_gui(resp), onErrorCB: (resp) => callbackOnErr_gui(resp) });
+
+    useEffect(() => {
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            getUInfo.mutate({ token: prs_guifls, required_data_code: "824637" });
+        }
+    }, []);
 
     return (
         <>
@@ -123,14 +226,17 @@ const GeneralSettings = () => {
                                         </div>
                                         {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.email.message}</div>)}
                                     </div>
-                                    <div className="text-right">
+                                    <div className="flex gap-x-[20px] items-center justify-between">
+                                        {
+                                            getUInfo.isPending ? (<Loader2 className="animate-spin text-zinc-800 dark:text-zinc-100" />) : (<div></div>)
+                                        }
                                         <Button
                                             type="submit"
-                                            title={isLoading ? "Updating ..." : "Update"}
-                                            disabled={isLoading}
+                                            title={isPending ? "Updating ..." : "Update"}
+                                            disabled={isPending}
                                         >
                                             {
-                                                isLoading ?
+                                                isPending ?
                                                     (<>
                                                         <Loader2 className="animate-spin" />
                                                         Updating ...
@@ -166,7 +272,7 @@ const GeneralSettings = () => {
                 </div>
                 <div className="pb-[15px] px-[20px] text-center max-w-[450px] mx-auto">
                     <p className="inline-block font-roboto_mono text-[12px] md:text-[14px] text-zinc-600 dark:text-zinc-400">
-                        If you plan to change the email address then you need to re-verify yourself first via email just like before you registered to make continue use of our services. You will receive OTP & Verification link on your newly updated email address. after clicking "update" button system will get automatically logout and you can able to login again only after you re-verify yourself.
+                        If you plan to change the email address then you need to re-verify yourself first via email just like before you registered to make continue use of our services. You will receive OTP & Verification link on your newly updated email address. after clicking "update" button you can able to login again only after you re-verify yourself.
                         <br /> <br />
                         Thank You.
                     </p>

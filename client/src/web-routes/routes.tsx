@@ -24,6 +24,7 @@ import VerifyEmail from "@/pages/auth-pages/verifyEmail";
 import TokenChecker from "@/utils/tokenChecker";
 import ReVerifyEmail from "@/pages/auth-pages/reVerifyEmail";
 import LoginVerificationRedirect from "@/pages/auth-pages/loginVerificationRedirect";
+import ACLoginRedirect from "@/utils/acLoginRedirect";
 
 // Layouts
 // import BaseLayout from "@/layouts/baseLayout";
@@ -63,7 +64,7 @@ const WebRoutes = createBrowserRouter([
         children: [
             {
                 path: 'register',
-                element: <Register />
+                element: <ACLoginRedirect><Register /></ACLoginRedirect>
             },
             {
                 path: 'verify-email/:token',
@@ -71,15 +72,15 @@ const WebRoutes = createBrowserRouter([
             },
             {
                 path: 'login',
-                element: <Login />
+                element: <ACLoginRedirect><Login /></ACLoginRedirect>
             },
             {
                 path: 'forgot-password',
-                element: <ForgotPassword />
+                element: <ACLoginRedirect><ForgotPassword /></ACLoginRedirect>
             },
             {
                 path: 'reset-password/:token',
-                element: <ResetPassword />
+                element: <ACLoginRedirect><ResetPassword /></ACLoginRedirect>
             },
             {
                 path: 're-verify-email/:token',

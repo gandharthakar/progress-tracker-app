@@ -18,9 +18,10 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Loader2 } from "lucide-react";
-import { useVerifyUserEmail } from "@/tenstack-query/mutations/auth/authMutations";
+import { useCheckTokenValidity, useReVerifyUserEmail } from "@/tenstack-query/mutations/auth/authMutations";
 import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 const ReVerifyEmail = () => {
 
@@ -38,7 +39,59 @@ const ReVerifyEmail = () => {
         defaultValues: {
             otp: "",
         },
-    })
+    });
+
+    // const callbackOnSuc_tvc = (resp: (CommonAPIResponse | undefined)) => {
+    //     if (resp) {
+    //         if (resp.success) {
+
+    //         }
+    //     }
+    // }
+
+    const callbackOnErr_tvc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate(`/`);
+                    }
+                });
+                // Redirect to home page.
+                const st = setTimeout(() => {
+                    navigate(`/`);
+                    clearTimeout(st);
+                }, 3000);
+            }
+        }
+    }
+
+    const callbackErr_tvc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate(`/`);
+                    }
+                });
+                // Redirect to home page.
+                const st = setTimeout(() => {
+                    navigate(`/`);
+                    clearTimeout(st);
+                }, 3000);
+            }
+        }
+    }
 
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
@@ -89,7 +142,8 @@ const ReVerifyEmail = () => {
         }
     }
 
-    const { mutate, isPending } = useVerifyUserEmail({ onSuccessCB: (resp) => callbackOnSuc(resp), errorCB: (resp) => callbackErr(resp), onErrorCB: (resp) => callbackOnErr(resp) });
+    const { mutate, isPending } = useReVerifyUserEmail({ onSuccessCB: (resp) => callbackOnSuc(resp), errorCB: (resp) => callbackErr(resp), onErrorCB: (resp) => callbackOnErr(resp) });
+    const tvc = useCheckTokenValidity({ errorCB: (resp) => callbackErr_tvc(resp), onErrorCB: (resp) => callbackOnErr_tvc(resp) });
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
         if (token) {
@@ -100,6 +154,12 @@ const ReVerifyEmail = () => {
             mutate(prepData);
         }
     }
+
+    useEffect(() => {
+        if (token) {
+            tvc.mutate({ token })
+        }
+    }, [navigate]);
 
     return (
         <>

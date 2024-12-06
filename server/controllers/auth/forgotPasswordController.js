@@ -17,18 +17,26 @@ const forgotPasswordController = async (req, res) => {
             // Check user already exist.
             const userAlreadyExist = await UsersModel.findOne({ user_email });
             if (userAlreadyExist !== null) {
-                const token = jwt.sign({ user_id: userAlreadyExist._id, user_email: userAlreadyExist.user_email }, process.env.JWT_SECRET || "undefined", { expiresIn: "5m" });
-                const frontEndLink = `${process.env.FRONTEND_CLIENT_URI}/auth/reset-password/${token}`;
-                await emailTransporter.sendMail({
-                    from: process.env.EMAIL_FROM,
-                    to: user_email, // list of receivers
-                    subject: "Password Reset Link - PT.APP", // Subject line
-                    html: fgtPwdEmailTemplate(frontEndLink)
-                });
-                status = 200;
-                response = {
-                    success: true,
-                    message: "Password reset link has been sent to your registered email address.",
+                if (userAlreadyExist.isEmailVerified) {
+                    const token = jwt.sign({ user_id: userAlreadyExist._id, user_email: userAlreadyExist.user_email }, process.env.JWT_SECRET || "undefined", { expiresIn: "5m" });
+                    const frontEndLink = `${process.env.FRONTEND_CLIENT_URI}/auth/reset-password/${token}`;
+                    await emailTransporter.sendMail({
+                        from: process.env.EMAIL_FROM,
+                        to: user_email, // list of receivers
+                        subject: "Password Reset Link - PT.APP", // Subject line
+                        html: fgtPwdEmailTemplate(frontEndLink)
+                    });
+                    status = 200;
+                    response = {
+                        success: true,
+                        message: "Password reset link has been sent to your registered email address.",
+                    }
+                } else {
+                    status = 200;
+                    response = {
+                        success: false,
+                        message: "Your email is not verified.",
+                    }
                 }
             } else {
                 status = 200;
