@@ -56,7 +56,7 @@ const ReVerifyEmail = () => {
                     title: "Error!",
                     text: resp.message,
                     icon: "error",
-                    timer: 3000
+                    timer: 5000
                 }).then((result) => {
                     if (result.isConfirmed) {
                         navigate(`/`);
@@ -66,7 +66,7 @@ const ReVerifyEmail = () => {
                 const st = setTimeout(() => {
                     navigate(`/`);
                     clearTimeout(st);
-                }, 3000);
+                }, 5000);
             }
         }
     }
@@ -78,7 +78,7 @@ const ReVerifyEmail = () => {
                     title: "Error!",
                     text: resp.message,
                     icon: "error",
-                    timer: 3000
+                    timer: 5000
                 }).then((result) => {
                     if (result.isConfirmed) {
                         navigate(`/`);
@@ -88,7 +88,7 @@ const ReVerifyEmail = () => {
                 const st = setTimeout(() => {
                     navigate(`/`);
                     clearTimeout(st);
-                }, 3000);
+                }, 5000);
             }
         }
     }
@@ -107,7 +107,7 @@ const ReVerifyEmail = () => {
                     }
                 });
                 form.reset();
-                // Redirect to verification page.
+                // Redirect to login page.
                 const st = setTimeout(() => {
                     navigate(`/auth/login`);
                     clearTimeout(st);

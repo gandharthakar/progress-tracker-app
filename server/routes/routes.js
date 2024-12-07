@@ -13,6 +13,8 @@ const generalSettingsController = require("../controllers/user-area/generalSetti
 const reBerifyEmailController = require("../controllers/auth/reVerifyController");
 const verifyTokenController = require("../controllers/auth/verifyTokenController");
 const passwordSettingController = require("../controllers/user-area/passwordSettingController");
+const viaTokenEmailVerificationController = require("../controllers/auth/viaTokenEmailVerificationController");
+const viaOptionalEmailVerificationController = require("../controllers/auth/viaOptionalEmailVerificationController");
 
 // Middlewares.
 const isGmailUserMiddleware = require("../middleware/isGmailUserMiddleware");
@@ -31,8 +33,8 @@ routes.post('/api/auth/reset-password', resetPasswordController);
 routes.post('/api/auth/checker', authCheckerController);
 routes.post('/api/auth/re-verify-email', reBerifyEmailController);
 routes.post('/api/auth/check-token-validity', verifyTokenController);
-// routes.post("/api/auth/via-token-email-verification", generalSettingsController);
-// routes.post("/api/auth/via-optional-email-verification", generalSettingsController);
+routes.post("/api/auth/via-token-email-verification", viaTokenEmailVerificationController);
+routes.post("/api/auth/via-optional-email-verification", isGmailUserMiddleware, viaOptionalEmailVerificationController);
 
 // User Routes.
 routes.post('/api/get-user-info', userInfoController);

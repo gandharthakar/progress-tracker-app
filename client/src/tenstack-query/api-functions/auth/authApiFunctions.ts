@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/tenstack-query/fetcher";
-import { CommonAPIResponseAuthCheck, ResetUserPWDType, TSQ_EmailVerify, TSQ_UserData } from "@/types/tenstack-query/auth/authTypes";
+import { CommonAPIResponseAuthCheck, ResetUserPWDType, reVerEmlViaOptEmlPayloadType, TSQ_EmailVerify, TSQ_UserData } from "@/types/tenstack-query/auth/authTypes";
 import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
 
 export const registerUser = async (data: TSQ_UserData) => {
@@ -32,4 +32,12 @@ export const tokenChecker = async (data: { token: string }) => {
 
 export const reVerifyUserEmail = async (data: TSQ_EmailVerify) => {
     return (await axiosInstance.post<TSQ_EmailVerify & CommonAPIResponse>('/api/auth/re-verify-email', data)).data;
+}
+
+export const reVerifyEmailLinkByToken = async (data: { token: string }) => {
+    return (await axiosInstance.post<CommonAPIResponse>('/api/auth/via-token-email-verification', data)).data;
+}
+
+export const reVerifyEmailLinkByOptEml = async (data: reVerEmlViaOptEmlPayloadType) => {
+    return (await axiosInstance.post<reVerEmlViaOptEmlPayloadType & CommonAPIResponse>('/api/auth/via-optional-email-verification', data)).data;
 }

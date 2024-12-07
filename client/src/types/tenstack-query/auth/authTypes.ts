@@ -45,3 +45,8 @@ export interface ResetUserPWDType {
     confirm_user_password: string,
     token: string
 }
+
+export interface reVerEmlViaOptEmlPayloadType {
+    token: string,
+    user_email: string
+}

@@ -20,11 +20,19 @@ const reBerifyEmailController = async (req, res) => {
                     // Check user already exist.
                     const userAlreadyExist = await UsersModel.findOne({ user_email: verTok.user.user_email });
                     if (userAlreadyExist !== null) {
-                        await UsersModel.findByIdAndUpdate({ _id: verTok.user.user_id }, { isEmailVerified: true });
-                        status = 200;
-                        response = {
-                            success: true,
-                            message: "Email verified successfully."
+                        if (!userAlreadyExist.isEmailVerified) {
+                            await UsersModel.findByIdAndUpdate({ _id: verTok.user.user_id }, { isEmailVerified: true });
+                            status = 200;
+                            response = {
+                                success: true,
+                                message: "Email verified successfully."
+                            }
+                        } else {
+                            status = 200;
+                            response = {
+                                success: true,
+                                message: "Email already verified."
+                            }
                         }
                     } else {
                         status = 200;

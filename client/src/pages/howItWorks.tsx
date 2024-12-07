@@ -61,9 +61,9 @@ const HowItWorks = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-1 mdl-1:grid-cols-2">
-                        <div className="flex md:min-h-[350px] flex-col gap-y-[8px] p-[20px] md:p-[30px] border-t-[2px] border-b-[2px] border-l-[2px] border-r-[2px] mdl-1:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                        <div className="flex md:min-h-[350px] flex-col gap-y-[8px] p-[20px] md:p-[30px] border-t-[2px] border-b-[2px] border-l-[2px] border-r-[2px] mdl-1:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 digonal-lines-bg">
                             <div>
-                                <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[40px] md:h-[40px] rounded-full font-poppins font-semibold text-[14px] md:text-[20px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-200">
+                                <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[40px] md:h-[40px] rounded-full font-poppins font-semibold text-[14px] md:text-[20px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                     1
                                 </h2>
                             </div>
@@ -71,68 +71,68 @@ const HowItWorks = () => {
                                 <h3 className="font-poppins font-semibold text-[16px] md:text-[26px] text-zinc-900 dark:text-zinc-200">
                                     User Register & Login
                                 </h3>
-                                <p className="font-roboto_mono text-[12px] text-zinc-400">
+                                <p className="font-roboto_mono text-[12px] md:text-[14px] text-zinc-600 dark:text-zinc-400">
                                     You must first register & login first as a user to use the tool.
                                 </p>
                             </div>
                         </div>
                         <div className="flex flex-wrap flex-col md:flex-row border-t-0 mdl-1:border-t-[2px] border-zinc-300 dark:border-zinc-700">
-                            <div className="flex md:min-h-[250px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
                                 <div>
-                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-200">
+                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         2
                                     </h2>
                                 </div>
                                 <div className="mt-auto">
-                                    <h3 className="font-poppins font-semibold text-[16px] text-zinc-900 dark:text-zinc-200">
+                                    <h3 className="font-poppins font-semibold text-[16px] md:text-[18px] text-zinc-900 dark:text-zinc-200">
                                         Create Workspace
                                     </h3>
-                                    <p className="font-roboto_mono text-[12px] text-zinc-400">
+                                    <p className="font-roboto_mono text-[12px] md:text-[14px] text-zinc-600 dark:text-zinc-400">
                                         After login, you need to create a workspace (project) for multiple goals.
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex md:min-h-[250px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
                                 <div>
-                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-200">
+                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         3
                                     </h2>
                                 </div>
                                 <div className="mt-auto">
-                                    <h3 className="font-poppins font-semibold text-[16px] text-zinc-900 dark:text-zinc-200">
+                                    <h3 className="font-poppins font-semibold text-[16px] md:text-[18px] text-zinc-900 dark:text-zinc-200">
                                         Create Sections
                                     </h3>
-                                    <p className="font-roboto_mono text-[12px] text-zinc-400">
+                                    <p className="font-roboto_mono text-[12px] md:text-[14px] text-zinc-600 dark:text-zinc-400">
                                         Create sections to separate & manage tasks in proper manner.
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex md:min-h-[250px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
                                 <div>
-                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-200">
+                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         4
                                     </h2>
                                 </div>
                                 <div className="mt-auto">
-                                    <h3 className="font-poppins font-semibold text-[16px] text-zinc-900 dark:text-zinc-200">
+                                    <h3 className="font-poppins font-semibold text-[16px] md:text-[18px] text-zinc-900 dark:text-zinc-200">
                                         Create Tasks
                                     </h3>
-                                    <p className="font-roboto_mono text-[12px] text-zinc-400">
+                                    <p className="font-roboto_mono text-[12px] md:text-[14px] text-zinc-600 dark:text-zinc-400">
                                         Create you task which you want to track in real world.
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex md:min-h-[250px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
                                 <div>
-                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-200">
+                                    <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         5
                                     </h2>
                                 </div>
                                 <div className="mt-auto">
-                                    <h3 className="font-poppins font-semibold text-[16px] text-zinc-900 dark:text-zinc-200">
+                                    <h3 className="font-poppins font-semibold text-[16px] md:text-[18px] text-zinc-900 dark:text-zinc-200">
                                         Create Labels
                                     </h3>
-                                    <p className="font-roboto_mono text-[12px] text-zinc-400">
+                                    <p className="font-roboto_mono text-[12px] md:text-[14px] text-zinc-600 dark:text-zinc-400">
                                         Create appropriate labels for you tasks to determine progress.
                                     </p>
                                 </div>

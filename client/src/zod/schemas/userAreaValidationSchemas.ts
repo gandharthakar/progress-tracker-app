@@ -85,3 +85,14 @@ export const updateUserGeneralSettingsFormValidationSchema = z.object({
 });
 
 export type updateUserGeneralSettingsFormVS = z.infer<typeof updateUserGeneralSettingsFormValidationSchema>;
+
+export const emlverlnkreqFormValidationSchema = z.object({
+    email: z.string({
+        required_error: "Please enter email address.",
+        invalid_type_error: "Email must be in string format."
+    }).email({
+        message: "Please enter valid email address."
+    }).min(1),
+});
+
+export type emlverlnkreqFormValidationSchemaVS = z.infer<typeof emlverlnkreqFormValidationSchema>;
