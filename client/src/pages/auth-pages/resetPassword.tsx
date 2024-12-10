@@ -7,9 +7,9 @@ import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userResetPasswordFormVS, userResetPasswordFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
-import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 import Swal from "sweetalert2";
-import { useResetPassword } from "@/tenstack-query/mutations/auth/authMutations";
+import { useResetPassword } from "@/tanstack-query/mutations/auth/authMutations";
 
 const ResetPassword = () => {
 
@@ -124,6 +124,7 @@ const ResetPassword = () => {
                                             id="ru_pwd"
                                             className="pr-[50px]"
                                             {...register("password")}
+                                            autoComplete="off"
                                         />
                                         <div className="absolute right-[10px] top-[6px] z-[5]">
                                             <button
@@ -151,6 +152,7 @@ const ResetPassword = () => {
                                             id="ru_conf_pwd"
                                             className="pr-[50px]"
                                             {...register("confirmPassword")}
+                                            autoComplete="off"
                                         />
                                         <div className="absolute right-[10px] top-[6px] z-[5]">
                                             <button

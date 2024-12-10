@@ -18,8 +18,8 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Loader2 } from "lucide-react";
-import { useCheckTokenValidity, useVerifyUserEmail } from "@/tenstack-query/mutations/auth/authMutations";
-import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import { useCheckTokenValidity, useVerifyUserEmail } from "@/tanstack-query/mutations/auth/authMutations";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 

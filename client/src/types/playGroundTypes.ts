@@ -5,7 +5,7 @@ export interface taskComboboxType {
 }
 
 export interface workspaceType {
-    workspace_id: string,
+    workspace_id?: string,
     workspace_title: string,
     workspace_description: string | undefined,
     user_id?: string | undefined
@@ -59,4 +59,15 @@ export interface pieChartDataType {
     value: number,
     color: string,
     label: string
+}
+
+export interface rdAlWkspPayloadType {
+    success: boolean,
+    message: string,
+    workspace: workspaceType[]
+}
+
+export interface delWkspPayloadType {
+    workspace_id: string,
+    user_id: string
 }

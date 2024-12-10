@@ -15,9 +15,9 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userResetPasswordFormVS, userResetPasswordFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
-import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 import Swal from "sweetalert2";
-import { useUpdatePasswordSettings } from "@/tenstack-query/mutations/user/userMutations";
+import { useUpdatePasswordSettings } from "@/tanstack-query/mutations/user/userMutations";
 
 const PasswordSettings = () => {
 
@@ -145,6 +145,7 @@ const PasswordSettings = () => {
                                                 id="uu_pwd"
                                                 className="pr-[45px]"
                                                 {...register("password")}
+                                                autoComplete="off"
                                             />
                                             {
                                                 showPwd ?
@@ -175,6 +176,7 @@ const PasswordSettings = () => {
                                                 type={showConfPwd ? "text" : "password"}
                                                 id="uu_cpwd"
                                                 {...register("confirmPassword")}
+                                                autoComplete="off"
                                             />
                                             {
                                                 showConfPwd ?

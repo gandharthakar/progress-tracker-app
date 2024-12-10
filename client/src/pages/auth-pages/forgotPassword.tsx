@@ -6,9 +6,9 @@ import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userForgotPasswordFormVS, userForgotPasswordFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
-import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 import Swal from "sweetalert2";
-import { useForgotPassword } from "@/tenstack-query/mutations/auth/authMutations";
+import { useForgotPassword } from "@/tanstack-query/mutations/auth/authMutations";
 
 const ForgotPassword = () => {
 
@@ -115,6 +115,7 @@ const ForgotPassword = () => {
                                         id="ru_eml"
                                         placeholder="test@example.com"
                                         {...register("email")}
+                                        autoComplete="off"
                                     />
                                     {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.email?.message}</div>)}
                                 </div>

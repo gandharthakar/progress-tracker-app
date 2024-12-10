@@ -5,32 +5,104 @@ import { Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import demo_workspaces from "@/utils/demoData";
-import { SiteWorkspaceCompProps } from "@/types/componentsTypes";
+// import demo_workspaces from "@/utils/demoData";
+// import { SiteWorkspaceCompProps } from "@/types/componentsTypes";
 import WorkspaceBox from "@/components/user-area/workspaceBox";
 import { workspaceFormVS, workspaceFormValidationSchema } from "@/zod/schemas/userWorkspace";
-import { UserInfoAPIResponse } from "@/types/tenstack-query/user/userTypes";
+import { UserInfoAPIResponse } from "@/types/tanstack-query/user/userTypes";
 import Swal from "sweetalert2";
-import { useGetUserInfo } from "@/tenstack-query/mutations/user/userMutations";
+import { useGetUserInfo } from "@/tanstack-query/mutations/user/userMutations";
+// import { useParams } from "react-router-dom";
+import { useReadAllWorkspaces } from "@/tanstack-query/queries/queries";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useCreateWorkspace } from "@/tanstack-query/mutations/workspace/workspaceMutations";
 
 const WorkSpace = () => {
 
+    // const { user_id } = useParams();
+
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [data, setData] = useState<SiteWorkspaceCompProps[]>([]);
+    // const [data, setData] = useState<SiteWorkspaceCompProps[]>([]);
+    let tkn = null;
+    const lsi = localStorage.getItem("Auth");
+    if (lsi) {
+        tkn = JSON.parse(lsi);
+    }
+    const rAWD = useReadAllWorkspaces(tkn);
     const [workspaceDscr, setWorkspaceDscr] = useState<string>('');
     const [userName, setUserName] = useState<string>("User");
     const isLoading = false;
 
-    const { register, handleSubmit, formState: { errors } } = useForm<workspaceFormVS>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<workspaceFormVS>({
         resolver: zodResolver(workspaceFormValidationSchema)
     });
 
-    const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
-        const data = {
-            workspace_name: formdata.workspaceName,
-            workspace_description: workspaceDscr
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        reset();
+                        setShowModal(false);
+                    }
+                });
+                const st = setTimeout(() => {
+                    setShowModal(false);
+                    reset();
+                    clearTimeout(st);
+                }, 4000);
+            }
         }
-        console.log(data);
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const creWksp = useCreateWorkspace({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        errorCB: (resp) => callbackErr(resp),
+        onErrorCB: (resp) => callbackOnErr(resp)
+    });
+
+    const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
+        const glsi = localStorage.getItem("Auth");
+        if (glsi) {
+            const prs_glsi = JSON.parse(glsi);
+            const data = {
+                workspace_title: formdata.workspaceName,
+                workspace_description: workspaceDscr,
+                user_id: prs_glsi
+            }
+            creWksp.mutate(data);
+        }
     }
 
     const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
@@ -133,17 +205,17 @@ const WorkSpace = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 mdl-1:grid-cols-3 gap-x-[20px] gap-y-[20px]">
                         {
-                            data.length ?
+                            rAWD.data?.workspace.length ?
                                 (
                                     <>
                                         {
-                                            data.map((item) => (
+                                            rAWD.data?.workspace.map((item) => (
                                                 <WorkspaceBox
                                                     key={item.workspace_id}
-                                                    workspace_id={item.workspace_id}
+                                                    workspace_id={item.workspace_id ?? ""}
                                                     workspace_title={item.workspace_title}
-                                                    workspace_description={item.workspace_description}
-                                                    user_id={item.user_id}
+                                                    workspace_description={item.workspace_description ?? ""}
+                                                    user_id={item.user_id ?? ""}
                                                 />
                                             ))
                                         }

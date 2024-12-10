@@ -1,6 +1,6 @@
-import { registerUser, verifyUserEmail, loginUser, forgotPassword, resetPassword, authChecker, tokenChecker, reVerifyUserEmail, reVerifyEmailLinkByToken, reVerifyEmailLinkByOptEml } from "@/tenstack-query/api-functions/auth/authApiFunctions";
-import { TQ_CBtype_Auth, TSQ_UserData, TSQ_EmailVerify, ResetUserPWDType, TQ_CBtype_AuthCheck, reVerEmlViaOptEmlPayloadType } from "@/types/tenstack-query/auth/authTypes";
-import { TQ_CBtype } from "@/types/tenstack-query/commonTypes";
+import { registerUser, verifyUserEmail, loginUser, forgotPassword, resetPassword, authChecker, tokenChecker, reVerifyUserEmail, reVerifyEmailLinkByToken, reVerifyEmailLinkByOptEml } from "@/tanstack-query/api-functions/auth/authApiFunctions";
+import { TQ_CBtype_Auth, TSQ_UserData, TSQ_EmailVerify, ResetUserPWDType, TQ_CBtype_AuthCheck, reVerEmlViaOptEmlPayloadType } from "@/types/tanstack-query/auth/authTypes";
+import { TQ_CBtype } from "@/types/tanstack-query/commonTypes";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 

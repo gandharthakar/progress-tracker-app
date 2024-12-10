@@ -1,9 +1,9 @@
-import { axiosInstance } from "@/tenstack-query/fetcher";
-import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
-import { updGenSetPayloadType, updPwdSetPayloadType, UserInfoAPIResponse, UserInfoPayloadType } from "@/types/tenstack-query/user/userTypes";
+import { axiosInstance } from "@/tanstack-query/fetcher";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { updGenSetPayloadType, updPwdSetPayloadType, UserInfoAPIResponse, UserInfoPayloadType } from "@/types/tanstack-query/user/userTypes";
 
 export const getUserInfo = async (data: UserInfoPayloadType) => {
-    return (await axiosInstance.post<UserInfoPayloadType & UserInfoAPIResponse>('/api/get-user-info', data)).data;
+    return (await axiosInstance.post<UserInfoPayloadType & UserInfoAPIResponse>('/api/users/user-info', data)).data;
 }
 
 export const updateGeneralSettings = async (data: updGenSetPayloadType) => {

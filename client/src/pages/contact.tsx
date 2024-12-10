@@ -24,7 +24,7 @@ const Contact = () => {
                                 <div className="grid grid-cols-1 xsm-1:grid-cols-2 gap-x-[30px] gap-y-[30px]">
                                     <div>
                                         <div className="pb-[8px] md:pb-[15px]">
-                                            <div className="w-[30px] h-[30px] md:w-[50px] md:h-[50px] flex items-center justify-center rounded-md md:rounded-xl bg-zinc-800 text-zinc-100">
+                                            <div className="w-[30px] h-[30px] md:w-[50px] md:h-[50px] flex items-center justify-center rounded-md md:rounded-xl bg-zinc-800 text-zinc-100 dark:bg-zinc-50 dark:text-zinc-900">
                                                 <IoLocationOutline size={28} className="w-[16px] h-[16px] md:w-[28px] md:h-[28px]" />
                                             </div>
                                         </div>
@@ -41,7 +41,7 @@ const Contact = () => {
                                     </div>
                                     <div>
                                         <div className="pb-[8px] md:pb-[15px]">
-                                            <div className="w-[30px] h-[30px] md:w-[50px] md:h-[50px] flex items-center justify-center rounded-md md:rounded-xl bg-zinc-800 text-zinc-100">
+                                            <div className="w-[30px] h-[30px] md:w-[50px] md:h-[50px] flex items-center justify-center rounded-md md:rounded-xl bg-zinc-800 text-zinc-100 dark:bg-zinc-50 dark:text-zinc-900">
                                                 <BsTelephone size={24} className="w-[16px] h-[16px] md:w-[24px] md:h-[24px]" />
                                             </div>
                                         </div>

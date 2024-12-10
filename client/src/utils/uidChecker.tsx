@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { UserLoginTokenType } from "@/types/tenstack-query/auth/authTypes";
+import { UserLoginTokenType } from "@/types/tanstack-query/auth/authTypes";
 
 const UIDChecker = () => {
 

@@ -1,6 +1,6 @@
-import { axiosInstance } from "@/tenstack-query/fetcher";
-import { CommonAPIResponseAuthCheck, ResetUserPWDType, reVerEmlViaOptEmlPayloadType, TSQ_EmailVerify, TSQ_UserData } from "@/types/tenstack-query/auth/authTypes";
-import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import { axiosInstance } from "@/tanstack-query/fetcher";
+import { CommonAPIResponseAuthCheck, ResetUserPWDType, reVerEmlViaOptEmlPayloadType, TSQ_EmailVerify, TSQ_UserData } from "@/types/tanstack-query/auth/authTypes";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 
 export const registerUser = async (data: TSQ_UserData) => {
     return (await axiosInstance.post<TSQ_UserData & CommonAPIResponse>('/api/auth/register', data)).data;

@@ -14,7 +14,7 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Box, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { UserLoginTokenType } from "@/types/tenstack-query/auth/authTypes";
+import { UserLoginTokenType } from "@/types/tanstack-query/auth/authTypes";
 
 const AccountProfileHome = (props: { cb?: () => void }) => {
 

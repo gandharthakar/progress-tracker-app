@@ -15,6 +15,8 @@ import { workspaceFormVS, workspaceFormValidationSchema } from "@/zod/schemas/us
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Swal from 'sweetalert2';
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useDeleteWorkspace, useUpdateWorkspace } from "@/tanstack-query/mutations/workspace/workspaceMutations";
 
 const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
 
@@ -28,7 +30,6 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
     const [isEditModalShown, setIsEditModalShown] = useState<boolean>(false);
     const [isDeleteModalShown, setIsDeleteModalShown] = useState<boolean>(false);
     const [workspaceDscr, setWorkspaceDscr] = useState<string>(workspace_description);
-    const isLoading = false;
 
     const { register, handleSubmit, formState: { errors } } = useForm<workspaceFormVS>({
         resolver: zodResolver(workspaceFormValidationSchema),
@@ -37,22 +38,135 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
         }
     });
 
-    const handleDelete = () => {
-        setIsDeleteModalShown(false);
-        Swal.fire({
-            title: "Success!",
-            text: "Workspace Deleted Successfully !",
-            icon: "success",
-            timer: 2000
-        });
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsEditModalShown(false);
+                    }
+                });
+                const st = setTimeout(() => {
+                    setIsEditModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
     }
 
-    const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
-        const data = {
-            workspace_name: formdata.workspaceName,
-            workspace_description: workspaceDscr
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
         }
-        console.log(data);
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const { mutate, isPending } = useUpdateWorkspace({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        errorCB: (resp) => callbackErr(resp),
+        onErrorCB: (resp) => callbackOnErr(resp)
+    })
+
+    const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const data = {
+                workspace_id,
+                workspace_title: formdata.workspaceName,
+                workspace_description: workspaceDscr,
+                user_id: prs_guifls
+            }
+            mutate(data);
+        }
+    }
+
+    const callbackOnSuc_delWksp = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsDeleteModalShown(false);
+                    }
+                });
+                const st = setTimeout(() => {
+                    setIsDeleteModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr_delWksp = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr_delWksp = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const delWK = useDeleteWorkspace({
+        onSuccessCB: (resp) => callbackOnSuc_delWksp(resp),
+        onErrorCB: (resp) => callbackOnErr_delWksp(resp),
+        errorCB: (resp) => callbackErr_delWksp(resp)
+    });
+
+    const handleDelete = () => {
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            delWK.mutate({
+                workspace_id,
+                user_id: prs_guifls
+            });
+        }
     }
 
     return (
@@ -158,12 +272,12 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
                     </div>
                     <div className="text-right">
                         <Button
-                            title={isLoading ? "Updating ..." : "Update"}
+                            title={isPending ? "Updating ..." : "Update"}
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isPending}
                         >
                             {
-                                isLoading ?
+                                isPending ?
                                     (<>
                                         <Loader2 className="animate-spin" />
                                         Updating ...
@@ -200,13 +314,13 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
                 </div>
                 <div className="flex justify-center items-center gap-x-[15px] gap-y-[10px] pb-[25px]">
                     <Button
-                        title={isLoading ? "wait ..." : "Yes"}
+                        title={delWK.isPending ? "wait ..." : "Yes"}
                         type="button"
-                        disabled={isLoading}
+                        disabled={delWK.isPending}
                         onClick={handleDelete}
                     >
                         {
-                            isLoading ?
+                            delWK.isPending ?
                                 (<>
                                     <Loader2 className="animate-spin" />
                                     wait ...

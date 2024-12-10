@@ -8,9 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userLoginFormVS, userLoginFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
 import Swal from "sweetalert2";
-import { CommonAPIResponseAuth } from "@/types/tenstack-query/auth/authTypes";
-import { useLoginUser } from "@/tenstack-query/mutations/auth/authMutations";
-// import { jwtDecode } from "jwt-decode";
+import { CommonAPIResponseAuth, UserLoginTokenType } from "@/types/tanstack-query/auth/authTypes";
+import { useLoginUser } from "@/tanstack-query/mutations/auth/authMutations";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
 
@@ -33,9 +33,8 @@ const Login = () => {
                     if (result.isConfirmed) {
                         if (resp.token) {
                             localStorage.setItem("Auth", JSON.stringify(resp.token));
-                            // const decodeToken: UserLoginTokenType = jwtDecode(resp.token);
-                            // navigate(`/user/my-workspaces/${decodeToken}`);
-                            navigate("/");
+                            const decodeToken: UserLoginTokenType = jwtDecode(resp.token ?? "");
+                            navigate(`/user/my-workspaces/${decodeToken.user_id}`);
                         }
                     }
                 });
@@ -44,9 +43,8 @@ const Login = () => {
                 const st = setTimeout(() => {
                     if (resp.token) {
                         localStorage.setItem("Auth", JSON.stringify(resp.token));
-                        // const decodeToken: UserLoginTokenType = jwtDecode(resp.token);
-                        // navigate(`/user/my-workspaces/${decodeToken}`);
-                        navigate("/");
+                        const decodeToken: UserLoginTokenType = jwtDecode(resp.token ?? "");
+                        navigate(`/user/my-workspaces/${decodeToken.user_id}`);
                     }
                     clearTimeout(st);
                 }, 2000);
@@ -129,6 +127,7 @@ const Login = () => {
                                         id="ru_eml"
                                         placeholder="test@example.com"
                                         {...register("email")}
+                                        autoComplete="off"
                                     />
                                     {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.email?.message}</div>)}
                                 </div>
@@ -145,6 +144,7 @@ const Login = () => {
                                             id="ru_pwd"
                                             className="pr-[50px]"
                                             {...register("password")}
+                                            autoComplete="off"
                                         />
                                         <div className="absolute right-[10px] top-[6px] z-[5]">
                                             <button

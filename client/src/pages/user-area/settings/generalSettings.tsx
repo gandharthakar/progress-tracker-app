@@ -17,10 +17,10 @@ import { updateUserGeneralSettingsFormVS, updateUserGeneralSettingsFormValidatio
 import { useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import SiteDialog from "@/components/SiteDialog";
-import { UserInfoAPIResponse } from "@/types/tenstack-query/user/userTypes";
+import { UserInfoAPIResponse } from "@/types/tanstack-query/user/userTypes";
 import Swal from "sweetalert2";
-import { useGetUserInfo, useUpdateGeneralSettings } from "@/tenstack-query/mutations/user/userMutations";
-import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
+import { useGetUserInfo, useUpdateGeneralSettings } from "@/tanstack-query/mutations/user/userMutations";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 
 const GeneralSettings = () => {
 
@@ -189,6 +189,7 @@ const GeneralSettings = () => {
                                             id="uu_flnm"
                                             placeholder="Peter John"
                                             {...register("fullName")}
+                                            autoComplete="off"
                                         />
                                         {errors.fullName && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.fullName.message}</div>)}
                                     </div>
@@ -207,6 +208,7 @@ const GeneralSettings = () => {
                                                 {...register("email")}
                                                 className="read-only:bg-theme-grey-1 read-only:!ring-0 dark:read-only:bg-zinc-900 pr-[75px]"
                                                 readOnly={isEmlWilChng}
+                                                autoComplete="off"
                                             />
                                             <div className="absolute right-[15px] top-[9.5px] z-[5]">
                                                 <button

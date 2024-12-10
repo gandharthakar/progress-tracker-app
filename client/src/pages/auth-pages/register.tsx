@@ -7,9 +7,9 @@ import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userRegisterFormVS, userRegisterFormValidationSchema } from "@/zod/schemas/userAreaValidationSchemas";
-import { useRegisterUser } from "@/tenstack-query/mutations/auth/authMutations";
+import { useRegisterUser } from "@/tanstack-query/mutations/auth/authMutations";
 import Swal from "sweetalert2";
-import { CommonAPIResponseAuth } from "@/types/tenstack-query/auth/authTypes";
+import { CommonAPIResponseAuth } from "@/types/tanstack-query/auth/authTypes";
 
 const Register = () => {
 
@@ -121,6 +121,7 @@ const Register = () => {
                                         id="ru_flnm"
                                         placeholder="Peter John"
                                         {...register("fullName")}
+                                        autoComplete="off"
                                     />
                                     {errors.fullName && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.fullName?.message}</div>)}
                                 </div>
@@ -136,6 +137,7 @@ const Register = () => {
                                         id="ru_eml"
                                         placeholder="test@example.com"
                                         {...register("email")}
+                                        autoComplete="off"
                                     />
                                     {errors.email && (<div className="block mt-[2px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.email?.message}</div>)}
                                 </div>
@@ -152,6 +154,7 @@ const Register = () => {
                                             id="ru_pwd"
                                             className="pr-[50px]"
                                             {...register("password")}
+                                            autoComplete="off"
                                         />
                                         <div className="absolute right-[10px] top-[6px] z-[5]">
                                             <button
@@ -179,6 +182,7 @@ const Register = () => {
                                             id="ru_conf_pwd"
                                             className="pr-[50px]"
                                             {...register("confirmPassword")}
+                                            autoComplete="off"
                                         />
                                         <div className="absolute right-[10px] top-[6px] z-[5]">
                                             <button

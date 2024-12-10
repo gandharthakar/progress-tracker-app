@@ -1,6 +1,6 @@
-import { getUserInfo, updateGeneralSettings, updatePasswordSetting } from "@/tenstack-query/api-functions/user/userApiFunctions";
-import { TQ_CBtype } from "@/types/tenstack-query/commonTypes";
-import { TQ_CBtype_User, updGenSetPayloadType, updPwdSetPayloadType, UserInfoPayloadType } from "@/types/tenstack-query/user/userTypes";
+import { getUserInfo, updateGeneralSettings, updatePasswordSetting } from "@/tanstack-query/api-functions/user/userApiFunctions";
+import { TQ_CBtype } from "@/types/tanstack-query/commonTypes";
+import { TQ_CBtype_User, updGenSetPayloadType, updPwdSetPayloadType, UserInfoPayloadType } from "@/types/tanstack-query/user/userTypes";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 

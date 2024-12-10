@@ -1,9 +1,9 @@
 // import { CommonAPIResponse } from "@/types/tenstack-query/commonTypes";
-import { useAuthChecker } from "@/tenstack-query/mutations/auth/authMutations";
+import { useAuthChecker } from "@/tanstack-query/mutations/auth/authMutations";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { CommonAPIResponseAuthCheck } from "@/types/tenstack-query/auth/authTypes";
+import { CommonAPIResponseAuthCheck } from "@/types/tanstack-query/auth/authTypes";
 
 const TokenChecker = ({ children }: { children: React.ReactNode }) => {
 

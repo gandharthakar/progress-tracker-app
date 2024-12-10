@@ -15,9 +15,15 @@ const verifyTokenController = require("../controllers/auth/verifyTokenController
 const passwordSettingController = require("../controllers/user-area/passwordSettingController");
 const viaTokenEmailVerificationController = require("../controllers/auth/viaTokenEmailVerificationController");
 const viaOptionalEmailVerificationController = require("../controllers/auth/viaOptionalEmailVerificationController");
+const createWorkspaceController = require("../controllers/workspace/createWorkspaceController");
+const deleteWorkspaceController = require("../controllers/workspace/deleteWorkspaceController");
+const updateWorkspaceController = require("../controllers/workspace/updateWorkspaceController");
+const readWorkspaceController = require("../controllers/workspace/readWorkspaceController");
+const readAllWorkspacesController = require("../controllers/workspace/readAllWorkspaceController");
 
 // Middlewares.
 const isGmailUserMiddleware = require("../middleware/isGmailUserMiddleware");
+
 
 const routes = express.Router();
 
@@ -37,8 +43,15 @@ routes.post("/api/auth/via-token-email-verification", viaTokenEmailVerificationC
 routes.post("/api/auth/via-optional-email-verification", isGmailUserMiddleware, viaOptionalEmailVerificationController);
 
 // User Routes.
-routes.post('/api/get-user-info', userInfoController);
+routes.post('/api/users/user-info', userInfoController);
 routes.post("/api/users/settings/general", generalSettingsController);
 routes.post("/api/users/settings/password", passwordSettingController);
+
+// Workspace Routes.
+routes.post("/api/workspaces/create", createWorkspaceController);
+routes.get("/api/workspaces/read", readWorkspaceController);
+routes.get("/api/workspaces/read-all", readAllWorkspacesController);
+routes.put("/api/workspaces/update", updateWorkspaceController);
+routes.delete("/api/workspaces/delete", deleteWorkspaceController);
 
 module.exports = routes;
