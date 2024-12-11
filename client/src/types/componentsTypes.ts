@@ -18,3 +18,9 @@ export interface SiteWorkspaceCompProps {
     workspace_description: string,
     user_id: string
 }
+
+export interface labelActionsType {
+    label_id: string,
+    label_title: string,
+    workspace_id: string,
+}

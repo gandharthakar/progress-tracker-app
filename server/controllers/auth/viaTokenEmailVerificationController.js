@@ -16,9 +16,9 @@ const viaTokenEmailVerificationController = async (req, res) => {
     try {
         const { token } = req.body;
         if (token) {
-            const verTok = await jwt.verify(token, process.env.JWT_SECRET || "undefined");
+            const verTok = req.user.user_id;
             // Check user already exist.
-            const userAlreadyExist = await UsersModel.findOne({ _id: verTok.user_id });
+            const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
                 if (!userAlreadyExist.isEmailVerified) {
                     const verifyData = {
@@ -62,26 +62,9 @@ const viaTokenEmailVerificationController = async (req, res) => {
         }
         res.status(status).json(response);
     } catch (error) {
-        if (error.message == "jwt expired") {
-            response = {
-                success: false,
-                message: "Your session is expired, Please login again."
-            }
-        } else if (error.message == "jwt malformed" || error.message == "jwt must be a string") {
-            response = {
-                success: false,
-                message: "Wrong information provided, Please login again."
-            }
-        } else if (error.message == "invalid signature" || error.message == "invalid token") {
-            response = {
-                success: false,
-                message: "Invalid information provided, Please login again."
-            }
-        } else {
-            response = {
-                success: false,
-                message: error.message
-            }
+        response = {
+            success: false,
+            message: error.message
         }
         res.json(response);
     }

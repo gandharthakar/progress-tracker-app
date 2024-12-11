@@ -41,7 +41,7 @@ import { useParams } from "react-router-dom";
 
 const AddNewFuncs = () => {
 
-    const isLoading = false;
+    const isPending = false;
     const { workspace_id, user_id } = useParams();
 
     // Add New Modals States.
@@ -165,24 +165,29 @@ const AddNewFuncs = () => {
     });
 
     const HFS_addLabel: SubmitHandler<labelFormVS> = (formData) => {
-        const sendData = {
-            label_title: formData.labelTitle,
-            label_value: convertToSlug(formData.labelTitle),
-            workspace_id,
-            user_id
+        // setIsLabelModalShown(false);
+        // Swal.fire({
+        //     title: "Success!",
+        //     text: "... Successfully !",
+        //     icon: "success",
+        //     timer: 2000
+        // });
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const sendData = {
+                label_title: formData.labelTitle,
+                label_value: convertToSlug(formData.labelTitle),
+                workspace_id,
+                user_id: prs_guifls
+            }
+            console.log(sendData);
         }
-        console.log(sendData);
-        setIsLabelModalShown(false);
-        Swal.fire({
-            title: "Success!",
-            text: "... Successfully !",
-            icon: "success",
-            timer: 2000
-        });
     }
 
     return (
         <>
+            <input type="hidden" value={user_id} />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild={true}>
                     <div>
@@ -262,12 +267,12 @@ const AddNewFuncs = () => {
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isLoading ? "Creating ..." : "Create"}
+                                title={isPending ? "Creating ..." : "Create"}
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={isPending}
                             >
                                 {
-                                    isLoading ?
+                                    isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Creating ...
@@ -373,12 +378,12 @@ const AddNewFuncs = () => {
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isLoading ? "Creating ..." : "Create"}
+                                title={isPending ? "Creating ..." : "Create"}
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={isPending}
                             >
                                 {
-                                    isLoading ?
+                                    isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Creating ...
@@ -420,12 +425,12 @@ const AddNewFuncs = () => {
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isLoading ? "Creating ..." : "Create"}
+                                title={isPending ? "Creating ..." : "Create"}
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={isPending}
                             >
                                 {
-                                    isLoading ?
+                                    isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Creating ...

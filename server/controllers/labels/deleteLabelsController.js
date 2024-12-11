@@ -1,16 +1,17 @@
 const UsersModel = require("../../mongodb/models/userModel");
 const WorkspaceModel = require('../../mongodb/models/workspaceModel');
+const LabelModel = require("../../mongodb/models/labelModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
-const deleteWorkspaceController = async (req, res) => {
+const deleteLabelsController = async (req, res) => {
     let status = 200;
     let response = {
         success: false,
         message: ""
     }
     try {
-        const { workspace_id, user_id } = req.body;
-        if (workspace_id && user_id) {
+        const { label_id, workspace_id, user_id } = req.body;
+        if (label_id && workspace_id && user_id) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -19,11 +20,31 @@ const deleteWorkspaceController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        await WorkspaceModel.findByIdAndDelete({ _id: workspace_id });
-                        status = 200;
-                        response = {
-                            success: true,
-                            message: "Workspace deleted successfully."
+                        const labelIDCheck = isValidObjectIdString(label_id);
+                        if (labelIDCheck) {
+                            const labelAlreadyExist = await LabelModel.findOne({ _id: label_id });
+                            if (labelAlreadyExist !== null) {
+                                await LabelModel.findByIdAndDelete({ _id: label_id });
+                                const updLS = workspaceAlreadyExist.label_sequence.filter((ids) => ids !== label_id);
+                                await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { label_sequence: updLS });
+                                status = 200;
+                                response = {
+                                    success: true,
+                                    message: "Label deleted successfully."
+                                }
+                            } else {
+                                status = 200;
+                                response = {
+                                    success: false,
+                                    message: "Label not found."
+                                }
+                            }
+                        } else {
+                            status = 200;
+                            response = {
+                                success: false,
+                                message: "Invalid label ID found."
+                            }
                         }
                     } else {
                         status = 200;
@@ -64,4 +85,4 @@ const deleteWorkspaceController = async (req, res) => {
     }
 }
 
-module.exports = deleteWorkspaceController;
+module.exports = deleteLabelsController;

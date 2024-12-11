@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const UsersModel = require("../../mongodb/models/userModel");
 
@@ -14,12 +13,12 @@ const passwordSettingController = async (req, res) => {
 
         if (token && user_password && confirm_user_password) {
             if (user_password === confirm_user_password) {
-                const verTok = await jwt.verify(token, process.env.JWT_SECRET || "undefined");
+                const verTok = req.user.user_id;
                 // Check user already exist.
-                const userAlreadyExist = await UsersModel.findOne({ _id: verTok.user_id });
+                const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
                 if (userAlreadyExist !== null) {
                     const hashPassword = await bcrypt.hash(user_password, Number(process.env.BCRYPT_ROUNDS) || 10);
-                    await UsersModel.findByIdAndUpdate({ _id: verTok.user_id }, { user_password: hashPassword })
+                    await UsersModel.findByIdAndUpdate({ _id: verTok }, { user_password: hashPassword })
                     status = 200;
                     response = {
                         success: true,
@@ -49,26 +48,9 @@ const passwordSettingController = async (req, res) => {
 
         res.status(status).json(response);
     } catch (error) {
-        if (error.message == "jwt expired") {
-            response = {
-                success: false,
-                message: "Your link is expired, Please request again."
-            }
-        } else if (error.message == "jwt malformed" || error.message == "jwt must be a string") {
-            response = {
-                success: false,
-                message: "Wrong information provided."
-            }
-        } else if (error.message == "invalid signature" || error.message == "invalid token") {
-            response = {
-                success: false,
-                message: "Invalid information provided."
-            }
-        } else {
-            response = {
-                success: false,
-                message: error.message
-            }
+        response = {
+            success: false,
+            message: error.message
         }
         res.json(response);
     }

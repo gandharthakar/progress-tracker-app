@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const UsersModel = require("../../mongodb/models/userModel");
 const WorkspaceModel = require('../../mongodb/models/workspaceModel');
 
@@ -11,10 +10,10 @@ const createWorkspaceController = async (req, res) => {
     try {
         const { workspace_title, workspace_description, user_id } = req.body;
 
-        if (workspace_title && workspace_description && user_id) {
-            const verTok = await jwt.verify(user_id, process.env.JWT_SECRET || "undefined");
+        if (workspace_title && user_id) {
+            const verTok = req.user.user_id;
             // Check user already exist.
-            const userAlreadyExist = await UsersModel.findOne({ _id: verTok.user_id });
+            const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
                 const resp = new WorkspaceModel({
                     workspace_title,
@@ -44,26 +43,9 @@ const createWorkspaceController = async (req, res) => {
 
         res.status(status).json(response);
     } catch (error) {
-        if (error.message == "jwt expired") {
-            response = {
-                success: false,
-                message: "Your link is expired, Please request again."
-            }
-        } else if (error.message == "jwt malformed" || error.message == "jwt must be a string") {
-            response = {
-                success: false,
-                message: "Wrong information provided."
-            }
-        } else if (error.message == "invalid signature" || error.message == "invalid token") {
-            response = {
-                success: false,
-                message: "Invalid information provided."
-            }
-        } else {
-            response = {
-                success: false,
-                message: error.message
-            }
+        response = {
+            success: false,
+            message: error.message
         }
         res.json(response);
     }

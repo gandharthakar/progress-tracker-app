@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const UsersModel = require("../../mongodb/models/userModel");
 const WorkspaceModel = require('../../mongodb/models/workspaceModel');
 
@@ -11,11 +10,11 @@ const readAllWorkspacesController = async (req, res) => {
     try {
         const { token } = req.query;
         if (token) {
-            const verTok = await jwt.verify(token, process.env.JWT_SECRET || "undefined");
+            const verTok = req.user.user_id;
             // Check user already exist.
-            const userAlreadyExist = await UsersModel.findOne({ _id: verTok.user_id });
+            const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
-                const workspaceAlreadyExist = await WorkspaceModel.find();
+                const workspaceAlreadyExist = await WorkspaceModel.find({ user_id: userAlreadyExist._id });
                 if (workspaceAlreadyExist.length > 0) {
                     const wkData = await WorkspaceModel.find({ user_id: userAlreadyExist._id })
                         .exec()
@@ -32,14 +31,14 @@ const readAllWorkspacesController = async (req, res) => {
                     status = 200;
                     response = {
                         success: true,
-                        message: "Workspaces found.",
+                        message: "Workspaces found successfully.",
                         workspace: wkData
                     }
                 } else {
                     status = 200;
                     response = {
                         success: false,
-                        message: "Workspaces not found.",
+                        message: "No workspaces found.",
                         workspace: []
                     }
                 }
@@ -60,26 +59,9 @@ const readAllWorkspacesController = async (req, res) => {
 
         res.status(status).json(response);
     } catch (error) {
-        if (error.message == "jwt expired") {
-            response = {
-                success: false,
-                message: "Your link is expired, Please request again."
-            }
-        } else if (error.message == "jwt malformed" || error.message == "jwt must be a string") {
-            response = {
-                success: false,
-                message: "Wrong information provided."
-            }
-        } else if (error.message == "invalid signature" || error.message == "invalid token") {
-            response = {
-                success: false,
-                message: "Invalid information provided."
-            }
-        } else {
-            response = {
-                success: false,
-                message: error.message
-            }
+        response = {
+            success: false,
+            message: error.message
         }
         res.json(response);
     }

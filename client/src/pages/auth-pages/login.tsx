@@ -34,7 +34,10 @@ const Login = () => {
                         if (resp.token) {
                             localStorage.setItem("Auth", JSON.stringify(resp.token));
                             const decodeToken: UserLoginTokenType = jwtDecode(resp.token ?? "");
-                            navigate(`/user/my-workspaces/${decodeToken.user_id}`);
+                            const apt = setTimeout(() => {
+                                navigate(`/user/my-workspaces/${decodeToken.user_id}`);
+                                clearTimeout(apt);
+                            }, 100);
                         }
                     }
                 });
@@ -44,7 +47,10 @@ const Login = () => {
                     if (resp.token) {
                         localStorage.setItem("Auth", JSON.stringify(resp.token));
                         const decodeToken: UserLoginTokenType = jwtDecode(resp.token ?? "");
-                        navigate(`/user/my-workspaces/${decodeToken.user_id}`);
+                        const apt = setTimeout(() => {
+                            navigate(`/user/my-workspaces/${decodeToken.user_id}`);
+                            clearTimeout(apt);
+                        }, 100);
                     }
                     clearTimeout(st);
                 }, 2000);

@@ -17,12 +17,12 @@ const viaOptionalEmailVerificationController = async (req, res) => {
         const { token, user_email } = req.body;
 
         if (token && user_email) {
-            const verTok = await jwt.verify(token, process.env.JWT_SECRET || "undefined");
+            const verTok = req.user.user_id;
             // Check user already exist.
-            const userAlreadyExist = await UsersModel.findOne({ _id: verTok.user_id });
+            const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
                 if (user_email !== userAlreadyExist.user_email) {
-                    await UsersModel.findByIdAndUpdate({ _id: verTok.user_id }, { user_email, isEmailVerified: false });
+                    await UsersModel.findByIdAndUpdate({ _id: verTok }, { user_email, isEmailVerified: false });
                     const verifyData = {
                         user_id: userAlreadyExist._id,
                         user_email,

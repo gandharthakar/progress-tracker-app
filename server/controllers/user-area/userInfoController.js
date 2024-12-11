@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const UsersModel = require("../../mongodb/models/userModel");
 
 const userInfoController = async (req, res) => {
@@ -11,9 +10,9 @@ const userInfoController = async (req, res) => {
         const { token, required_data_code } = req.body;
 
         if (token) {
-            const verTok = await jwt.verify(token, process.env.JWT_SECRET || "undefined");
+            const verTok = req.user.user_id;
             // Check user already exist.
-            const userAlreadyExist = await UsersModel.findOne({ _id: verTok.user_id });
+            const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
                 let user = {};
                 if (required_data_code && required_data_code !== "") {
@@ -89,26 +88,9 @@ const userInfoController = async (req, res) => {
 
         res.status(status).json(response);
     } catch (error) {
-        if (error.message == "jwt expired") {
-            response = {
-                success: false,
-                message: "Your link is expired, Please request again."
-            }
-        } else if (error.message == "jwt malformed" || error.message == "jwt must be a string") {
-            response = {
-                success: false,
-                message: "Wrong information provided."
-            }
-        } else if (error.message == "invalid signature" || error.message == "invalid token") {
-            response = {
-                success: false,
-                message: "Invalid information provided."
-            }
-        } else {
-            response = {
-                success: false,
-                message: error.message
-            }
+        response = {
+            success: false,
+            message: error.message
         }
         res.json(response);
     }

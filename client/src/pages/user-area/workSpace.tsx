@@ -143,7 +143,11 @@ const WorkSpace = () => {
         }
     }
 
-    const { mutate } = useGetUserInfo({ onSuccessCB: (resp) => callbackOnSuc_gui(resp), errorCB: (resp) => callbackErr_gui(resp), onErrorCB: (resp) => callbackOnErr_gui(resp) });
+    const { mutate } = useGetUserInfo({
+        onSuccessCB: (resp) => callbackOnSuc_gui(resp),
+        errorCB: (resp) => callbackErr_gui(resp),
+        onErrorCB: (resp) => callbackOnErr_gui(resp)
+    });
 
     useEffect(() => {
         const guifls = localStorage.getItem("Auth");

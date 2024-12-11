@@ -15,6 +15,9 @@ import { Box, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { UserLoginTokenType } from "@/types/tanstack-query/auth/authTypes";
+import { UserInfoAPIResponse } from "@/types/tanstack-query/user/userTypes";
+import Swal from "sweetalert2";
+import { useGetUserInfo } from "@/tanstack-query/mutations/user/userMutations";
 
 const AccountProfileHome = (props: { cb?: () => void }) => {
 
@@ -22,6 +25,7 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
     const navigate = useNavigate();
     const [isLoggedInUser, setIsLoggedInUser] = useState<boolean>(false);
     const [userID, setUserID] = useState<string>("");
+    const [uNm, sUNM] = useState("a");
 
     const handleLogOut = () => {
         localStorage.removeItem("Auth");
@@ -29,6 +33,58 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
         setIsLoggedInUser(false);
         setUserID("");
     }
+
+    const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                if (resp.user) {
+                    if (resp.user.user_full_name) {
+                        sUNM(resp.user.user_full_name.charAt(0));
+                    }
+                }
+            }
+        }
+    }
+
+    const callbackOnErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const callbackErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 3000
+                });
+            }
+        }
+    }
+
+    const { mutate } = useGetUserInfo({
+        onSuccessCB: (resp) => callbackOnSuc_gui(resp),
+        errorCB: (resp) => callbackErr_gui(resp),
+        onErrorCB: (resp) => callbackOnErr_gui(resp)
+    });
+
+    useEffect(() => {
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            mutate({ token: prs_guifls, required_data_code: "115521" });
+        }
+    }, [mutate]);
 
     useEffect(() => {
         const gtCo = localStorage.getItem("Auth");
@@ -58,7 +114,7 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
                                 }}>
                                     <DropdownMenuTrigger>
                                         <div className="bg-white dark:bg-zinc-800 w-[40px] h-[40px] border border-solid border-zinc-200 dark:border-zinc-600 flex items-center justify-center rounded-full font-poppins text-[18px] font-semibold text-zinc-500 dark:text-zinc-300">
-                                            <span className="uppercase">a</span>
+                                            <span className="uppercase">{uNm}</span>
                                         </div>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-[170px] apddm">

@@ -14,22 +14,27 @@ import { convertToSlug } from "@/utils/helperFunctions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SiteDialog from "@/components/SiteDialog";
+import { labelActionsType } from "@/types/componentsTypes";
 
-const LabelActions = (props: { label_id: string, label_title: string }) => {
+const LabelActions = (props: labelActionsType) => {
 
-    const { label_id, label_title } = props;
-    const isLoading = false;
+    const { label_id, label_title, workspace_id } = props;
+    const isPending = false;
     const [isLabelModalShown, setIsLabelModalShown] = useState<boolean>(false);
 
     const handleDeleteLable = () => {
         const conf = confirm("Are you sure want to delete this lable ?");
         if (conf) {
-            Swal.fire({
-                title: "Success!",
-                text: "... Successfully !",
-                icon: "success",
-                timer: 2000
-            });
+            const guifls = localStorage.getItem("Auth");
+            if (guifls) {
+                const prs_guifls = JSON.parse(guifls);
+                const sendData = {
+                    label_id,
+                    workspace_id,
+                    user_id: prs_guifls
+                }
+                console.log(sendData);
+            }
         }
     }
 
@@ -42,19 +47,18 @@ const LabelActions = (props: { label_id: string, label_title: string }) => {
     });
 
     const HFS_UpdateLabel: SubmitHandler<labelFormVS> = (formData) => {
-        const sendData = {
-            label_id,
-            label_title: formData.labelTitle,
-            label_value: convertToSlug(formData.labelTitle)
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const sendData = {
+                label_id,
+                label_title: formData.labelTitle,
+                label_value: convertToSlug(formData.labelTitle),
+                workspace_id,
+                user_id: prs_guifls
+            }
+            console.log(sendData);
         }
-        console.log(sendData);
-        setIsLabelModalShown(false);
-        Swal.fire({
-            title: "Success!",
-            text: "... Successfully !",
-            icon: "success",
-            timer: 2000
-        });
     }
 
     return (
@@ -117,12 +121,12 @@ const LabelActions = (props: { label_id: string, label_title: string }) => {
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isLoading ? "Creating ..." : "Create"}
+                                title={isPending ? "Creating ..." : "Create"}
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={isPending}
                             >
                                 {
-                                    isLoading ?
+                                    isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Creating ...

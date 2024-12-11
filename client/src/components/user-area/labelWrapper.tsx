@@ -72,6 +72,7 @@ const LabelWrapper = () => {
                                                                         <LabelActions
                                                                             label_id={label.label_id}
                                                                             label_title={label.label_title}
+                                                                            workspace_id={workspace_id ?? ""}
                                                                         />
                                                                     </div>
                                                                 </div>

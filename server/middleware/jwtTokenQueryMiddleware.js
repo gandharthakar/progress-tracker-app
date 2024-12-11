@@ -1,30 +1,13 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
-const verifyTokenController = async (req, res) => {
-    let status = 200;
-    let response = {
-        success: false,
-        message: ""
-    }
+const jwtTokenQueryMiddleware = async (req, res, next) => {
     try {
-        const { token } = req.body;
-        if (token) {
-            await jwt.verify(token, process.env.JWT_SECRET || "undefined");
-            status = 200;
-            response = {
-                success: true,
-                message: "Token is valid."
-            }
-        } else {
-            status = 400;
-            response = {
-                success: false,
-                message: "Missing required fields."
-            }
-        }
-        res.status(status).json(response);
+        const { token } = req.query;
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET || "undefined");
+        req.user = decoded;
+        next();
     } catch (error) {
+        let sts = 200;
         if (error.message == "jwt expired") {
             response = {
                 success: false,
@@ -56,4 +39,4 @@ const verifyTokenController = async (req, res) => {
     }
 };
 
-module.exports = verifyTokenController;
+module.exports = jwtTokenQueryMiddleware;
