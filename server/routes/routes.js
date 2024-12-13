@@ -34,6 +34,14 @@ const readAllSectionsController = require("../controllers/sections/readAllSectio
 const updateSectionsController = require("../controllers/sections/updateSectionsController");
 const deleteSectionsController = require("../controllers/sections/deleteSectionsController");
 
+// Tasks Controllers.
+const createTasksController = require("../controllers/tasks/createTasksController");
+const readSingleTaskController = require("../controllers/tasks/readSingleTaskController");
+const readAllTasksController = require("../controllers/tasks/readAllTasksController");
+const readAllTasksBySectionIdController = require("../controllers/tasks/readAllTasksBySectionIdController");
+const updateTasksController = require("../controllers/tasks/updateTasksController");
+const deleteTasksController = require("../controllers/tasks/deleteTasksController");
+
 // Labels Controllers.
 const createLabelsController = require("../controllers/labels/createLabelsController");
 const readSingleLabelController = require("../controllers/labels/readSingleLabelController");
@@ -83,6 +91,14 @@ routes.put("/api/sections/update", jwtUserIDBodyMiddleware, updateSectionsContro
 routes.get("/api/sections/read", jwtTokenQueryMiddleware, readSingleSectionController);
 routes.get("/api/sections/read-all", jwtTokenQueryMiddleware, readAllSectionsController);
 routes.delete("/api/sections/delete", jwtUserIDBodyMiddleware, deleteSectionsController);
+
+// Tasks Routes.
+routes.post("/api/tasks/create", jwtUserIDBodyMiddleware, createTasksController);
+routes.get("/api/tasks/read", jwtTokenQueryMiddleware, readSingleTaskController);
+routes.get("/api/tasks/read-all", jwtTokenQueryMiddleware, readAllTasksController);
+routes.get("/api/tasks/read-all-by-section-id", jwtTokenQueryMiddleware, readAllTasksBySectionIdController);
+routes.put("/api/tasks/update", jwtUserIDBodyMiddleware, updateTasksController);
+routes.delete("/api/tasks/delete", jwtUserIDBodyMiddleware, deleteTasksController);
 
 // Labels Routes.
 routes.post("/api/labels/create", jwtUserIDBodyMiddleware, createLabelsController);
