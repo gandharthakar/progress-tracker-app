@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema, models, model } = mongoose;
 
-const labelSchema = new Schema({
+const labelsSchema = new Schema({
     label_title: {
         type: String,
         required: true
@@ -22,6 +22,6 @@ const labelSchema = new Schema({
     timestamps: true
 });
 
-const LabelModel = models.labels || model('labels', labelSchema);
+const LabelsModel = models.labels || model('labels', labelsSchema);
 
-module.exports = LabelModel;
+module.exports = LabelsModel;

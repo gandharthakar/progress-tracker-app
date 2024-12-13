@@ -1,4 +1,4 @@
-const UsersModel = require("../../mongodb/models/userModel");
+const UsersModel = require("../../mongodb/models/usersModel");
 
 const userInfoController = async (req, res) => {
     let status = 200;

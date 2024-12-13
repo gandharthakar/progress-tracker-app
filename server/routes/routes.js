@@ -1,6 +1,6 @@
 const express = require("express");
 
-// Home Controllers
+// Home Controllers.
 const homeController = require("./../controllers/homeController");
 
 // Auth Controllers.
@@ -15,24 +15,31 @@ const verifyTokenController = require("../controllers/auth/verifyTokenController
 const viaTokenEmailVerificationController = require("../controllers/auth/viaTokenEmailVerificationController");
 const viaOptionalEmailVerificationController = require("../controllers/auth/viaOptionalEmailVerificationController");
 
-// User Controllers.
+// Users Controllers.
 const userInfoController = require("../controllers/user-area/userInfoController");
 const generalSettingsController = require("../controllers/user-area/generalSettingsController");
 const passwordSettingController = require("../controllers/user-area/passwordSettingController");
 
-// Workspace Controllers.
-const createWorkspaceController = require("../controllers/workspace/createWorkspaceController");
-const deleteWorkspaceController = require("../controllers/workspace/deleteWorkspaceController");
-const updateWorkspaceController = require("../controllers/workspace/updateWorkspaceController");
-const readWorkspaceController = require("../controllers/workspace/readWorkspaceController");
-const readAllWorkspacesController = require("../controllers/workspace/readAllWorkspaceController");
+// Workspaces Controllers.
+const createWorkspacesController = require("../controllers/workspaces/createWorkspacesController");
+const deleteWorkspacesController = require("../controllers/workspaces/deleteWorkspacesController");
+const updateWorkspacesController = require("../controllers/workspaces/updateWorkspacesController");
+const readSingleWorkspaceController = require("../controllers/workspaces/readSingleWorkspaceController");
+const readAllWorkspacesController = require("../controllers/workspaces/readAllWorkspaceController");
 
-// Label Controllers.
+// Sections Controllers.
+const createSectionsController = require("../controllers/sections/createSectionsController");
+const readSingleSectionController = require("../controllers/sections/readSingleSectionController");
+const readAllSectionsController = require("../controllers/sections/readAllSectionsController");
+const updateSectionsController = require("../controllers/sections/updateSectionsController");
+const deleteSectionsController = require("../controllers/sections/deleteSectionsController");
+
+// Labels Controllers.
 const createLabelsController = require("../controllers/labels/createLabelsController");
-const updateLabelsController = require("../controllers/labels/updateLabelsController");
-const deleteLabelsController = require("../controllers/labels/deleteLabelsController");
 const readSingleLabelController = require("../controllers/labels/readSingleLabelController");
 const readAllLabelsController = require("../controllers/labels/readAllLabelsController");
+const updateLabelsController = require("../controllers/labels/updateLabelsController");
+const deleteLabelsController = require("../controllers/labels/deleteLabelsController");
 
 // Middlewares.
 const isGmailUserMiddleware = require("../middleware/isGmailUserMiddleware");
@@ -40,6 +47,7 @@ const jwtUserIDBodyMiddleware = require("../middleware/jwtUserIDBodyMiddleware")
 const jwtTokenBodyMiddleware = require("../middleware/jwtTokenBodyMiddleware");
 const jwtTokenQueryMiddleware = require("../middleware/jwtTokenQueryMiddleware");
 
+// Router Instance.
 const routes = express.Router();
 
 // Home Route.
@@ -57,19 +65,26 @@ routes.post('/api/auth/check-token-validity', verifyTokenController);
 routes.post("/api/auth/via-token-email-verification", jwtTokenBodyMiddleware, viaTokenEmailVerificationController);
 routes.post("/api/auth/via-optional-email-verification", jwtTokenBodyMiddleware, isGmailUserMiddleware, viaOptionalEmailVerificationController);
 
-// User Routes.
+// Users Routes.
 routes.post('/api/users/user-info', jwtTokenBodyMiddleware, userInfoController);
 routes.post("/api/users/settings/general", jwtTokenBodyMiddleware, generalSettingsController);
 routes.post("/api/users/settings/password", jwtTokenBodyMiddleware, passwordSettingController);
 
-// Workspace Routes.
-routes.post("/api/workspaces/create", jwtUserIDBodyMiddleware, createWorkspaceController);
-routes.get("/api/workspaces/read", jwtTokenQueryMiddleware, readWorkspaceController);
+// Workspaces Routes.
+routes.post("/api/workspaces/create", jwtUserIDBodyMiddleware, createWorkspacesController);
+routes.get("/api/workspaces/read", jwtTokenQueryMiddleware, readSingleWorkspaceController);
 routes.get("/api/workspaces/read-all", jwtTokenQueryMiddleware, readAllWorkspacesController);
-routes.put("/api/workspaces/update", jwtUserIDBodyMiddleware, updateWorkspaceController);
-routes.delete("/api/workspaces/delete", jwtUserIDBodyMiddleware, deleteWorkspaceController);
+routes.put("/api/workspaces/update", jwtUserIDBodyMiddleware, updateWorkspacesController);
+routes.delete("/api/workspaces/delete", jwtUserIDBodyMiddleware, deleteWorkspacesController);
 
-// Label Routes.
+// Sections Routes.
+routes.post("/api/sections/create", jwtUserIDBodyMiddleware, createSectionsController);
+routes.put("/api/sections/update", jwtUserIDBodyMiddleware, updateSectionsController);
+routes.get("/api/sections/read", jwtTokenQueryMiddleware, readSingleSectionController);
+routes.get("/api/sections/read-all", jwtTokenQueryMiddleware, readAllSectionsController);
+routes.delete("/api/sections/delete", jwtUserIDBodyMiddleware, deleteSectionsController);
+
+// Labels Routes.
 routes.post("/api/labels/create", jwtUserIDBodyMiddleware, createLabelsController);
 routes.get("/api/labels/read", jwtTokenQueryMiddleware, readSingleLabelController);
 routes.get("/api/labels/read-all", jwtTokenQueryMiddleware, readAllLabelsController);

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const UsersModel = require("../../mongodb/models/userModel");
+const UsersModel = require("../../mongodb/models/usersModel");
 const { generateOTP } = require("../../libs/helperFunctions");
 const emailTransporter = require('../../nodemailer/emailConfig');
 const emailVerificationWithOTP = require('../../nodemailer/template/otpEmailTemplate');

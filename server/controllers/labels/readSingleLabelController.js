@@ -1,6 +1,6 @@
-const UsersModel = require("../../mongodb/models/userModel");
-const WorkspaceModel = require('../../mongodb/models/workspaceModel');
-const LabelModel = require("../../mongodb/models/labelModel");
+const UsersModel = require("../../mongodb/models/usersModel");
+const WorkspaceModel = require('../../mongodb/models/workspacesModel');
+const LabelsModel = require("../../mongodb/models/labelsModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
 const readSingleLabelController = async (req, res) => {
@@ -22,7 +22,7 @@ const readSingleLabelController = async (req, res) => {
                     if (workspaceAlreadyExist !== null) {
                         const labelIDCheck = isValidObjectIdString(label_id);
                         if (labelIDCheck) {
-                            const labelAlreadyExist = await LabelModel.findOne({ _id: label_id });
+                            const labelAlreadyExist = await LabelsModel.findOne({ _id: label_id });
                             if (labelAlreadyExist !== null) {
                                 status = 200;
                                 response = {

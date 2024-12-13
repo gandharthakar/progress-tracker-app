@@ -35,9 +35,24 @@ const sortLabelsBySequence = (labels, labelOrder) => {
     return sortedTags;
 }
 
+const sortSectionsBySequence = (sections, sectionOrder) => {
+    // Create a map of sections IDs to their indices in the sections Orders array
+    const orderMap = new Map(sectionOrder.map((sectionId, index) => [sectionId, index]));
+
+    // Sort the sections based on their index in the orderMap, or append them to the end.
+    const sortedTags = sections.sort((a, b) => {
+        const aIndex = orderMap.get(a.section_id.toString()) ?? Infinity;
+        const bIndex = orderMap.get(b.section_id.toString()) ?? Infinity;
+        return aIndex - bIndex;
+    });
+
+    return sortedTags;
+}
+
 module.exports = {
     isGmail,
     generateOTP,
     isValidObjectIdString,
-    sortLabelsBySequence
+    sortLabelsBySequence,
+    sortSectionsBySequence
 }

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema, models, model } = mongoose;
 
-const workspaceSchema = new Schema({
+const workspacesSchema = new Schema({
     workspace_title: {
         type: String,
         required: [true, "Workspace title is required."]
@@ -32,6 +32,6 @@ const workspaceSchema = new Schema({
     timestamps: true
 });
 
-const WorkspaceModel = models.workspaces || model('workspaces', workspaceSchema);
+const WorkspacesModel = models.workspaces || model('workspaces', workspacesSchema);
 
-module.exports = WorkspaceModel;
+module.exports = WorkspacesModel;

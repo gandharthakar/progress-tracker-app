@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const UsersModel = require("../../mongodb/models/userModel");
+const UsersModel = require("../../mongodb/models/usersModel");
 const { isGmail } = require("../../libs/helperFunctions");
 
 const verifyEmailController = async (req, res) => {

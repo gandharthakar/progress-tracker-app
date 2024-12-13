@@ -1,6 +1,6 @@
-const UsersModel = require("../../mongodb/models/userModel");
-const WorkspaceModel = require('../../mongodb/models/workspaceModel');
-const LabelModel = require("../../mongodb/models/labelModel");
+const UsersModel = require("../../mongodb/models/usersModel");
+const WorkspaceModel = require('../../mongodb/models/workspacesModel');
+const LabelsModel = require("../../mongodb/models/labelsModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
 const updateLabelsController = async (req, res) => {
@@ -22,7 +22,7 @@ const updateLabelsController = async (req, res) => {
                     if (workspaceAlreadyExist !== null) {
                         const labelIDCheck = isValidObjectIdString(label_id);
                         if (labelIDCheck) {
-                            const labelAlreadyExist = await LabelModel.findOne({ _id: label_id });
+                            const labelAlreadyExist = await LabelsModel.findOne({ _id: label_id });
                             if (labelAlreadyExist !== null) {
                                 if (labelAlreadyExist.label_title == label_title) {
                                     status = 200;
@@ -31,7 +31,7 @@ const updateLabelsController = async (req, res) => {
                                         message: "Label already exist."
                                     }
                                 } else {
-                                    await LabelModel.findByIdAndUpdate({ _id: label_id }, { label_title, label_value });
+                                    await LabelsModel.findByIdAndUpdate({ _id: label_id }, { label_title, label_value });
                                     status = 200;
                                     response = {
                                         success: true,

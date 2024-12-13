@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 require('dotenv').config();
-const UsersModel = require("../../mongodb/models/userModel");
+const UsersModel = require("../../mongodb/models/usersModel");
 
 const passwordSettingController = async (req, res) => {
     let status = 200;

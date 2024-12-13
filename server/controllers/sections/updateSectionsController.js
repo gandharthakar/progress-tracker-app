@@ -1,17 +1,18 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspaceModel = require('../../mongodb/models/workspacesModel');
-const LabelsModel = require("../../mongodb/models/labelsModel");
+const SectionsModel = require("../../mongodb/models/sectionsModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
-const deleteLabelsController = async (req, res) => {
+const updateSectionsController = async (req, res) => {
     let status = 200;
     let response = {
         success: false,
         message: ""
     }
     try {
-        const { label_id, workspace_id, user_id } = req.body;
-        if (label_id && workspace_id && user_id) {
+
+        const { section_id, section_title, section_value, workspace_id, user_id } = req.body;
+        if (section_id && section_title && section_value && workspace_id && user_id) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -20,30 +21,27 @@ const deleteLabelsController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const labelIDCheck = isValidObjectIdString(label_id);
-                        if (labelIDCheck) {
-                            const labelAlreadyExist = await LabelsModel.findOne({ _id: label_id });
-                            if (labelAlreadyExist !== null) {
-                                await LabelsModel.findByIdAndDelete({ _id: label_id });
-                                const updLS = workspaceAlreadyExist.label_sequence.filter((ids) => ids !== label_id);
-                                await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { label_sequence: updLS });
-                                status = 200;
-                                response = {
-                                    success: true,
-                                    message: "Label deleted successfully."
-                                }
-                            } else {
+                        const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
+                        if (sectionAlreadyExist !== null) {
+                            if (sectionAlreadyExist.section_title == section_title) {
                                 status = 200;
                                 response = {
                                     success: false,
-                                    message: "Label not found."
+                                    message: "Section already exist."
+                                }
+                            } else {
+                                await SectionsModel.findByIdAndUpdate({ _id: section_id }, { section_title, section_value });
+                                status = 200;
+                                response = {
+                                    success: true,
+                                    message: "Section updated successfully."
                                 }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Invalid label ID found."
+                                message: "Section not found."
                             }
                         }
                     } else {
@@ -85,4 +83,4 @@ const deleteLabelsController = async (req, res) => {
     }
 }
 
-module.exports = deleteLabelsController;
+module.exports = updateSectionsController;

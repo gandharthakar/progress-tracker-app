@@ -1,6 +1,6 @@
-const UsersModel = require("../../mongodb/models/userModel");
-const WorkspaceModel = require('../../mongodb/models/workspaceModel');
-const LabelModel = require("../../mongodb/models/labelModel");
+const UsersModel = require("../../mongodb/models/usersModel");
+const WorkspaceModel = require('../../mongodb/models/workspacesModel');
+const LabelsModel = require("../../mongodb/models/labelsModel");
 const { isValidObjectIdString, sortLabelsBySequence } = require("../../libs/helperFunctions");
 
 const readAllLabelsController = async (req, res) => {
@@ -20,9 +20,9 @@ const readAllLabelsController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const labelsAlreadyExist = await LabelModel.find({ workspace_id });
+                        const labelsAlreadyExist = await LabelsModel.find({ workspace_id });
                         if (labelsAlreadyExist.length > 0) {
-                            const lbData = await LabelModel.find({ workspace_id })
+                            const lbData = await LabelsModel.find({ workspace_id })
                                 .exec()
                                 .then(docs => {
                                     return docs.map((doc) => {

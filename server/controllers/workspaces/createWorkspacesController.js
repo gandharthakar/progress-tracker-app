@@ -1,7 +1,7 @@
-const UsersModel = require("../../mongodb/models/userModel");
-const WorkspaceModel = require('../../mongodb/models/workspaceModel');
+const UsersModel = require("../../mongodb/models/usersModel");
+const WorkspacesModel = require('../../mongodb/models/workspacesModel');
 
-const createWorkspaceController = async (req, res) => {
+const createWorkspacesController = async (req, res) => {
     let status = 200;
     let response = {
         success: false,
@@ -15,7 +15,7 @@ const createWorkspaceController = async (req, res) => {
             // Check user already exist.
             const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
-                const resp = new WorkspaceModel({
+                const resp = new WorkspacesModel({
                     workspace_title,
                     workspace_description,
                     user_id: userAlreadyExist._id
@@ -51,4 +51,4 @@ const createWorkspaceController = async (req, res) => {
     }
 }
 
-module.exports = createWorkspaceController;
+module.exports = createWorkspacesController;

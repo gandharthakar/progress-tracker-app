@@ -1,17 +1,17 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspaceModel = require('../../mongodb/models/workspacesModel');
-const LabelsModel = require("../../mongodb/models/labelsModel");
-const { isValidObjectIdString } = require("../../libs/helperFunctions");
+const SectionsModel = require("../../mongodb/models/sectionsModel");
+const { isValidObjectIdString, sortSectionsBySequence } = require("../../libs/helperFunctions");
 
-const deleteLabelsController = async (req, res) => {
+const readAllSectionsController = async (req, res) => {
     let status = 200;
     let response = {
         success: false,
         message: ""
     }
     try {
-        const { label_id, workspace_id, user_id } = req.body;
-        if (label_id && workspace_id && user_id) {
+        const { workspace_id, token } = req.query;
+        if (workspace_id && token) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -20,30 +20,34 @@ const deleteLabelsController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const labelIDCheck = isValidObjectIdString(label_id);
-                        if (labelIDCheck) {
-                            const labelAlreadyExist = await LabelsModel.findOne({ _id: label_id });
-                            if (labelAlreadyExist !== null) {
-                                await LabelsModel.findByIdAndDelete({ _id: label_id });
-                                const updLS = workspaceAlreadyExist.label_sequence.filter((ids) => ids !== label_id);
-                                await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { label_sequence: updLS });
-                                status = 200;
-                                response = {
-                                    success: true,
-                                    message: "Label deleted successfully."
-                                }
-                            } else {
-                                status = 200;
-                                response = {
-                                    success: false,
-                                    message: "Label not found."
-                                }
+                        const sectionsAlreadyExist = await SectionsModel.find({ workspace_id });
+                        if (sectionsAlreadyExist.length > 0) {
+                            const secData = await SectionsModel.find({ workspace_id })
+                                .exec()
+                                .then(docs => {
+                                    return docs.map((doc) => {
+                                        return {
+                                            section_id: doc._id,
+                                            section_title: doc.section_title,
+                                            section_value: doc.section_value,
+                                            workspace_id: doc.workspace_id,
+                                            user_id: doc.user_id
+                                        }
+                                    })
+                                });
+                            const sortedSections = sortSectionsBySequence(secData, workspaceAlreadyExist.section_sequence);
+                            status = 200;
+                            response = {
+                                success: true,
+                                message: "Sections found successfully.",
+                                sections: sortedSections
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Invalid label ID found."
+                                message: "No sections found.",
+                                sections: []
                             }
                         }
                     } else {
@@ -85,4 +89,4 @@ const deleteLabelsController = async (req, res) => {
     }
 }
 
-module.exports = deleteLabelsController;
+module.exports = readAllSectionsController;

@@ -1,8 +1,8 @@
-const UsersModel = require("../../mongodb/models/userModel");
-const WorkspaceModel = require('../../mongodb/models/workspaceModel');
+const UsersModel = require("../../mongodb/models/usersModel");
+const WorkspacesModel = require('../../mongodb/models/workspacesModel');
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
-const readWorkspaceController = async (req, res) => {
+const readSingleWorkspaceController = async (req, res) => {
     let status = 200;
     let response = {
         success: false,
@@ -18,7 +18,7 @@ const readWorkspaceController = async (req, res) => {
                 const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
                 if (userAlreadyExist !== null) {
                     if (workspaceIDCheck) {
-                        const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
+                        const workspaceAlreadyExist = await WorkspacesModel.findOne({ _id: workspace_id });
                         if (workspaceAlreadyExist !== null) {
                             status = 200;
                             response = {
@@ -77,4 +77,4 @@ const readWorkspaceController = async (req, res) => {
     }
 }
 
-module.exports = readWorkspaceController;
+module.exports = readSingleWorkspaceController;

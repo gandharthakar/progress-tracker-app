@@ -1,5 +1,5 @@
-const UsersModel = require("../../mongodb/models/userModel");
-const WorkspaceModel = require('../../mongodb/models/workspaceModel');
+const UsersModel = require("../../mongodb/models/usersModel");
+const WorkspacesModel = require('../../mongodb/models/workspacesModel');
 
 const readAllWorkspacesController = async (req, res) => {
     let status = 200;
@@ -14,9 +14,9 @@ const readAllWorkspacesController = async (req, res) => {
             // Check user already exist.
             const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
-                const workspaceAlreadyExist = await WorkspaceModel.find({ user_id: userAlreadyExist._id });
+                const workspaceAlreadyExist = await WorkspacesModel.find({ user_id: userAlreadyExist._id });
                 if (workspaceAlreadyExist.length > 0) {
-                    const wkData = await WorkspaceModel.find({ user_id: userAlreadyExist._id })
+                    const wkData = await WorkspacesModel.find({ user_id: userAlreadyExist._id })
                         .exec()
                         .then(docs => {
                             return docs.map((doc) => {
