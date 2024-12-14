@@ -1,7 +1,8 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspaceModel = require('../../mongodb/models/workspacesModel');
 const TasksModel = require("../../mongodb/models/tasksModel");
-const { isValidObjectIdString } = require("../../libs/helperFunctions");
+const SectionsModel = require("../../mongodb/models/sectionsModel");
+const { isValidObjectIdString, insertValueAtIndex } = require("../../libs/helperFunctions");
 
 const updateTasksController = async (req, res) => {
     let status = 200;
@@ -11,8 +12,8 @@ const updateTasksController = async (req, res) => {
     }
     try {
 
-        const { task_id, task_title, section_id, workspace_id, user_id } = req.body;
-        if (task_id && task_title && section_id && workspace_id && user_id) {
+        const { task_id, task_title, section_id, taskIndex, workspace_id, user_id } = req.body;
+        if (task_id && task_title && section_id && taskIndex && workspace_id && user_id) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -21,27 +22,83 @@ const updateTasksController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const taskAlreadyExist = await TasksModel.findOne({ _id: task_id });
-                        if (taskAlreadyExist !== null) {
-                            if (taskAlreadyExist.task_title == task_title) {
+                        const sectionIDCheck = isValidObjectIdString(section_id);
+                        if (sectionIDCheck) {
+                            const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
+                            if (sectionAlreadyExist !== null) {
+                                const taskIDCheck = isValidObjectIdString(task_id);
+                                if (taskIDCheck) {
+                                    const taskAlreadyExist = await TasksModel.findOne({ _id: task_id });
+                                    if (taskAlreadyExist !== null) {
+                                        if (taskAlreadyExist.section_id == section_id) {
+                                            if (taskAlreadyExist.task_title == task_title) {
+                                                status = 200;
+                                                response = {
+                                                    success: false,
+                                                    message: "Task already exist."
+                                                }
+                                            } else {
+                                                await TasksModel.findByIdAndUpdate({ _id: task_id }, { task_title });
+                                                status = 200;
+                                                response = {
+                                                    success: true,
+                                                    message: "Task Updated successfully."
+                                                }
+                                            }
+                                        } else {
+                                            const newSection = await SectionsModel.findOne({ _id: section_id });
+                                            // Check for valid index & length of array because valid index number must be within or in between array length.
+                                            if (Number(taskIndex) < 0 || Number(taskIndex) > newSection.task_sequence.length) {
+                                                status = 200;
+                                                response = {
+                                                    success: false,
+                                                    message: "Wrong index number provided or index out of bounds."
+                                                }
+                                            } else {
+                                                // First Remove task from old section sequence.
+                                                const oldSection = await SectionsModel.findOne({ _id: taskAlreadyExist.section_id });
+                                                const filterOldSS = oldSection.task_sequence.filter((ids) => ids !== task_id);
+                                                await SectionsModel.findByIdAndUpdate({ _id: taskAlreadyExist.section_id }, { task_sequence: filterOldSS });
+
+                                                // Second Add task to the new section.
+                                                const updSec = [...newSection.task_sequence];
+                                                const upd = insertValueAtIndex(updSec, Number(taskIndex), task_id);
+                                                await SectionsModel.findByIdAndUpdate({ _id: section_id }, { task_sequence: upd });
+                                                // Finally Update section ID to the Task Object.
+                                                await TasksModel.findByIdAndUpdate({ _id: task_id }, { task_title, section_id });
+                                                status = 200;
+                                                response = {
+                                                    success: true,
+                                                    message: "Task Updated successfully."
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        status = 200;
+                                        response = {
+                                            success: false,
+                                            message: "Task not found."
+                                        }
+                                    }
+                                } else {
+                                    status = 200;
+                                    response = {
+                                        success: false,
+                                        message: "Invalid task ID found."
+                                    }
+                                }
+                            } else {
                                 status = 200;
                                 response = {
                                     success: false,
-                                    message: "Task already exist."
-                                }
-                            } else {
-                                await TasksModel.findByIdAndUpdate({ _id: task_id }, { task_title, section_id });
-                                status = 200;
-                                response = {
-                                    success: true,
-                                    message: "Task Updated successfully."
+                                    message: "Section not found."
                                 }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Task not found."
+                                message: "Invalid section ID found."
                             }
                         }
                     } else {

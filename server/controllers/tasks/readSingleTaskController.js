@@ -21,25 +21,34 @@ const readSingleTaskController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const taskAlreadyExist = await TasksModel.findOne({ _id: task_id });
-                        if (taskAlreadyExist !== null) {
-                            status = 200;
-                            response = {
-                                success: true,
-                                message: "Task found successfully.",
-                                task: {
-                                    task_id: taskAlreadyExist._id,
-                                    task_title: taskAlreadyExist.task_title,
-                                    section_id: taskAlreadyExist.section_id,
-                                    workspace_id: taskAlreadyExist.workspace_id,
-                                    user_id: taskAlreadyExist.user_id
+                        const taskIDCheck = isValidObjectIdString(task_id);
+                        if (taskIDCheck) {
+                            const taskAlreadyExist = await TasksModel.findOne({ _id: task_id });
+                            if (taskAlreadyExist !== null) {
+                                status = 200;
+                                response = {
+                                    success: true,
+                                    message: "Task found successfully.",
+                                    task: {
+                                        task_id: taskAlreadyExist._id,
+                                        task_title: taskAlreadyExist.task_title,
+                                        section_id: taskAlreadyExist.section_id,
+                                        workspace_id: taskAlreadyExist.workspace_id,
+                                        user_id: taskAlreadyExist.user_id
+                                    }
+                                }
+                            } else {
+                                status = 200;
+                                response = {
+                                    success: false,
+                                    message: "Task not found."
                                 }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Task not found."
+                                message: "Invalid task ID found."
                             }
                         }
                     } else {

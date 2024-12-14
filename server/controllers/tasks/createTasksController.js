@@ -1,6 +1,7 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspaceModel = require('../../mongodb/models/workspacesModel');
 const TasksModel = require("../../mongodb/models/tasksModel");
+const SectionsModel = require("../../mongodb/models/sectionsModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
 const createTasksController = async (req, res) => {
@@ -21,25 +22,44 @@ const createTasksController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const taskAlreadyExist = await TasksModel.findOne({ task_title, workspace_id });
-                        if (taskAlreadyExist == null) {
-                            const doc = new TasksModel({
-                                task_title,
-                                section_id,
-                                workspace_id,
-                                user_id: userAlreadyExist._id
-                            });
-                            await doc.save();
-                            status = 201;
-                            response = {
-                                success: true,
-                                message: "Task created successfully."
+                        const sectionIDCheck = isValidObjectIdString(section_id);
+                        if (sectionIDCheck) {
+                            const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
+                            if (sectionAlreadyExist !== null) {
+                                const taskAlreadyExist = await TasksModel.findOne({ task_title, workspace_id });
+                                if (taskAlreadyExist == null) {
+                                    const doc = new TasksModel({
+                                        task_title,
+                                        section_id,
+                                        workspace_id,
+                                        user_id: userAlreadyExist._id
+                                    });
+                                    await doc.save();
+                                    await SectionsModel.findByIdAndUpdate({ _id: section_id }, { task_sequence: [...sectionAlreadyExist.task_sequence, doc._id] });
+                                    status = 201;
+                                    response = {
+                                        success: true,
+                                        message: "Task created successfully."
+                                    }
+                                } else {
+                                    status = 200;
+                                    response = {
+                                        success: false,
+                                        message: "Task already exist."
+                                    }
+                                }
+                            } else {
+                                status = 200;
+                                response = {
+                                    success: false,
+                                    message: "Section not found."
+                                }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Task already exist."
+                                message: "Invalid section ID found."
                             }
                         }
                     } else {

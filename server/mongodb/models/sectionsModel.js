@@ -17,7 +17,12 @@ const sectionsSchema = new Schema({
     user_id: {
         type: String,
         required: true
-    }
+    },
+    task_sequence: [
+        {
+            type: String
+        }
+    ]
 }, {
     timestamps: true
 });

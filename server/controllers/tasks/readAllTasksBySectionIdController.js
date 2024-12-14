@@ -21,33 +21,51 @@ const readAllTasksBySectionIdController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const tasksAlreadyExist = await TasksModel.find({ workspace_id, section_id });
-                        if (tasksAlreadyExist.length > 0) {
-                            const tskData = await TasksModel.find({ workspace_id, section_id })
-                                .exec()
-                                .then(docs => {
-                                    return docs.map((doc) => {
-                                        return {
-                                            task_id: doc._id,
-                                            task_title: doc.task_title,
-                                            section_id: doc.section_id,
-                                            workspace_id: doc.workspace_id,
-                                            user_id: doc.user_id
-                                        }
-                                    })
-                                });
-                            status = 200;
-                            response = {
-                                success: true,
-                                message: "Tasks found successfully.",
-                                tasks: tskData
+                        const sectionIDCheck = isValidObjectIdString(section_id);
+                        if (sectionIDCheck) {
+                            const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
+                            if (sectionAlreadyExist !== null) {
+                                const tasksAlreadyExist = await TasksModel.find({ workspace_id, section_id });
+                                if (tasksAlreadyExist.length > 0) {
+                                    const tskData = await TasksModel.find({ workspace_id, section_id })
+                                        .exec()
+                                        .then(docs => {
+                                            return docs.map((doc) => {
+                                                return {
+                                                    task_id: doc._id,
+                                                    task_title: doc.task_title,
+                                                    section_id: doc.section_id,
+                                                    workspace_id: doc.workspace_id,
+                                                    user_id: doc.user_id
+                                                }
+                                            })
+                                        });
+                                    status = 200;
+                                    response = {
+                                        success: true,
+                                        message: "Tasks found successfully.",
+                                        tasks: tskData
+                                    }
+                                } else {
+                                    status = 200;
+                                    response = {
+                                        success: false,
+                                        message: "No tasks found.",
+                                        tasks: []
+                                    }
+                                }
+                            } else {
+                                status = 200;
+                                response = {
+                                    success: false,
+                                    message: "Section not found."
+                                }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "No tasks found.",
-                                tasks: []
+                                message: "Invalid section ID found."
                             }
                         }
                     } else {

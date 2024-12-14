@@ -98,22 +98,24 @@ const SingleWorkSpace = () => {
         if (workspace) {
             console.log(workspace.sections);
             if (workspace.sections?.length) {
-                const trackIDs = workspace.sections.map((section) => {
-                    if (section.tasks?.length) {
-                        const ids = section.tasks.map((task) => {
-                            return {
-                                task_id: task.task_id,
-                                section_id: section.section_id
-                            }
-                        });
-                        return ids;
-                    }
-                }).flat(1);
+                const secIDs = workspace.sections.map((sect) => sect.section_id);
+                console.log(secIDs);
+                // const trackIDs = workspace.sections.map((section) => {
+                //     if (section.tasks?.length) {
+                //         const ids = section.tasks.map((task) => {
+                //             return {
+                //                 task_id: task.task_id,
+                //                 section_id: section.section_id
+                //             }
+                //         });
+                //         return ids;
+                //     }
+                // }).flat(1);
 
                 const prepData = {
                     workspace_id,
                     user_id,
-                    tracked_tasks_sections: trackIDs,
+                    // tracked_tasks_sections: trackIDs,
                     completed_task: sel
                 }
                 console.log(prepData);
@@ -330,7 +332,7 @@ const SingleWorkSpace = () => {
                                                                                                 <div className="h-[16px] pt-[2px] md:pt-[4px]" {...providedDraggable.dragHandleProps}>
                                                                                                     <GripVertical size={16} className="text-zinc-400" />
                                                                                                 </div>
-                                                                                                <div>{section.section_title}</div>
+                                                                                                <div>{index} {section.section_title}</div>
                                                                                                 <div className="ml-auto h-[15px] pt-[2px]">
                                                                                                     <SectionActions
                                                                                                         section_id={section.section_id}
@@ -357,15 +359,17 @@ const SingleWorkSpace = () => {
                                                                                                                                             <div className="h-[16px] pt-[1px] md:pt-[2px]" {...providedTaskDraggable.dragHandleProps}>
                                                                                                                                                 <GripVertical size={16} className="text-zinc-400" />
                                                                                                                                             </div>
-                                                                                                                                            <div>{task.task_title}</div>
+                                                                                                                                            <div>{taskIndex} {task.task_title}</div>
                                                                                                                                             <div className="ml-auto h-[15px] pt-[2px]">
                                                                                                                                                 <TasksActions
                                                                                                                                                     task_id={task.task_id}
                                                                                                                                                     task_title={task.task_title}
+                                                                                                                                                    taskIndex={taskIndex}
                                                                                                                                                     section_id={section.section_id}
                                                                                                                                                     section_title={section.section_title}
                                                                                                                                                     section_value={section.section_value}
                                                                                                                                                     sections={workspace.sections ? workspace.sections : []}
+                                                                                                                                                    workspace_id={workspace_id ?? ""}
                                                                                                                                                 />
                                                                                                                                             </div>
                                                                                                                                         </div>

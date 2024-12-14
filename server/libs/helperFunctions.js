@@ -49,10 +49,26 @@ const sortSectionsBySequence = (sections, sectionOrder) => {
     return sortedTags;
 }
 
+const insertValueAtIndex = (array, index, newValue) => {
+    // const ind = Number(index);
+    if (index < 0 || index > array.length) {
+        throw new Error("Wrong index number provided or index out of bounds.");
+    }
+
+    // Create a new array to avoid mutating the original array
+    const updatedArray = [...array];
+
+    // Insert the new value at the specified index
+    updatedArray.splice(index, 0, newValue);
+
+    return updatedArray;
+}
+
 module.exports = {
     isGmail,
     generateOTP,
     isValidObjectIdString,
     sortLabelsBySequence,
-    sortSectionsBySequence
+    sortSectionsBySequence,
+    insertValueAtIndex
 }

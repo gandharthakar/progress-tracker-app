@@ -17,7 +17,17 @@ const LabelWrapper = () => {
 
     const saveLabelOrder = () => {
         console.log(labelData);
-        setIsLabelOrderChanged(false);
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const prepData = {
+                workspace_id,
+                user_id: prs_guifls,
+                label_sequence: labelData.map((label) => label.label_id)
+            }
+            console.log(prepData);
+            setIsLabelOrderChanged(false);
+        }
     }
 
     const onDragEnd = (result: any) => {

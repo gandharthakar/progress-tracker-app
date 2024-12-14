@@ -26,21 +26,32 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-const TasksActions = (props: (taskType & sectionType & { sections: sectionApiType[] })) => {
+const TasksActions = (props: (taskType & sectionType & { sections: sectionApiType[], taskIndex: number, workspace_id: string })) => {
 
-    const { task_id, task_title, section_title, section_id, section_value, sections } = props;
+    const { task_id, task_title, taskIndex, section_title, section_id, section_value, sections, workspace_id } = props;
     const isLoading = false;
     const [isTaskModalShown, setIsTaskModalShown] = useState<boolean>(false);
 
     const handleDeleteTask = () => {
         const conf = confirm("Are you sure want to delete this task ?");
         if (conf) {
-            Swal.fire({
-                title: "Success!",
-                text: "... Successfully !",
-                icon: "success",
-                timer: 2000
-            });
+            const guifls = localStorage.getItem("Auth");
+            if (guifls) {
+                const prs_guifls = JSON.parse(guifls);
+                const prepData = {
+                    task_id,
+                    section_id,
+                    workspace_id,
+                    user_id: prs_guifls
+                }
+                console.log(prepData);
+            }
+            // Swal.fire({
+            //     title: "Success!",
+            //     text: "... Successfully !",
+            //     icon: "success",
+            //     timer: 2000
+            // });
         }
     }
 
@@ -69,7 +80,7 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
         setTaskTitle(value);
     }
 
-    const HFS_addTask = (e: React.FormEvent<HTMLFormElement>) => {
+    const HFS_UpdateTask = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (taskTitle == '') {
@@ -97,23 +108,30 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
         }
 
         if (isValidForm) {
-            const sendData = {
-                task_id,
-                task_title: taskTitle,
-                section_id: sectionListID,
+            const guifls = localStorage.getItem("Auth");
+            if (guifls) {
+                const prs_guifls = JSON.parse(guifls);
+                const sendData = {
+                    task_id,
+                    task_title: taskTitle,
+                    section_id: sectionListID,
+                    taskIndex: taskIndex.toString(),
+                    workspace_id,
+                    user_id: prs_guifls
+                }
+                console.log(sendData);
+                // setTaskTitle("");
+                // setSectionListValue("");
+                // setSectionListBL("");
+                // setSectionListID("");
+                // setIsTaskModalShown(false);
+                // Swal.fire({
+                //     title: "Success!",
+                //     text: "... Successfully !",
+                //     icon: "success",
+                //     timer: 2000
+                // });
             }
-            console.log(sendData);
-            setTaskTitle("");
-            setSectionListValue("");
-            setSectionListBL("");
-            setSectionListID("");
-            setIsTaskModalShown(false);
-            Swal.fire({
-                title: "Success!",
-                text: "... Successfully !",
-                icon: "success",
-                timer: 2000
-            });
         }
     }
 
@@ -170,7 +188,7 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                 modal_max_width={450}
             >
                 <div className="py-[20px] px-[20px]">
-                    <form onSubmit={HFS_addTask}>
+                    <form onSubmit={HFS_UpdateTask}>
                         <div className="pb-[15px]">
                             <label
                                 htmlFor="tsk_ttl"
