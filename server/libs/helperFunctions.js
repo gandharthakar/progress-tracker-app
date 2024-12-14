@@ -49,6 +49,20 @@ const sortSectionsBySequence = (sections, sectionOrder) => {
     return sortedTags;
 }
 
+const sortTasksBySequence = (tasks, taskOrder) => {
+    // Create a map of tasks IDs to their indices in the tasks Orders array
+    const orderMap = new Map(taskOrder.map((taskId, index) => [taskId, index]));
+
+    // Sort the tasks based on their index in the orderMap, or append them to the end.
+    const sortedTags = tasks.sort((a, b) => {
+        const aIndex = orderMap.get(a.task_id.toString()) ?? Infinity;
+        const bIndex = orderMap.get(b.task_id.toString()) ?? Infinity;
+        return aIndex - bIndex;
+    });
+
+    return sortedTags;
+}
+
 const insertValueAtIndex = (array, index, newValue) => {
     // const ind = Number(index);
     if (index < 0 || index > array.length) {
@@ -70,5 +84,6 @@ module.exports = {
     isValidObjectIdString,
     sortLabelsBySequence,
     sortSectionsBySequence,
+    sortTasksBySequence,
     insertValueAtIndex
 }

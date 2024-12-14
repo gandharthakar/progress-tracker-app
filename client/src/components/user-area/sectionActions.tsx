@@ -15,22 +15,32 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SiteDialog from "@/components/SiteDialog";
 
-const SectionActions = (props: { section_id: string, section_title: string, }) => {
+const SectionActions = (props: { section_id: string, section_title: string, sectionIndex: number, workspace_id: string }) => {
 
-    const { section_id, section_title } = props;
+    const { section_id, section_title, sectionIndex, workspace_id } = props;
     const isLoading = false;
 
     const [isSectionModalShown, setIsSectionModalShown] = useState<boolean>(false);
     const [isDeleteModalShown, setIsDeleteModalShown] = useState<boolean>(false);
 
     const handleDeleteSection = () => {
-        setIsDeleteModalShown(false);
-        Swal.fire({
-            title: "Success!",
-            text: "... Successfully !",
-            icon: "success",
-            timer: 2000
-        });
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const sendData = {
+                section_id,
+                workspace_id,
+                user_id: prs_guifls
+            }
+            console.log(sendData);
+            // setIsDeleteModalShown(false);
+        }
+        // Swal.fire({
+        //     title: "Success!",
+        //     text: "... Successfully !",
+        //     icon: "success",
+        //     timer: 2000
+        // });
     }
 
     // Update Sections Modal Form Handling.
@@ -42,20 +52,28 @@ const SectionActions = (props: { section_id: string, section_title: string, }) =
     });
 
     const HFS_addSection: SubmitHandler<sectionFormVS> = (formData) => {
-        const sendData = {
-            section_id,
-            section_name: formData.sectionName,
-            section_value: convertToSlug(formData.sectionName),
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const sendData = {
+                section_id,
+                section_name: formData.sectionName,
+                section_value: convertToSlug(formData.sectionName),
+                sectionIndex: sectionIndex.toString(),
+                workspace_id,
+                user_id: prs_guifls
+            }
+            console.log(sendData);
+            // setIsDeleteModalShown(false);
         }
-        console.log(sendData);
-        rhfAddSection.reset();
-        setIsSectionModalShown(false);
-        Swal.fire({
-            title: "Success!",
-            text: "... Successfully !",
-            icon: "success",
-            timer: 2000
-        });
+        // rhfAddSection.reset();
+        // setIsSectionModalShown(false);
+        // Swal.fire({
+        //     title: "Success!",
+        //     text: "... Successfully !",
+        //     icon: "success",
+        //     timer: 2000
+        // });
     }
 
     return (

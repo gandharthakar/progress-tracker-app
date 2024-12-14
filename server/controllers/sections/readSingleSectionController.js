@@ -20,25 +20,34 @@ const readSingleSectionController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
-                        if (sectionAlreadyExist !== null) {
-                            status = 200;
-                            response = {
-                                success: true,
-                                message: "Section found successfully.",
-                                section: {
-                                    section_id: sectionAlreadyExist._id,
-                                    section_title: sectionAlreadyExist.section_title,
-                                    section_value: sectionAlreadyExist.section_value,
-                                    workspace_id: sectionAlreadyExist.workspace_id,
-                                    user_id: sectionAlreadyExist.user_id
+                        const sectionIDCheck = isValidObjectIdString(section_id);
+                        if (sectionIDCheck) {
+                            const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
+                            if (sectionAlreadyExist !== null) {
+                                status = 200;
+                                response = {
+                                    success: true,
+                                    message: "Section found successfully.",
+                                    section: {
+                                        section_id: sectionAlreadyExist._id,
+                                        section_title: sectionAlreadyExist.section_title,
+                                        section_value: sectionAlreadyExist.section_value,
+                                        workspace_id: sectionAlreadyExist.workspace_id,
+                                        user_id: sectionAlreadyExist.user_id
+                                    }
+                                }
+                            } else {
+                                status = 200;
+                                response = {
+                                    success: false,
+                                    message: "Section not found."
                                 }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Section not found."
+                                message: "Invalid section ID found."
                             }
                         }
                     } else {

@@ -11,8 +11,8 @@ const updateSectionsController = async (req, res) => {
     }
     try {
 
-        const { section_id, section_title, section_value, workspace_id, user_id } = req.body;
-        if (section_id && section_title && section_value && workspace_id && user_id) {
+        const { section_id, section_title, section_value, sectionIndex, workspace_id, user_id } = req.body;
+        if (section_id && section_title && section_value && sectionIndex && workspace_id && user_id) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -21,27 +21,36 @@ const updateSectionsController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
-                        if (sectionAlreadyExist !== null) {
-                            if (sectionAlreadyExist.section_title == section_title) {
+                        const sectionIDCheck = isValidObjectIdString(section_id);
+                        if (sectionIDCheck) {
+                            const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
+                            if (sectionAlreadyExist !== null) {
+                                if (sectionAlreadyExist.section_title == section_title) {
+                                    status = 200;
+                                    response = {
+                                        success: false,
+                                        message: "Section already exist."
+                                    }
+                                } else {
+                                    await SectionsModel.findByIdAndUpdate({ _id: section_id }, { section_title, section_value });
+                                    status = 200;
+                                    response = {
+                                        success: true,
+                                        message: "Section updated successfully."
+                                    }
+                                }
+                            } else {
                                 status = 200;
                                 response = {
                                     success: false,
-                                    message: "Section already exist."
-                                }
-                            } else {
-                                await SectionsModel.findByIdAndUpdate({ _id: section_id }, { section_title, section_value });
-                                status = 200;
-                                response = {
-                                    success: true,
-                                    message: "Section updated successfully."
+                                    message: "Section not found."
                                 }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Section not found."
+                                message: "Invalid section ID found."
                             }
                         }
                     } else {

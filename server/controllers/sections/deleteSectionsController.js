@@ -20,21 +20,30 @@ const deleteSectionsController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
-                        if (sectionAlreadyExist !== null) {
-                            await SectionsModel.findByIdAndDelete({ _id: section_id });
-                            const updSs = workspaceAlreadyExist.section_sequence.filter((ids) => ids !== section_id);
-                            await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs });
-                            status = 200;
-                            response = {
-                                success: true,
-                                message: "Section deleted successfully."
+                        const sectionIDCheck = isValidObjectIdString(section_id);
+                        if (sectionIDCheck) {
+                            const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
+                            if (sectionAlreadyExist !== null) {
+                                await SectionsModel.findByIdAndDelete({ _id: section_id });
+                                const updSs = workspaceAlreadyExist.section_sequence.filter((ids) => ids !== section_id);
+                                await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs });
+                                status = 200;
+                                response = {
+                                    success: true,
+                                    message: "Section deleted successfully."
+                                }
+                            } else {
+                                status = 200;
+                                response = {
+                                    success: false,
+                                    message: "Section not found."
+                                }
                             }
                         } else {
                             status = 200;
                             response = {
                                 success: false,
-                                message: "Section not found."
+                                message: "Invalid section ID found."
                             }
                         }
                     } else {

@@ -1,7 +1,8 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspaceModel = require('../../mongodb/models/workspacesModel');
 const TasksModel = require("../../mongodb/models/tasksModel");
-const { isValidObjectIdString } = require("../../libs/helperFunctions");
+const SectionsModel = require("../../mongodb/models/sectionsModel");
+const { isValidObjectIdString, sortTasksBySequence } = require("../../libs/helperFunctions");
 
 const readAllTasksBySectionIdController = async (req, res) => {
     let status = 200;
@@ -40,11 +41,12 @@ const readAllTasksBySectionIdController = async (req, res) => {
                                                 }
                                             })
                                         });
+                                    const sortedTasks = sortTasksBySequence(tskData, sectionAlreadyExist.task_sequence);
                                     status = 200;
                                     response = {
                                         success: true,
                                         message: "Tasks found successfully.",
-                                        tasks: tskData
+                                        tasks: sortedTasks
                                     }
                                 } else {
                                     status = 200;

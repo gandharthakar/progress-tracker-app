@@ -99,26 +99,24 @@ const SingleWorkSpace = () => {
             console.log(workspace.sections);
             if (workspace.sections?.length) {
                 const secIDs = workspace.sections.map((sect) => sect.section_id);
-                console.log(secIDs);
-                // const trackIDs = workspace.sections.map((section) => {
-                //     if (section.tasks?.length) {
-                //         const ids = section.tasks.map((task) => {
-                //             return {
-                //                 task_id: task.task_id,
-                //                 section_id: section.section_id
-                //             }
-                //         });
-                //         return ids;
-                //     }
-                // }).flat(1);
-
-                const prepData = {
-                    workspace_id,
-                    user_id,
-                    // tracked_tasks_sections: trackIDs,
-                    completed_task: sel
+                const gtSec = workspace.sections.map((section) => {
+                    return {
+                        section_id: section.section_id,
+                        task_sequence: section.tasks?.map((task) => task.task_id)
+                    }
+                });
+                const guifls = localStorage.getItem("Auth");
+                if (guifls) {
+                    const prs_guifls = JSON.parse(guifls);
+                    const prepData = {
+                        section_sequence: secIDs,
+                        sections: gtSec,
+                        completed_task: sel,
+                        workspace_id,
+                        user_id: prs_guifls
+                    }
+                    console.log(prepData);
                 }
-                console.log(prepData);
             }
         }
     }
@@ -337,6 +335,8 @@ const SingleWorkSpace = () => {
                                                                                                     <SectionActions
                                                                                                         section_id={section.section_id}
                                                                                                         section_title={section.section_title}
+                                                                                                        sectionIndex={index}
+                                                                                                        workspace_id={workspace_id ?? ""}
                                                                                                     />
                                                                                                 </div>
                                                                                             </div>
