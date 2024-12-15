@@ -1,7 +1,7 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspaceModel = require('../../mongodb/models/workspacesModel');
 const SectionsModel = require("../../mongodb/models/sectionsModel");
-const { isValidObjectIdString } = require("../../libs/helperFunctions");
+const { isValidObjectIdString, insertValueAtIndex } = require("../../libs/helperFunctions");
 
 const updateSectionsController = async (req, res) => {
     let status = 200;
@@ -25,18 +25,42 @@ const updateSectionsController = async (req, res) => {
                         if (sectionIDCheck) {
                             const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
                             if (sectionAlreadyExist !== null) {
-                                if (sectionAlreadyExist.section_title == section_title) {
-                                    status = 200;
-                                    response = {
-                                        success: false,
-                                        message: "Section already exist."
+                                if (workspaceAlreadyExist.section_sequence[sectionIndex] === section_id) {
+                                    if (sectionAlreadyExist.section_title == section_title) {
+                                        status = 200;
+                                        response = {
+                                            success: false,
+                                            message: "Section already exist."
+                                        }
+                                    } else {
+                                        await SectionsModel.findByIdAndUpdate({ _id: section_id }, { section_title, section_value });
+                                        status = 200;
+                                        response = {
+                                            success: true,
+                                            message: "Section updated successfully."
+                                        }
                                     }
                                 } else {
-                                    await SectionsModel.findByIdAndUpdate({ _id: section_id }, { section_title, section_value });
-                                    status = 200;
-                                    response = {
-                                        success: true,
-                                        message: "Section updated successfully."
+                                    if (Number(sectionIndex) < 0 || Number(sectionIndex) > workspaceAlreadyExist.section_sequence.length) {
+                                        status = 200;
+                                        response = {
+                                            success: false,
+                                            message: "Wrong index number provided or index out of bounds."
+                                        }
+                                    } else {
+                                        // Remove from sequence first.
+                                        const fupd = workspaceAlreadyExist.section_sequence.filter((ids) => ids !== section_id);
+                                        // Make copy.
+                                        const cpy = [...fupd];
+                                        // Add item.
+                                        const upd = insertValueAtIndex(cpy, Number(sectionIndex), section_id);
+                                        await SectionsModel.findByIdAndUpdate({ _id: section_id }, { section_title, section_value });
+                                        await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: upd });
+                                        status = 200;
+                                        response = {
+                                            success: true,
+                                            message: "Section updated successfully."
+                                        }
                                     }
                                 }
                             } else {

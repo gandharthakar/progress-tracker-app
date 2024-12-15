@@ -1,6 +1,7 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspaceModel = require('../../mongodb/models/workspacesModel');
 const SectionsModel = require("../../mongodb/models/sectionsModel");
+const TasksModel = require("../../mongodb/models/tasksModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
 const deleteSectionsController = async (req, res) => {
@@ -10,8 +11,8 @@ const deleteSectionsController = async (req, res) => {
         message: ""
     }
     try {
-        const { section_id, workspace_id, user_id } = req.body;
-        if (section_id && workspace_id && user_id) {
+        const { section_id, sectionIndex, workspace_id, user_id } = req.body;
+        if (section_id && sectionIndex && workspace_id && user_id) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -24,13 +25,30 @@ const deleteSectionsController = async (req, res) => {
                         if (sectionIDCheck) {
                             const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
                             if (sectionAlreadyExist !== null) {
-                                await SectionsModel.findByIdAndDelete({ _id: section_id });
-                                const updSs = workspaceAlreadyExist.section_sequence.filter((ids) => ids !== section_id);
-                                await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs });
-                                status = 200;
-                                response = {
-                                    success: true,
-                                    message: "Section deleted successfully."
+                                if (workspaceAlreadyExist.section_sequence[sectionIndex] === section_id) {
+                                    await SectionsModel.findByIdAndDelete({ _id: section_id });
+                                    const updSs = workspaceAlreadyExist.section_sequence.filter((ids) => ids !== section_id);
+                                    await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs });
+                                    await TasksModel.deleteMany({ section_id })
+                                    status = 200;
+                                    response = {
+                                        success: true,
+                                        message: "Section deleted successfully."
+                                    }
+                                } else {
+                                    if (Number(sectionIndex) < 0 || Number(sectionIndex) > workspaceAlreadyExist.section_sequence.length) {
+                                        status = 200;
+                                        response = {
+                                            success: false,
+                                            message: "Wrong index number provided or index out of bounds."
+                                        }
+                                    } else {
+                                        status = 200;
+                                        response = {
+                                            success: false,
+                                            message: "Please save the changes before deleting section."
+                                        }
+                                    }
                                 }
                             } else {
                                 status = 200;

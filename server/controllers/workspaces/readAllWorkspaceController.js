@@ -24,6 +24,7 @@ const readAllWorkspacesController = async (req, res) => {
                                     workspace_id: doc._id,
                                     workspace_title: doc.workspace_title,
                                     workspace_description: doc.workspace_description,
+                                    section_sequence: doc.section_sequence,
                                     user_id: doc.user_id
                                 }
                             })

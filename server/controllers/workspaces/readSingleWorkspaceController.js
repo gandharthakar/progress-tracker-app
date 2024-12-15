@@ -28,6 +28,7 @@ const readSingleWorkspaceController = async (req, res) => {
                                     workspace_id: workspaceAlreadyExist._id,
                                     workspace_title: workspaceAlreadyExist.workspace_title,
                                     workspace_description: workspaceAlreadyExist.workspace_description,
+                                    section_sequence: workspaceAlreadyExist.section_sequence,
                                     user_id: userAlreadyExist._id
                                 }
                             }
