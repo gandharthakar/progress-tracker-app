@@ -20,7 +20,7 @@ export interface taskType {
 }
 
 export interface sectionType {
-    section_id: string,
+    section_id?: string,
     section_title: string,
     section_value: string,
     workspace_id?: string | undefined,
@@ -68,6 +68,36 @@ export interface rdAlWkspPayloadType {
 }
 
 export interface delWkspPayloadType {
+    workspace_id: string,
+    user_id: string
+}
+
+export interface delSecsPayloadType {
+    section_id: string,
+    workspace_id: string,
+    user_id: string
+}
+
+export interface rdMastWkspPayloadType {
+    workspace_id: string,
+    token: string
+}
+
+export interface rdMastWkspdataType {
+    success: boolean,
+    message: string,
+    master_workspace: workspaceApiType
+}
+
+export interface secUpdMsWk {
+    section_id: string,
+    task_sequence: string[] | undefined
+}
+
+export interface updMstWkspType {
+    completed_task: string[]
+    section_sequence: string[],
+    sections: secUpdMsWk[],
     workspace_id: string,
     user_id: string
 }

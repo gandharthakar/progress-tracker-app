@@ -49,6 +49,10 @@ const readAllLabelsController = require("../controllers/labels/readAllLabelsCont
 const updateLabelsController = require("../controllers/labels/updateLabelsController");
 const deleteLabelsController = require("../controllers/labels/deleteLabelsController");
 
+// Master Controllers.
+const readMasterWorkspaceController = require("../controllers/master/readMasterWorkspace");
+const updateMasterWorkspaceController = require("../controllers/master/updateMasterWorkspaceController");
+
 // Middlewares.
 const isGmailUserMiddleware = require("../middleware/isGmailUserMiddleware");
 const jwtUserIDBodyMiddleware = require("../middleware/jwtUserIDBodyMiddleware");
@@ -106,5 +110,9 @@ routes.get("/api/labels/read", jwtTokenQueryMiddleware, readSingleLabelControlle
 routes.get("/api/labels/read-all", jwtTokenQueryMiddleware, readAllLabelsController);
 routes.put("/api/labels/update", jwtUserIDBodyMiddleware, updateLabelsController);
 routes.delete("/api/labels/delete", jwtUserIDBodyMiddleware, deleteLabelsController);
+
+// Master Routes.
+routes.get("/api/master/workspace/read", jwtTokenQueryMiddleware, readMasterWorkspaceController);
+routes.put("/api/master/workspace/update", jwtUserIDBodyMiddleware, updateMasterWorkspaceController);
 
 module.exports = routes;

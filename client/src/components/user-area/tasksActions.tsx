@@ -4,7 +4,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { Check, ChevronsUpDown, EllipsisVertical, Loader2, Pencil, Trash2 } from "lucide-react";
+import { Check, ChevronsUpDown, EllipsisVertical, Loader2, Pencil, Trash2, TriangleAlert } from "lucide-react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -29,30 +29,29 @@ import {
 const TasksActions = (props: (taskType & sectionType & { sections: sectionApiType[], taskIndex: number, workspace_id: string })) => {
 
     const { task_id, task_title, taskIndex, section_title, section_id, section_value, sections, workspace_id } = props;
-    const isLoading = false;
+    const isPending = false;
+    const [isTaskDeleteModalShown, setIsDeleteTaskModalShown] = useState<boolean>(false);
     const [isTaskModalShown, setIsTaskModalShown] = useState<boolean>(false);
 
     const handleDeleteTask = () => {
-        const conf = confirm("Are you sure want to delete this task ?");
-        if (conf) {
-            const guifls = localStorage.getItem("Auth");
-            if (guifls) {
-                const prs_guifls = JSON.parse(guifls);
-                const prepData = {
-                    task_id,
-                    section_id,
-                    workspace_id,
-                    user_id: prs_guifls
-                }
-                console.log(prepData);
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const prepData = {
+                task_id,
+                section_id,
+                workspace_id,
+                user_id: prs_guifls
             }
-            // Swal.fire({
-            //     title: "Success!",
-            //     text: "... Successfully !",
-            //     icon: "success",
-            //     timer: 2000
-            // });
+            console.log(prepData);
+            setIsDeleteTaskModalShown(false);
         }
+        // Swal.fire({
+        //     title: "Success!",
+        //     text: "... Successfully !",
+        //     icon: "success",
+        //     timer: 2000
+        // });
     }
 
     // Update task Modal Form Handling.
@@ -148,6 +147,7 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
 
     return (
         <>
+
             <DropdownMenu>
                 <DropdownMenuTrigger asChild={true}>
                     <button
@@ -169,7 +169,7 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                     <DropdownMenuItem
                         title="Delete"
                         className="py-[10px] cursor-pointer text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
-                        onClick={handleDeleteTask}
+                        onClick={() => setIsDeleteTaskModalShown(true)}
                     >
                         <Trash2 size={16} />
                         Delete
@@ -270,21 +270,70 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isLoading ? "Creating ..." : "Create"}
+                                title={isPending ? "Updating ..." : "Update"}
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={isPending}
                             >
                                 {
-                                    isLoading ?
+                                    isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
-                                            Creating ...
+                                            Updating ...
                                         </>)
-                                        : ("Create")
+                                        : ("Update")
                                 }
                             </Button>
                         </div>
                     </form>
+                </div>
+            </SiteDialog>
+
+            {/* Delete Task Modal */}
+            <SiteDialog
+                openState={isTaskDeleteModalShown}
+                setOpenState={setIsDeleteTaskModalShown}
+                modal_heading="Delete Task"
+                hide_modal_on_backdrop_click={true}
+                roundedModal={true}
+                roundness="10px"
+                modal_max_width={450}
+            >
+                <div className="pt-[20px] pb-[10px] md:pt-[25px] md:pb-[15px] text-center">
+                    <TriangleAlert size={50} className="inline-block text-orange-400 w-[40px] h-[40px] md:w-[50px] md:h-[50px]" />
+                </div>
+                <div className="pb-[5px] text-center">
+                    <h1 className="inline-block font-poppins font-bold text-[18px] md:text-[20px] text-zinc-950 dark:text-zinc-100">
+                        Attention
+                    </h1>
+                </div>
+                <div className="pb-[15px] px-[20px] text-center max-w-[450px] mx-auto">
+                    <p className="inline-block font-roboto_mono text-[14px] md:text-[16px] text-zinc-600 dark:text-zinc-400">
+                        Are you sure want to delete this task ?
+                    </p>
+                </div>
+                <div className="flex justify-center items-center gap-x-[15px] gap-y-[10px] pb-[25px]">
+                    <Button
+                        title={isPending ? "wait ..." : "Yes"}
+                        type="button"
+                        disabled={isPending}
+                        onClick={handleDeleteTask}
+                    >
+                        {
+                            isPending ?
+                                (<>
+                                    <Loader2 className="animate-spin" />
+                                    wait ...
+                                </>)
+                                : ("Yes")
+                        }
+                    </Button>
+                    <Button
+                        title="No"
+                        variant={"secondary"}
+                        onClick={() => setIsDeleteTaskModalShown(false)}
+                    >
+                        No
+                    </Button>
                 </div>
             </SiteDialog>
         </>

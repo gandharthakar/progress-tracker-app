@@ -253,6 +253,7 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
                             id="cnw_name"
                             placeholder="eg. Full Stack Development"
                             {...register("workspaceName")}
+                            autoComplete="off"
                         />
                         {errors.workspaceName && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{errors.workspaceName?.message}</div>)}
                     </div>
@@ -268,6 +269,7 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
                             id="cnw_dscr"
                             value={workspaceDscr}
                             onChange={(e) => setWorkspaceDscr(e.target.value)}
+                            autoComplete="off"
                         />
                     </div>
                     <div className="text-right">

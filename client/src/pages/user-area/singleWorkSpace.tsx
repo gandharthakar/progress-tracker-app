@@ -12,18 +12,33 @@ import { pieChartDataType, workspaceApiType } from "@/types/playGroundTypes";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
-import { calculatePercentage, getDemoWorkpaceDataByID } from "@/utils/helperFunctions";
+import {
+    calculatePercentage,
+    // getDemoWorkpaceDataByID 
+} from "@/utils/helperFunctions";
 import { Button } from "@/components/ui/button";
 import { Check, GripVertical, Loader2 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import SectionActions from "@/components/user-area/sectionActions";
 import TasksActions from "@/components/user-area/tasksActions";
+import { useReadMasterWorkspace } from "@/tanstack-query/queries/queries";
+import Swal from "sweetalert2";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useUpdateMasterWorkspace } from "@/tanstack-query/mutations/master/masterMutations";
 
 const SingleWorkSpace = () => {
 
     console.log("Re-Render.");
     const isLoading = false;
     const { workspace_id, user_id } = useParams();
+
+    let tkn = null;
+    const lsi = localStorage.getItem("Auth");
+    if (lsi) {
+        tkn = JSON.parse(lsi);
+    }
+
+    const rAWD = useReadMasterWorkspace({ workspace_id: workspace_id ?? "", token: tkn });
 
     const [workspace, setWorkspace] = useState<workspaceApiType | null>(null);
     const [checked, setChecked] = useState<number>(0);
@@ -94,9 +109,53 @@ const SingleWorkSpace = () => {
         setWorkspace({ ...workspace, sections: newSections });
     }
 
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                })
+            }
+        }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const { mutate } = useUpdateMasterWorkspace({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        onErrorCB: (resp) => callbackOnErr(resp),
+        errorCB: (resp) => callbackErr(resp)
+    });
+
     const saveChangesButtonClick = () => {
         if (workspace) {
-            console.log(workspace.sections);
             if (workspace.sections?.length) {
                 const secIDs = workspace.sections.map((sect) => sect.section_id);
                 const gtSec = workspace.sections.map((section) => {
@@ -112,14 +171,33 @@ const SingleWorkSpace = () => {
                         section_sequence: secIDs,
                         sections: gtSec,
                         completed_task: sel,
-                        workspace_id,
+                        workspace_id: workspace_id ?? "",
                         user_id: prs_guifls
                     }
-                    console.log(prepData);
+                    mutate(prepData);
                 }
             }
         }
     }
+
+    useEffect(() => {
+        if (workspace_id) {
+            if (rAWD.data?.master_workspace) {
+                if (rAWD.data?.master_workspace.completed_task) {
+                    setSel(rAWD.data?.master_workspace.completed_task);
+                    setChecked(rAWD.data?.master_workspace.completed_task.length);
+                }
+                if (rAWD.data.master_workspace.sections) {
+                    const arrs = rAWD.data.master_workspace.sections.flatMap(section => section.tasks);
+                    if (rAWD.data.master_workspace.labels) {
+                        const lblnth = rAWD.data.master_workspace.labels;
+                        setUnchecked(arrs.length * lblnth.length);
+                    }
+                }
+                setWorkspace(rAWD.data?.master_workspace);
+            }
+        }
+    }, [rAWD.data]);
 
     useEffect(() => {
         if (workspace) {
@@ -134,12 +212,6 @@ const SingleWorkSpace = () => {
         }
         //eslint-disable-next-line
     }, [sel, workspace, unchecked]);
-
-    useEffect(() => {
-        if (workspace_id) {
-            setWorkspace(getDemoWorkpaceDataByID(workspace_id));
-        }
-    }, []);
 
     useEffect(() => {
         const lsitm = localStorage.getItem('theme');
@@ -160,8 +232,8 @@ const SingleWorkSpace = () => {
                 }
             }
         }
-        setChecked(0);
-        setUnchecked(1 * 3);
+        // setChecked(0);
+        // setUnchecked(1 * 3);
         setFin(Number(calculatePercentage(checked, unchecked).toFixed(2)));
         setFin2(100 - fin);
         setPieChartData([
@@ -169,10 +241,11 @@ const SingleWorkSpace = () => {
             { id: 1, value: fin2, color: pieChartColors[1], label: "Pending" },
         ]);
         //eslint-disable-next-line
-    }, [fin, fin2]);
+    }, [fin, fin2, rAWD.data]);
 
     return (
         <>
+
             <div className="py-[25px] md:py-[50px] bg-theme-grey-1 dark:bg-zinc-900">
                 <div className="site-container">
                     <div className="flex items-center justify-between flex-wrap gap-y-[10px] gap-x-[20px]">

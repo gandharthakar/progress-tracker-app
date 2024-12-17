@@ -55,21 +55,25 @@ const AddNewFuncs = () => {
     });
 
     const HFS_addSection: SubmitHandler<sectionFormVS> = (formData) => {
-        const sendData = {
-            section_name: formData.sectionName,
-            section_value: convertToSlug(formData.sectionName),
-            workspace_id,
-            user_id
+        const guifls = localStorage.getItem("Auth");
+        if (guifls) {
+            const prs_guifls = JSON.parse(guifls);
+            const sendData = {
+                section_name: formData.sectionName,
+                section_value: convertToSlug(formData.sectionName),
+                workspace_id,
+                user_id: prs_guifls
+            }
+            console.log(sendData);
         }
-        console.log(sendData);
-        rhfAddSection.reset();
-        setIsSectionModalShown(false);
-        Swal.fire({
-            title: "Success!",
-            text: "... Successfully !",
-            icon: "success",
-            timer: 2000
-        });
+        // rhfAddSection.reset();
+        // setIsSectionModalShown(false);
+        // Swal.fire({
+        //     title: "Success!",
+        //     text: "... Successfully !",
+        //     icon: "success",
+        //     timer: 2000
+        // });
     }
 
     // Add New Task Modal Form Handling.
@@ -126,24 +130,28 @@ const AddNewFuncs = () => {
         }
 
         if (isValidForm) {
-            const sendData = {
-                task_title: taskTitle,
-                workspace_id,
-                section_id: sectionListID,
-                user_id
+            const guifls = localStorage.getItem("Auth");
+            if (guifls) {
+                const prs_guifls = JSON.parse(guifls);
+                const sendData = {
+                    task_title: taskTitle,
+                    section_id: sectionListID,
+                    workspace_id,
+                    user_id: prs_guifls
+                }
+                console.log(sendData);
             }
-            console.log(sendData);
-            setTaskTitle("");
-            setSectionListValue("");
-            setSectionListBL("");
-            setSectionListID("");
-            setIsTaskModalShown(false);
-            Swal.fire({
-                title: "Success!",
-                text: "... Successfully !",
-                icon: "success",
-                timer: 2000
-            });
+            // setTaskTitle("");
+            // setSectionListValue("");
+            // setSectionListBL("");
+            // setSectionListID("");
+            // setIsTaskModalShown(false);
+            // Swal.fire({
+            //     title: "Success!",
+            //     text: "... Successfully !",
+            //     icon: "success",
+            //     timer: 2000
+            // });
         }
     }
 
