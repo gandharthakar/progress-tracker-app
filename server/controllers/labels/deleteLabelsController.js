@@ -26,7 +26,8 @@ const deleteLabelsController = async (req, res) => {
                             if (labelAlreadyExist !== null) {
                                 await LabelsModel.findByIdAndDelete({ _id: label_id });
                                 const updLS = workspaceAlreadyExist.label_sequence.filter((ids) => ids !== label_id);
-                                await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { label_sequence: updLS });
+                                const filtlbl = workspaceAlreadyExist.completed_task.filter((wksp) => !wksp.includes(label_id));
+                                await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { label_sequence: updLS, completed_task: filtlbl });
                                 status = 200;
                                 response = {
                                     success: true,

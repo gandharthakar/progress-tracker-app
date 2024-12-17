@@ -11,8 +11,8 @@ const deleteSectionsController = async (req, res) => {
         message: ""
     }
     try {
-        const { section_id, sectionIndex, workspace_id, user_id } = req.body;
-        if (section_id && sectionIndex && workspace_id && user_id) {
+        const { section_id, sectionIndex, selected_tasks, workspace_id, user_id } = req.body;
+        if (section_id && sectionIndex && selected_tasks && workspace_id && user_id) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -28,8 +28,12 @@ const deleteSectionsController = async (req, res) => {
                                 if (workspaceAlreadyExist.section_sequence[sectionIndex] === section_id) {
                                     await SectionsModel.findByIdAndDelete({ _id: section_id });
                                     const updSs = workspaceAlreadyExist.section_sequence.filter((ids) => ids !== section_id);
-                                    await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs });
-                                    await TasksModel.deleteMany({ section_id })
+                                    const filtlbl = workspaceAlreadyExist.completed_task.filter((taskId) => {
+                                        const [idPart] = taskId.split('_');
+                                        return !selected_tasks.includes(idPart);
+                                    });
+                                    await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs, completed_task: filtlbl });
+                                    await TasksModel.deleteMany({ section_id });
                                     status = 200;
                                     response = {
                                         success: true,

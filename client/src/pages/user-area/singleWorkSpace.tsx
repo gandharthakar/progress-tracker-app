@@ -14,6 +14,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import {
     calculatePercentage,
+    getSelectedTaskIDs,
     // getDemoWorkpaceDataByID 
 } from "@/utils/helperFunctions";
 import { Button } from "@/components/ui/button";
@@ -241,7 +242,7 @@ const SingleWorkSpace = () => {
             { id: 1, value: fin2, color: pieChartColors[1], label: "Pending" },
         ]);
         //eslint-disable-next-line
-    }, [fin, fin2, rAWD.data]);
+    }, [fin, fin2]);
 
     return (
         <>
@@ -403,13 +404,14 @@ const SingleWorkSpace = () => {
                                                                                                 <div className="h-[16px] pt-[2px] md:pt-[4px]" {...providedDraggable.dragHandleProps}>
                                                                                                     <GripVertical size={16} className="text-zinc-400" />
                                                                                                 </div>
-                                                                                                <div>{index} {section.section_title}</div>
+                                                                                                <div>{section.section_title}</div>
                                                                                                 <div className="ml-auto h-[15px] pt-[2px]">
                                                                                                     <SectionActions
                                                                                                         section_id={section.section_id}
                                                                                                         section_title={section.section_title}
                                                                                                         sectionIndex={index}
                                                                                                         workspace_id={workspace_id ?? ""}
+                                                                                                        selected_tasks={getSelectedTaskIDs(sel, section.tasks ? section.tasks : [])}
                                                                                                     />
                                                                                                 </div>
                                                                                             </div>
@@ -432,7 +434,7 @@ const SingleWorkSpace = () => {
                                                                                                                                             <div className="h-[16px] pt-[1px] md:pt-[2px]" {...providedTaskDraggable.dragHandleProps}>
                                                                                                                                                 <GripVertical size={16} className="text-zinc-400" />
                                                                                                                                             </div>
-                                                                                                                                            <div>{taskIndex} {task.task_title}</div>
+                                                                                                                                            <div>{task.task_title}</div>
                                                                                                                                             <div className="ml-auto h-[15px] pt-[2px]">
                                                                                                                                                 <TasksActions
                                                                                                                                                     task_id={task.task_id}

@@ -14,10 +14,11 @@ import { convertToSlug } from "@/utils/helperFunctions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SiteDialog from "@/components/SiteDialog";
+import { sectionActionType } from "@/types/componentsTypes";
 
-const SectionActions = (props: { section_id: string, section_title: string, sectionIndex: number, workspace_id: string }) => {
+const SectionActions = (props: sectionActionType) => {
 
-    const { section_id, section_title, sectionIndex, workspace_id } = props;
+    const { section_id, section_title, sectionIndex, workspace_id, selected_tasks } = props;
     const isLoading = false;
 
     const [isSectionModalShown, setIsSectionModalShown] = useState<boolean>(false);
@@ -30,7 +31,8 @@ const SectionActions = (props: { section_id: string, section_title: string, sect
             const sendData = {
                 section_id,
                 workspace_id,
-                user_id: prs_guifls
+                user_id: prs_guifls,
+                selected_tasks
             }
             console.log(sendData);
             // setIsDeleteModalShown(false);

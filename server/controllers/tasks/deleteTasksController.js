@@ -34,6 +34,8 @@ const deleteTasksController = async (req, res) => {
                                             await TasksModel.findByIdAndDelete({ _id: task_id });
                                             const filr = sectionAlreadyExist.task_sequence.filter((ids) => ids !== task_id);
                                             await SectionsModel.findByIdAndUpdate({ _id: section_id }, { task_sequence: filr })
+                                            const filtlbl = workspaceAlreadyExist.completed_task.filter((wksp) => !wksp.includes(task_id));
+                                            await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { completed_task: filtlbl });
                                             status = 200;
                                             response = {
                                                 success: true,

@@ -1,4 +1,4 @@
-import { labelType } from "@/types/playGroundTypes";
+import { labelType, taskType } from "@/types/playGroundTypes";
 import demo_workspaces, { demo_sections, demo_tasks, demo_labels } from "@/utils/demoData";
 
 // Encode string to slug
@@ -53,4 +53,14 @@ export const getDemoWorkpaceDataByID = (wid: string) => {
         labels: getLbs
     }
     return prepData;
+}
+
+export const getSelectedTaskIDs = (selected_tasks: string[], tasks: taskType[]) => {
+    // Extract task IDs from the sel array
+    const taskIds = selected_tasks.map(item => item.split('_')[0]);
+
+    // Filter tasks based on the extracted task IDs
+    const filteredTasks = tasks.filter(task => taskIds.includes(task.task_id));
+
+    return filteredTasks.map((task) => task.task_id);
 }

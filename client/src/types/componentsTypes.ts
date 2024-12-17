@@ -24,3 +24,11 @@ export interface labelActionsType {
     label_title: string,
     workspace_id: string,
 }
+
+export interface sectionActionType {
+    section_id: string,
+    section_title: string,
+    sectionIndex: number,
+    workspace_id: string,
+    selected_tasks?: string[]
+}

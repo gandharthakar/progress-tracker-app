@@ -6,7 +6,6 @@ import ThemeSwitcher from "@/components/themeSwitcher";
 import SiteLogo from "@/components/siteLogo";
 import { NavLink } from "react-router-dom";
 
-
 const Footer = () => {
     return (
         <>
