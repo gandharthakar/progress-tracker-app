@@ -3,6 +3,7 @@ import { rdMastWkspPayloadType } from "@/types/playGroundTypes";
 import { useQuery } from "@tanstack/react-query"
 import { readMasterWorkspace } from "../api-functions/master/masterWorkspaceAPIFunctions";
 import { readSections } from "../api-functions/sections/sectionsApiFunctions";
+import { readLabels } from "../api-functions/labels/labelsApiFunctions";
 
 const defConfig = {
     refetchOnWindowFocus: false,
@@ -30,6 +31,14 @@ export const useReadSections = (data: rdMastWkspPayloadType) => {
     return useQuery({
         queryKey: ["readSections"],
         queryFn: () => readSections(data),
+        ...defConfig
+    });
+}
+
+export const useReadLables = (data: rdMastWkspPayloadType) => {
+    return useQuery({
+        queryKey: ["readLabels"],
+        queryFn: () => readLabels(data),
         ...defConfig
     });
 }

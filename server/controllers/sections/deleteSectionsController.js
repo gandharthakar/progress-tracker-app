@@ -1,5 +1,5 @@
 const UsersModel = require("../../mongodb/models/usersModel");
-const WorkspaceModel = require('../../mongodb/models/workspacesModel');
+const WorkspacesModel = require('../../mongodb/models/workspacesModel');
 const SectionsModel = require("../../mongodb/models/sectionsModel");
 const TasksModel = require("../../mongodb/models/tasksModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
@@ -19,20 +19,20 @@ const deleteSectionsController = async (req, res) => {
             const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
                 if (workspaceIDCheck) {
-                    const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
+                    const workspaceAlreadyExist = await WorkspacesModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
                         const sectionIDCheck = isValidObjectIdString(section_id);
                         if (sectionIDCheck) {
                             const sectionAlreadyExist = await SectionsModel.findOne({ _id: section_id });
                             if (sectionAlreadyExist !== null) {
-                                if (workspaceAlreadyExist.section_sequence[sectionIndex] === section_id) {
+                                if (workspaceAlreadyExist.section_sequence[Number(sectionIndex)] === section_id) {
                                     await SectionsModel.findByIdAndDelete({ _id: section_id });
                                     const updSs = workspaceAlreadyExist.section_sequence.filter((ids) => ids !== section_id);
                                     const filtlbl = workspaceAlreadyExist.completed_task.filter((taskId) => {
                                         const [idPart] = taskId.split('_');
                                         return !selected_tasks.includes(idPart);
                                     });
-                                    await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs, completed_task: filtlbl });
+                                    await WorkspacesModel.findByIdAndUpdate({ _id: workspace_id }, { section_sequence: updSs, completed_task: filtlbl });
                                     await TasksModel.deleteMany({ section_id });
                                     status = 200;
                                     response = {

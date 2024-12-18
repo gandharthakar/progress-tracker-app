@@ -42,10 +42,10 @@ import { useReadSections } from "@/tanstack-query/queries/queries";
 import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 import { useCreateSection } from "@/tanstack-query/mutations/sections/sectionsMutations";
 import { useCreateTask } from "@/tanstack-query/mutations/tasks/tasksMutations";
+import { useCreateLabels } from "@/tanstack-query/mutations/labels/labelsMutations";
 
 const AddNewFuncs = () => {
 
-    const isPending = false;
     const { workspace_id, user_id } = useParams();
 
     // Add New Modals States.
@@ -278,7 +278,7 @@ const AddNewFuncs = () => {
             });
             setSectionList(dsdata);
         }
-        //eslint-disable-next-line
+
     }, [rdSecs.data, isTaskModalShown]);
 
     // Add New Label Modal Form Handling.
@@ -286,14 +286,62 @@ const AddNewFuncs = () => {
         resolver: zodResolver(labelFormValidationSchema),
     });
 
+    const callbackOnSuc_lbl = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        rhfAddLabel.reset();
+                        setIsLabelModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    rhfAddLabel.reset();
+                    setIsLabelModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr_lbl = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr_lbl = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const crtLabels = useCreateLabels({
+        onSuccessCB: (resp) => callbackOnSuc_lbl(resp),
+        onErrorCB: (resp) => callbackOnErr_lbl(resp),
+        errorCB: (resp) => callbackErr_lbl(resp)
+    });
+
     const HFS_addLabel: SubmitHandler<labelFormVS> = (formData) => {
-        // setIsLabelModalShown(false);
-        // Swal.fire({
-        //     title: "Success!",
-        //     text: "... Successfully !",
-        //     icon: "success",
-        //     timer: 2000
-        // });
         const guifls = localStorage.getItem("Auth");
         if (guifls) {
             const prs_guifls = JSON.parse(guifls);
@@ -303,7 +351,7 @@ const AddNewFuncs = () => {
                 workspace_id,
                 user_id: prs_guifls
             }
-            console.log(sendData);
+            crtLabels.mutate(sendData);
         }
     }
 
@@ -550,12 +598,12 @@ const AddNewFuncs = () => {
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isPending ? "Creating ..." : "Create"}
+                                title={crtLabels.isPending ? "Creating ..." : "Create"}
                                 type="submit"
-                                disabled={isPending}
+                                disabled={crtLabels.isPending}
                             >
                                 {
-                                    isPending ?
+                                    crtLabels.isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Creating ...

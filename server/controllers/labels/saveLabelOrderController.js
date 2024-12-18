@@ -1,9 +1,8 @@
 const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspacesModel = require('../../mongodb/models/workspacesModel');
-const TasksModel = require("../../mongodb/models/tasksModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
-const readAllTasksController = async (req, res) => {
+const saveLabelOrderController = async (req, res) => {
     let status = 200;
     let response = {
         success: false,
@@ -11,8 +10,8 @@ const readAllTasksController = async (req, res) => {
     }
     try {
 
-        const { workspace_id, token } = req.query;
-        if (workspace_id && token) {
+        const { label_sequence, workspace_id, user_id } = req.body;
+        if (label_sequence && workspace_id && user_id) {
             const workspaceIDCheck = isValidObjectIdString(workspace_id);
             const verTok = req.user.user_id;
             // Check user already exist.
@@ -21,34 +20,11 @@ const readAllTasksController = async (req, res) => {
                 if (workspaceIDCheck) {
                     const workspaceAlreadyExist = await WorkspacesModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
-                        const tasksAlreadyExist = await TasksModel.find({ workspace_id });
-                        if (tasksAlreadyExist.length > 0) {
-                            const tskData = await TasksModel.find({ workspace_id })
-                                .exec()
-                                .then(docs => {
-                                    return docs.map((doc) => {
-                                        return {
-                                            task_id: doc._id,
-                                            task_title: doc.task_title,
-                                            section_id: doc.section_id,
-                                            workspace_id: doc.workspace_id,
-                                            user_id: doc.user_id
-                                        }
-                                    })
-                                });
-                            status = 200;
-                            response = {
-                                success: true,
-                                message: "Tasks found successfully.",
-                                tasks: tskData
-                            }
-                        } else {
-                            status = 200;
-                            response = {
-                                success: false,
-                                message: "No tasks found.",
-                                tasks: []
-                            }
+                        await WorkspacesModel.findByIdAndUpdate({ _id: workspace_id }, { label_sequence });
+                        status = 200;
+                        response = {
+                            success: true,
+                            message: "Changes saved successfully."
                         }
                     } else {
                         status = 200;
@@ -89,4 +65,4 @@ const readAllTasksController = async (req, res) => {
     }
 }
 
-module.exports = readAllTasksController;
+module.exports = saveLabelOrderController;

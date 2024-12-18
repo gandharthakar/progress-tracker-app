@@ -22,6 +22,7 @@ export interface SiteWorkspaceCompProps {
 export interface labelActionsType {
     label_id: string,
     label_title: string,
+    labelIndex: string | number,
     workspace_id: string,
 }
 

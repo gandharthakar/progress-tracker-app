@@ -171,6 +171,7 @@ const SectionActions = (props: sectionActionType) => {
 
     useEffect(() => {
         rhfUpdateSection.setValue("sectionName", section_title);
+        //eslint-disable-next-line
     }, [section_title, setIsSectionModalShown]);
 
     return (

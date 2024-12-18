@@ -1,5 +1,5 @@
 const UsersModel = require("../../mongodb/models/usersModel");
-const WorkspaceModel = require('../../mongodb/models/workspacesModel');
+const WorkspacesModel = require('../../mongodb/models/workspacesModel');
 const LabelsModel = require("../../mongodb/models/labelsModel");
 const { isValidObjectIdString, sortLabelsBySequence } = require("../../libs/helperFunctions");
 
@@ -18,7 +18,7 @@ const readAllLabelsController = async (req, res) => {
             const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
                 if (workspaceIDCheck) {
-                    const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
+                    const workspaceAlreadyExist = await WorkspacesModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
                         const labelsAlreadyExist = await LabelsModel.find({ workspace_id });
                         if (labelsAlreadyExist.length > 0) {

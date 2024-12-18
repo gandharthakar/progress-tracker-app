@@ -1,5 +1,5 @@
 const UsersModel = require("../../mongodb/models/usersModel");
-const WorkspaceModel = require('../../mongodb/models/workspacesModel');
+const WorkspacesModel = require('../../mongodb/models/workspacesModel');
 const TasksModel = require("../../mongodb/models/tasksModel");
 const SectionsModel = require("../../mongodb/models/sectionsModel");
 const { isValidObjectIdString, insertValueAtIndex } = require("../../libs/helperFunctions");
@@ -20,7 +20,7 @@ const deleteTasksController = async (req, res) => {
             const userAlreadyExist = await UsersModel.findOne({ _id: verTok });
             if (userAlreadyExist !== null) {
                 if (workspaceIDCheck) {
-                    const workspaceAlreadyExist = await WorkspaceModel.findOne({ _id: workspace_id });
+                    const workspaceAlreadyExist = await WorkspacesModel.findOne({ _id: workspace_id });
                     if (workspaceAlreadyExist !== null) {
                         const sectionIDCheck = isValidObjectIdString(section_id);
                         if (sectionIDCheck) {
@@ -35,7 +35,7 @@ const deleteTasksController = async (req, res) => {
                                             const filr = sectionAlreadyExist.task_sequence.filter((ids) => ids !== task_id);
                                             await SectionsModel.findByIdAndUpdate({ _id: section_id }, { task_sequence: filr })
                                             const filtlbl = workspaceAlreadyExist.completed_task.filter((wksp) => !wksp.includes(task_id));
-                                            await WorkspaceModel.findByIdAndUpdate({ _id: workspace_id }, { completed_task: filtlbl });
+                                            await WorkspacesModel.findByIdAndUpdate({ _id: workspace_id }, { completed_task: filtlbl });
                                             status = 200;
                                             response = {
                                                 success: true,

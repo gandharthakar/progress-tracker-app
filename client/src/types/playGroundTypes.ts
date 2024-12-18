@@ -39,9 +39,10 @@ export interface sectionApiType {
 }
 
 export interface labelType {
-    label_id: string,
+    label_id?: string,
     label_title: string,
     label_value: string,
+    labelIndex?: string | number,
     workspace_id?: string | undefined,
     user_id?: string | undefined
 }
@@ -120,5 +121,24 @@ export interface delTasksPayloadType {
     task_id: string,
     section_id: string,
     workspace_id: string,
+    user_id: string
+}
+
+export interface rdLblsDataType {
+    success: boolean,
+    message: string,
+    labels: labelType[]
+}
+
+export interface updLblOrdPayloadType {
+    workspace_id: string,
+    user_id: string,
+    label_sequence: (string | undefined)[] | undefined;
+}
+
+export interface delLblsPayloadType {
+    label_id: string,
+    workspace_id: string,
+    labelIndex: string | number,
     user_id: string
 }

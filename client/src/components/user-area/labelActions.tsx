@@ -5,23 +5,78 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical, Loader2, Pencil, Trash2, TriangleAlert } from "lucide-react";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 import { labelFormValidationSchema, labelFormVS } from "@/zod/schemas/userPlayGround";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { convertToSlug } from "@/utils/helperFunctions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SiteDialog from "@/components/SiteDialog";
 import { labelActionsType } from "@/types/componentsTypes";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useUpdateLabels, useDeleteLabels } from "@/tanstack-query/mutations/labels/labelsMutations";
 
 const LabelActions = (props: labelActionsType) => {
 
-    const { label_id, label_title, workspace_id } = props;
-    const isPending = false;
+    const { label_id, label_title, labelIndex, workspace_id } = props;
+
     const [isLabelDeleteModalShown, setIsLabelDeleteModalShown] = useState<boolean>(false);
     const [isLabelModalShown, setIsLabelModalShown] = useState<boolean>(false);
+
+    const callbackOnSuc_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        setIsLabelDeleteModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    setIsLabelDeleteModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const delLabels = useDeleteLabels({
+        onSuccessCB: (resp) => callbackOnSuc_del(resp),
+        onErrorCB: (resp) => callbackOnErr_del(resp),
+        errorCB: (resp) => callbackErr_del(resp)
+    });
 
     const handleDeleteLable = () => {
         const guifls = localStorage.getItem("Auth");
@@ -29,20 +84,72 @@ const LabelActions = (props: labelActionsType) => {
             const prs_guifls = JSON.parse(guifls);
             const sendData = {
                 label_id,
+                labelIndex: labelIndex.toString(),
                 workspace_id,
                 user_id: prs_guifls
             }
-            console.log(sendData);
-            setIsLabelDeleteModalShown(false);
+            delLabels.mutate(sendData);
         }
     }
 
     // Update Label Modal Form Handling.
     const rhfUpdateLabel = useForm<labelFormVS>({
         resolver: zodResolver(labelFormValidationSchema),
-        defaultValues: {
-            labelTitle: label_title
+    });
+
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        rhfUpdateLabel.reset();
+                        setIsLabelModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    rhfUpdateLabel.reset();
+                    setIsLabelModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
         }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const updLables = useUpdateLabels({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        onErrorCB: (resp) => callbackOnErr(resp),
+        errorCB: (resp) => callbackErr(resp)
     });
 
     const HFS_UpdateLabel: SubmitHandler<labelFormVS> = (formData) => {
@@ -53,12 +160,18 @@ const LabelActions = (props: labelActionsType) => {
                 label_id,
                 label_title: formData.labelTitle,
                 label_value: convertToSlug(formData.labelTitle),
+                labelIndex: labelIndex.toString(),
                 workspace_id,
                 user_id: prs_guifls
             }
-            console.log(sendData);
+            updLables.mutate(sendData);
         }
     }
+
+    useEffect(() => {
+        rhfUpdateLabel.setValue("labelTitle", label_title);
+        //eslint-disable-next-line
+    }, [isLabelModalShown]);
 
     return (
         <>
@@ -121,17 +234,17 @@ const LabelActions = (props: labelActionsType) => {
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isPending ? "Creating ..." : "Create"}
+                                title={updLables.isPending ? "Updating ..." : "Update"}
                                 type="submit"
-                                disabled={isPending}
+                                disabled={updLables.isPending}
                             >
                                 {
-                                    isPending ?
+                                    updLables.isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
-                                            Creating ...
+                                            Updating ...
                                         </>)
-                                        : ("Create")
+                                        : ("Update")
                                 }
                             </Button>
                         </div>
@@ -164,13 +277,13 @@ const LabelActions = (props: labelActionsType) => {
                 </div>
                 <div className="flex justify-center items-center gap-x-[15px] gap-y-[10px] pb-[25px]">
                     <Button
-                        title={isPending ? "wait ..." : "Yes"}
+                        title={delLabels.isPending ? "wait ..." : "Yes"}
                         type="button"
-                        disabled={isPending}
+                        disabled={delLabels.isPending}
                         onClick={handleDeleteLable}
                     >
                         {
-                            isPending ?
+                            delLabels.isPending ?
                                 (<>
                                     <Loader2 className="animate-spin" />
                                     wait ...

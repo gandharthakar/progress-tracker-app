@@ -48,6 +48,7 @@ const readSingleLabelController = require("../controllers/labels/readSingleLabel
 const readAllLabelsController = require("../controllers/labels/readAllLabelsController");
 const updateLabelsController = require("../controllers/labels/updateLabelsController");
 const deleteLabelsController = require("../controllers/labels/deleteLabelsController");
+const saveLabelOrderController = require("../controllers/labels/saveLabelOrderController");
 
 // Master Controllers.
 const readMasterWorkspaceController = require("../controllers/master/readMasterWorkspace");
@@ -110,6 +111,7 @@ routes.get("/api/labels/read", jwtTokenQueryMiddleware, readSingleLabelControlle
 routes.get("/api/labels/read-all", jwtTokenQueryMiddleware, readAllLabelsController);
 routes.put("/api/labels/update", jwtUserIDBodyMiddleware, updateLabelsController);
 routes.delete("/api/labels/delete", jwtUserIDBodyMiddleware, deleteLabelsController);
+routes.put("/api/labels/save-order", jwtUserIDBodyMiddleware, saveLabelOrderController);
 
 // Master Routes.
 routes.get("/api/master/workspace/read", jwtTokenQueryMiddleware, readMasterWorkspaceController);
