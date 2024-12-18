@@ -198,6 +198,7 @@ const SingleWorkSpace = () => {
                 setWorkspace(rAWD.data?.master_workspace);
             }
         }
+        //eslint-disable-next-line
     }, [rAWD.data]);
 
     useEffect(() => {
@@ -292,6 +293,7 @@ const SingleWorkSpace = () => {
                                     Progress
                                 </h1>
                             </div>
+                            <div className="w-full border-t border-zinc-300 dark:border-zinc-800"></div>
                             <div className="p-[20px] text-center">
                                 <div className="inline-block">
                                     <PieChart
@@ -384,6 +386,7 @@ const SingleWorkSpace = () => {
                                     Workspace
                                 </h1>
                             </div>
+                            <div className="w-full border-t border-zinc-300 dark:border-zinc-800"></div>
                             <div className="p-[20px]">
                                 <DragDropContext onDragEnd={onDragEnd}>
                                     <Droppable droppableId="sections" type="GROUP">
@@ -480,7 +483,7 @@ const SingleWorkSpace = () => {
                                                                                                                                                     </div>
                                                                                                                                                 )
                                                                                                                                                 :
-                                                                                                                                                (<div className="w-full px-[0px] py-[0px] font-poppins text-[14px] text-zinc-400 dark:text-zinc-600">No Labels Found.</div>)
+                                                                                                                                                (<div className="w-full px-[10px] py-[0px] font-poppins text-[14px] text-zinc-400 dark:text-zinc-500">No Labels Found.</div>)
                                                                                                                                         }
                                                                                                                                         <div className="pt-[10px] pb-[15px] px-[10px]">
                                                                                                                                             <div className="border border-zinc-800 dark:border-zinc-300 border-solid w-full h-[5px] mt-[5px]">
@@ -488,7 +491,7 @@ const SingleWorkSpace = () => {
                                                                                                                                                     className="bg-zinc-800 dark:bg-zinc-300 h-[4px] w-0"
                                                                                                                                                     style={{
                                                                                                                                                         width: `${calculatePercentage(
-                                                                                                                                                            sel.filter((item) => item.includes(task.task_id)).length,
+                                                                                                                                                            sel.filter((item) => item.includes(task.task_id ?? "")).length,
                                                                                                                                                             workspace.labels ? workspace.labels.length : 0
                                                                                                                                                         )}%`,
                                                                                                                                                     }}
@@ -502,7 +505,7 @@ const SingleWorkSpace = () => {
                                                                                                                     </>
                                                                                                                 )
                                                                                                                 :
-                                                                                                                (<div className="w-full px-[20px] py-[10px] font-poppins text-[14px] text-zinc-400 dark:text-zinc-600">No Tasks Found.</div>)
+                                                                                                                (<div className="w-full px-[20px] py-[10px] font-poppins text-[14px] text-zinc-400 dark:text-zinc-500">No Tasks Found.</div>)
                                                                                                         }
                                                                                                         {providedDroppable.placeholder}
                                                                                                     </div>
@@ -515,7 +518,7 @@ const SingleWorkSpace = () => {
                                                                         </>
                                                                     )
                                                                     :
-                                                                    (<div className="w-full px-[0px] py-[0px] font-poppins text-[14px] text-zinc-400 dark:text-zinc-600">No Sections Found.</div>)
+                                                                    (<div className="w-full px-[0px] py-[0px] font-poppins text-[14px] text-zinc-400 dark:text-zinc-500">No Sections Found.</div>)
                                                             }
                                                         </>
                                                     )

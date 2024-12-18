@@ -2,6 +2,7 @@ import { readAllWorkspaces } from "@/tanstack-query/api-functions/workspace/work
 import { rdMastWkspPayloadType } from "@/types/playGroundTypes";
 import { useQuery } from "@tanstack/react-query"
 import { readMasterWorkspace } from "../api-functions/master/masterWorkspaceAPIFunctions";
+import { readSections } from "../api-functions/sections/sectionsApiFunctions";
 
 const defConfig = {
     refetchOnWindowFocus: false,
@@ -21,6 +22,14 @@ export const useReadMasterWorkspace = (data: rdMastWkspPayloadType) => {
     return useQuery({
         queryKey: ["readMasterWorkspace"],
         queryFn: () => readMasterWorkspace(data),
+        ...defConfig
+    });
+}
+
+export const useReadSections = (data: rdMastWkspPayloadType) => {
+    return useQuery({
+        queryKey: ["readSections"],
+        queryFn: () => readSections(data),
         ...defConfig
     });
 }

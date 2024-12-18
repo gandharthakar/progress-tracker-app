@@ -25,45 +25,93 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useDeleteTask, useUpdateTask } from "@/tanstack-query/mutations/tasks/tasksMutations";
 
 const TasksActions = (props: (taskType & sectionType & { sections: sectionApiType[], taskIndex: number, workspace_id: string })) => {
 
     const { task_id, task_title, taskIndex, section_title, section_id, section_value, sections, workspace_id } = props;
-    const isPending = false;
+
     const [isTaskDeleteModalShown, setIsDeleteTaskModalShown] = useState<boolean>(false);
     const [isTaskModalShown, setIsTaskModalShown] = useState<boolean>(false);
+
+    const callbackOnSuc_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        setIsDeleteTaskModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    setIsDeleteTaskModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const delTasks = useDeleteTask({
+        onSuccessCB: (resp) => callbackOnSuc_del(resp),
+        onErrorCB: (resp) => callbackOnErr_del(resp),
+        errorCB: (resp) => callbackErr_del(resp)
+    });
 
     const handleDeleteTask = () => {
         const guifls = localStorage.getItem("Auth");
         if (guifls) {
             const prs_guifls = JSON.parse(guifls);
             const prepData = {
-                task_id,
+                task_id: task_id ?? "",
                 section_id,
                 workspace_id,
                 user_id: prs_guifls
             }
-            console.log(prepData);
-            setIsDeleteTaskModalShown(false);
+            delTasks.mutate(prepData);
         }
-        // Swal.fire({
-        //     title: "Success!",
-        //     text: "... Successfully !",
-        //     icon: "success",
-        //     timer: 2000
-        // });
     }
 
     // Update task Modal Form Handling.
-    const [taskTitle, setTaskTitle] = useState<string>(task_title);
+    const [taskTitle, setTaskTitle] = useState<string>("");
     const [taskTitleInputError, setTaskTitleInputError] = useState<string>("");
     const [selSectionError, setSelSectionError] = useState<string>("");
 
     const [sectionList, setSectionList] = useState<taskComboboxType[]>([]);
     const [sectionListOpen, setSectionListOpen] = useState<boolean>(false);
-    const [sectionListValue, setSectionListValue] = useState<string>(section_value);
-    const [sectionListBL, setSectionListBL] = useState<string>(section_title);
-    const [sectionListID, setSectionListID] = useState<string>(section_id);
+    const [sectionListValue, setSectionListValue] = useState<string>("");
+    const [sectionListBL, setSectionListBL] = useState<string>("");
+    const [sectionListID, setSectionListID] = useState<string>("");
 
     const handleTaskInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
@@ -78,6 +126,67 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
         }
         setTaskTitle(value);
     }
+
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        setTaskTitle("");
+                        setSectionListValue("");
+                        setSectionListBL("");
+                        setSectionListID("");
+                        setIsTaskModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    setTaskTitle("");
+                    setSectionListValue("");
+                    setSectionListBL("");
+                    setSectionListID("");
+                    setIsTaskModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const updTasks = useUpdateTask({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        onErrorCB: (resp) => callbackOnErr(resp),
+        errorCB: (resp) => callbackErr(resp)
+    });
 
     const HFS_UpdateTask = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -118,18 +227,7 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                     workspace_id,
                     user_id: prs_guifls
                 }
-                console.log(sendData);
-                // setTaskTitle("");
-                // setSectionListValue("");
-                // setSectionListBL("");
-                // setSectionListID("");
-                // setIsTaskModalShown(false);
-                // Swal.fire({
-                //     title: "Success!",
-                //     text: "... Successfully !",
-                //     icon: "success",
-                //     timer: 2000
-                // });
+                updTasks.mutate(sendData);
             }
         }
     }
@@ -143,11 +241,15 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
             }
         });
         setSectionList(dsdata);
-    }, []);
+        setTaskTitle(task_title);
+        setSectionListValue(section_value);
+        setSectionListBL(section_title);
+        setSectionListID(section_id);
+        //eslint-disable-next-line
+    }, [isTaskModalShown]);
 
     return (
         <>
-
             <DropdownMenu>
                 <DropdownMenuTrigger asChild={true}>
                     <button
@@ -202,6 +304,7 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                                 placeholder="eg. HTML"
                                 value={taskTitle}
                                 onChange={handleTaskInputChange}
+                                autoComplete="off"
                             />
                             {taskTitleInputError && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{taskTitleInputError}</div>)}
                         </div>
@@ -270,12 +373,12 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isPending ? "Updating ..." : "Update"}
+                                title={updTasks.isPending ? "Updating ..." : "Update"}
                                 type="submit"
-                                disabled={isPending}
+                                disabled={updTasks.isPending}
                             >
                                 {
-                                    isPending ?
+                                    updTasks.isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Updating ...
@@ -313,13 +416,13 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                 </div>
                 <div className="flex justify-center items-center gap-x-[15px] gap-y-[10px] pb-[25px]">
                     <Button
-                        title={isPending ? "wait ..." : "Yes"}
+                        title={delTasks.isPending ? "wait ..." : "Yes"}
                         type="button"
-                        disabled={isPending}
+                        disabled={delTasks.isPending}
                         onClick={handleDeleteTask}
                     >
                         {
-                            isPending ?
+                            delTasks.isPending ?
                                 (<>
                                     <Loader2 className="animate-spin" />
                                     wait ...

@@ -30,5 +30,5 @@ export interface sectionActionType {
     section_title: string,
     sectionIndex: number,
     workspace_id: string,
-    selected_tasks?: string[]
+    selected_tasks?: (string | undefined)[] | undefined;
 }

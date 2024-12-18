@@ -159,6 +159,7 @@ const ReVerifyEmail = () => {
         if (token) {
             tvc.mutate({ token })
         }
+        //eslint-disable-next-line
     }, [navigate]);
 
     return (

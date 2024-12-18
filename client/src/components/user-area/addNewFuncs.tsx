@@ -35,9 +35,13 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { taskComboboxType } from "@/types/playGroundTypes";
-import { demo_sections } from "@/utils/demoData";
+// import { demo_sections } from "@/utils/demoData";
 import { convertToSlug } from "@/utils/helperFunctions";
 import { useParams } from "react-router-dom";
+import { useReadSections } from "@/tanstack-query/queries/queries";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useCreateSection } from "@/tanstack-query/mutations/sections/sectionsMutations";
+import { useCreateTask } from "@/tanstack-query/mutations/tasks/tasksMutations";
 
 const AddNewFuncs = () => {
 
@@ -54,26 +58,73 @@ const AddNewFuncs = () => {
         resolver: zodResolver(sectionFormValidationSchema),
     });
 
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        rhfAddSection.reset();
+                        setIsSectionModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    rhfAddSection.reset();
+                    setIsSectionModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const crtSects = useCreateSection({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        onErrorCB: (resp) => callbackOnErr(resp),
+        errorCB: (resp) => callbackErr(resp)
+    });
+
     const HFS_addSection: SubmitHandler<sectionFormVS> = (formData) => {
         const guifls = localStorage.getItem("Auth");
         if (guifls) {
             const prs_guifls = JSON.parse(guifls);
             const sendData = {
-                section_name: formData.sectionName,
+                section_title: formData.sectionName,
                 section_value: convertToSlug(formData.sectionName),
                 workspace_id,
                 user_id: prs_guifls
             }
-            console.log(sendData);
+            crtSects.mutate(sendData);
         }
-        // rhfAddSection.reset();
-        // setIsSectionModalShown(false);
-        // Swal.fire({
-        //     title: "Success!",
-        //     text: "... Successfully !",
-        //     icon: "success",
-        //     timer: 2000
-        // });
     }
 
     // Add New Task Modal Form Handling.
@@ -101,6 +152,67 @@ const AddNewFuncs = () => {
         }
         setTaskTitle(value);
     }
+
+    const callbackOnSuc_tsk = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        setTaskTitle("");
+                        setSectionListValue("");
+                        setSectionListBL("");
+                        setSectionListID("");
+                        setIsTaskModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    setTaskTitle("");
+                    setSectionListValue("");
+                    setSectionListBL("");
+                    setSectionListID("");
+                    setIsTaskModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr_tsk = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr_tsk = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const crtTasks = useCreateTask({
+        onSuccessCB: (resp) => callbackOnSuc_tsk(resp),
+        onErrorCB: (resp) => callbackOnErr_tsk(resp),
+        errorCB: (resp) => callbackErr_tsk(resp)
+    });
 
     const HFS_addTask = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -139,33 +251,35 @@ const AddNewFuncs = () => {
                     workspace_id,
                     user_id: prs_guifls
                 }
-                console.log(sendData);
+                crtTasks.mutate(sendData);
             }
-            // setTaskTitle("");
-            // setSectionListValue("");
-            // setSectionListBL("");
-            // setSectionListID("");
-            // setIsTaskModalShown(false);
-            // Swal.fire({
-            //     title: "Success!",
-            //     text: "... Successfully !",
-            //     icon: "success",
-            //     timer: 2000
-            // });
         }
     }
 
+    let tkn = null;
+    const lsi = localStorage.getItem("Auth");
+    if (lsi) {
+        tkn = JSON.parse(lsi);
+    }
+    const rdSecs = useReadSections({
+        workspace_id: workspace_id ?? "",
+        token: tkn
+    });
+
     useEffect(() => {
-        const filteredSection = demo_sections.filter((section) => section.workspace_id === workspace_id);
-        const dsdata = filteredSection.map((item) => {
-            return {
-                label: item.section_title,
-                value: item.section_value,
-                id: item.section_id
-            }
-        });
-        setSectionList(dsdata);
-    }, []);
+        // const filteredSection = demo_sections.filter((section) => section.workspace_id === workspace_id);
+        if (rdSecs.data?.sections) {
+            const dsdata = rdSecs.data?.sections.map((item) => {
+                return {
+                    label: item.section_title,
+                    value: item.section_value,
+                    id: item.section_id
+                }
+            });
+            setSectionList(dsdata);
+        }
+        //eslint-disable-next-line
+    }, [rdSecs.data, isTaskModalShown]);
 
     // Add New Label Modal Form Handling.
     const rhfAddLabel = useForm<labelFormVS>({
@@ -270,17 +384,18 @@ const AddNewFuncs = () => {
                                 id="sec_ttl"
                                 placeholder="eg. Frontend"
                                 {...rhfAddSection.register("sectionName")}
+                                autoComplete="off"
                             />
                             {rhfAddSection.formState.errors.sectionName && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{rhfAddSection.formState.errors.sectionName.message}</div>)}
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isPending ? "Creating ..." : "Create"}
+                                title={crtSects.isPending ? "Creating ..." : "Create"}
                                 type="submit"
-                                disabled={isPending}
+                                disabled={crtSects.isPending}
                             >
                                 {
-                                    isPending ?
+                                    crtSects.isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Creating ...
@@ -318,6 +433,7 @@ const AddNewFuncs = () => {
                                 placeholder="eg. HTML"
                                 value={taskTitle}
                                 onChange={handleTaskInputChange}
+                                autoComplete="off"
                             />
                             {taskTitleInputError && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{taskTitleInputError}</div>)}
                         </div>
@@ -386,12 +502,12 @@ const AddNewFuncs = () => {
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isPending ? "Creating ..." : "Create"}
+                                title={crtTasks.isPending ? "Creating ..." : "Create"}
                                 type="submit"
-                                disabled={isPending}
+                                disabled={crtTasks.isPending}
                             >
                                 {
-                                    isPending ?
+                                    crtTasks.isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
                                             Creating ...
@@ -428,6 +544,7 @@ const AddNewFuncs = () => {
                                 id="lbl_ttl"
                                 placeholder="eg. Basic"
                                 {...rhfAddLabel.register("labelTitle")}
+                                autoComplete="off"
                             />
                             {rhfAddLabel.formState.errors.labelTitle && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{rhfAddLabel.formState.errors.labelTitle.message}</div>)}
                         </div>

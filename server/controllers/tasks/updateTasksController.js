@@ -47,12 +47,31 @@ const updateTasksController = async (req, res) => {
                                             }
                                         } else {
                                             const newSection = await SectionsModel.findOne({ _id: section_id });
-                                            // Check for valid index & length of array because valid index number must be within or in between array length.
-                                            if (Number(taskIndex) < 0 || Number(taskIndex) > newSection.task_sequence.length) {
-                                                status = 200;
-                                                response = {
-                                                    success: false,
-                                                    message: "Wrong index number provided or index out of bounds."
+                                            if (newSection.task_sequence.length > 0) {
+                                                // Check for valid index & length of array because valid index number must be within or in between array length.
+                                                if (Number(taskIndex) < 0 || Number(taskIndex) > newSection.task_sequence.length) {
+                                                    status = 200;
+                                                    response = {
+                                                        success: false,
+                                                        message: "Wrong index number provided or index out of bounds."
+                                                    }
+                                                } else {
+                                                    // First Remove task from old section sequence.
+                                                    const oldSection = await SectionsModel.findOne({ _id: taskAlreadyExist.section_id });
+                                                    const filterOldSS = oldSection.task_sequence.filter((ids) => ids !== task_id);
+                                                    await SectionsModel.findByIdAndUpdate({ _id: taskAlreadyExist.section_id }, { task_sequence: filterOldSS });
+
+                                                    // Second Add task to the new section.
+                                                    const updSec = [...newSection.task_sequence];
+                                                    const upd = insertValueAtIndex(updSec, Number(taskIndex), task_id);
+                                                    await SectionsModel.findByIdAndUpdate({ _id: section_id }, { task_sequence: upd });
+                                                    // Finally Update section ID to the Task Object.
+                                                    await TasksModel.findByIdAndUpdate({ _id: task_id }, { task_title, section_id });
+                                                    status = 200;
+                                                    response = {
+                                                        success: true,
+                                                        message: "Task Updated successfully."
+                                                    }
                                                 }
                                             } else {
                                                 // First Remove task from old section sequence.
@@ -62,7 +81,7 @@ const updateTasksController = async (req, res) => {
 
                                                 // Second Add task to the new section.
                                                 const updSec = [...newSection.task_sequence];
-                                                const upd = insertValueAtIndex(updSec, Number(taskIndex), task_id);
+                                                const upd = insertValueAtIndex(updSec, 0, task_id);
                                                 await SectionsModel.findByIdAndUpdate({ _id: section_id }, { task_sequence: upd });
                                                 // Finally Update section ID to the Task Object.
                                                 await TasksModel.findByIdAndUpdate({ _id: task_id }, { task_title, section_id });

@@ -9,20 +9,74 @@ import Swal from "sweetalert2";
 import { sectionFormValidationSchema, sectionFormVS } from "@/zod/schemas/userPlayGround";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { convertToSlug } from "@/utils/helperFunctions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SiteDialog from "@/components/SiteDialog";
 import { sectionActionType } from "@/types/componentsTypes";
+import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useDeleteSection, useUpdateSection } from "@/tanstack-query/mutations/sections/sectionsMutations";
 
 const SectionActions = (props: sectionActionType) => {
 
     const { section_id, section_title, sectionIndex, workspace_id, selected_tasks } = props;
-    const isLoading = false;
 
     const [isSectionModalShown, setIsSectionModalShown] = useState<boolean>(false);
     const [isDeleteModalShown, setIsDeleteModalShown] = useState<boolean>(false);
+
+    const callbackOnSuc_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        setIsDeleteModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    setIsDeleteModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr_del = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const delSects = useDeleteSection({
+        onSuccessCB: (resp) => callbackOnSuc_del(resp),
+        onErrorCB: (resp) => callbackOnErr_del(resp),
+        errorCB: (resp) => callbackErr_del(resp)
+    });
 
     const handleDeleteSection = () => {
         const guifls = localStorage.getItem("Auth");
@@ -31,52 +85,93 @@ const SectionActions = (props: sectionActionType) => {
             const sendData = {
                 section_id,
                 workspace_id,
+                sectionIndex: sectionIndex.toString(),
                 user_id: prs_guifls,
                 selected_tasks
             }
-            console.log(sendData);
-            // setIsDeleteModalShown(false);
+            delSects.mutate(sendData);
         }
-        // Swal.fire({
-        //     title: "Success!",
-        //     text: "... Successfully !",
-        //     icon: "success",
-        //     timer: 2000
-        // });
     }
 
     // Update Sections Modal Form Handling.
-    const rhfAddSection = useForm<sectionFormVS>({
+    const rhfUpdateSection = useForm<sectionFormVS>({
         resolver: zodResolver(sectionFormValidationSchema),
-        defaultValues: {
-            sectionName: section_title
-        }
     });
 
-    const HFS_addSection: SubmitHandler<sectionFormVS> = (formData) => {
+    const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (resp.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: resp.message,
+                    icon: "success",
+                    timer: 4000
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        rhfUpdateSection.reset();
+                        setIsSectionModalShown(false);
+                    }
+                })
+                const st = setTimeout(() => {
+                    rhfUpdateSection.reset();
+                    setIsSectionModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
+            }
+        }
+    }
+
+    const callbackOnErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const callbackErr = (resp: (CommonAPIResponse | undefined)) => {
+        if (resp) {
+            if (!resp.success) {
+                Swal.fire({
+                    title: "Error!",
+                    text: resp.message,
+                    icon: "error",
+                    timer: 4000
+                });
+            }
+        }
+    }
+
+    const updSects = useUpdateSection({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        onErrorCB: (resp) => callbackOnErr(resp),
+        errorCB: (resp) => callbackErr(resp)
+    });
+
+    const HFS_UpdateSection: SubmitHandler<sectionFormVS> = (formData) => {
         const guifls = localStorage.getItem("Auth");
         if (guifls) {
             const prs_guifls = JSON.parse(guifls);
             const sendData = {
                 section_id,
-                section_name: formData.sectionName,
+                section_title: formData.sectionName,
                 section_value: convertToSlug(formData.sectionName),
                 sectionIndex: sectionIndex.toString(),
                 workspace_id,
                 user_id: prs_guifls
             }
-            console.log(sendData);
-            // setIsDeleteModalShown(false);
+            updSects.mutate(sendData);
         }
-        // rhfAddSection.reset();
-        // setIsSectionModalShown(false);
-        // Swal.fire({
-        //     title: "Success!",
-        //     text: "... Successfully !",
-        //     icon: "success",
-        //     timer: 2000
-        // });
     }
+
+    useEffect(() => {
+        rhfUpdateSection.setValue("sectionName", section_title);
+    }, [section_title, setIsSectionModalShown]);
 
     return (
         <>
@@ -121,7 +216,7 @@ const SectionActions = (props: sectionActionType) => {
                 modal_max_width={450}
             >
                 <div className="py-[20px] px-[20px]">
-                    <form onSubmit={rhfAddSection.handleSubmit(HFS_addSection)}>
+                    <form onSubmit={rhfUpdateSection.handleSubmit(HFS_UpdateSection)}>
                         <div className="pb-[15px]">
                             <label
                                 htmlFor="sec_ttl"
@@ -133,23 +228,24 @@ const SectionActions = (props: sectionActionType) => {
                                 type="text"
                                 id="sec_ttl"
                                 placeholder="eg. Frontend"
-                                {...rhfAddSection.register("sectionName")}
+                                {...rhfUpdateSection.register("sectionName")}
+                                autoComplete="off"
                             />
-                            {rhfAddSection.formState.errors.sectionName && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{rhfAddSection.formState.errors.sectionName.message}</div>)}
+                            {rhfUpdateSection.formState.errors.sectionName && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{rhfUpdateSection.formState.errors.sectionName.message}</div>)}
                         </div>
                         <div className="text-right">
                             <Button
-                                title={isLoading ? "Creating ..." : "Create"}
+                                title={updSects.isPending ? "Updating ..." : "Update"}
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={updSects.isPending}
                             >
                                 {
-                                    isLoading ?
+                                    updSects.isPending ?
                                         (<>
                                             <Loader2 className="animate-spin" />
-                                            Creating ...
+                                            Updating ...
                                         </>)
-                                        : ("Create")
+                                        : ("Update")
                                 }
                             </Button>
                         </div>
@@ -182,13 +278,13 @@ const SectionActions = (props: sectionActionType) => {
                 </div>
                 <div className="flex justify-center items-center gap-x-[15px] gap-y-[10px] pb-[25px]">
                     <Button
-                        title={isLoading ? "wait ..." : "Yes"}
+                        title={delSects.isPending ? "wait ..." : "Yes"}
                         type="button"
-                        disabled={isLoading}
+                        disabled={delSects.isPending}
                         onClick={handleDeleteSection}
                     >
                         {
-                            isLoading ?
+                            delSects.isPending ?
                                 (<>
                                     <Loader2 className="animate-spin" />
                                     wait ...

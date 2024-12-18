@@ -28,6 +28,7 @@ const UIDChecker = () => {
             navigate("/");
             localStorage.removeItem("Auth");
         }
+        //eslint-disable-next-line
     }, []);
 
     return <></>

@@ -47,6 +47,7 @@ const LabelWrapper = () => {
     useEffect(() => {
         const filtered_labels = demo_labels.filter((label) => label.workspace_id === workspace_id);
         setLabelData(filtered_labels);
+        //eslint-disable-next-line
     }, []);
 
     return (

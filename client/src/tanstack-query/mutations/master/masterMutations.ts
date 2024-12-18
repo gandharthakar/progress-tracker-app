@@ -36,6 +36,9 @@ export const useUpdateMasterWorkspace = (callbacks?: TQ_CBtype) => {
                 await queryClient.invalidateQueries({
                     queryKey: ["readMasterWorkspace"]
                 })
+                await queryClient.invalidateQueries({
+                    queryKey: ["readSections"]
+                });
             }
         },
     })

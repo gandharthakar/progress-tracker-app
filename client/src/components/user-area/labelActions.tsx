@@ -5,7 +5,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical, Loader2, Pencil, Trash2, TriangleAlert } from "lucide-react";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { labelFormValidationSchema, labelFormVS } from "@/zod/schemas/userPlayGround";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -115,6 +115,7 @@ const LabelActions = (props: labelActionsType) => {
                                 id="lbl_ttl"
                                 placeholder="eg. Basic"
                                 {...rhfUpdateLabel.register("labelTitle")}
+                                autoComplete="off"
                             />
                             {rhfUpdateLabel.formState.errors.labelTitle && (<div className="block mt-[5px] font-poppins text-[12px] text-red-600 dark:text-red-400">{rhfUpdateLabel.formState.errors.labelTitle.message}</div>)}
                         </div>

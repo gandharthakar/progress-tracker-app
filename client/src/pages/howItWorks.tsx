@@ -61,7 +61,7 @@ const HowItWorks = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-1 mdl-1:grid-cols-2">
-                        <div className="flex md:min-h-[350px] flex-col gap-y-[8px] p-[20px] md:p-[30px] border-t-[2px] border-b-[2px] border-l-[2px] border-r-[2px] mdl-1:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 digonal-lines-bg">
+                        <div className="flex md:min-h-[350px] flex-col gap-y-[8px] p-[20px] md:p-[30px] border-t-[2px] border-b-[2px] border-l-[2px] border-r-[2px] mdl-1:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
                             <div>
                                 <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[40px] md:h-[40px] rounded-full font-poppins font-semibold text-[14px] md:text-[20px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                     1
@@ -77,7 +77,7 @@ const HowItWorks = () => {
                             </div>
                         </div>
                         <div className="flex flex-wrap flex-col md:flex-row border-t-0 mdl-1:border-t-[2px] border-zinc-300 dark:border-zinc-700">
-                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700">
                                 <div>
                                     <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         2
@@ -92,7 +92,7 @@ const HowItWorks = () => {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700">
                                 <div>
                                     <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         3
@@ -107,7 +107,7 @@ const HowItWorks = () => {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] md:border-r-0 bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700">
                                 <div>
                                     <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         4
@@ -122,7 +122,7 @@ const HowItWorks = () => {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700">
+                            <div className="flex md:min-h-[300px] md:w-1/2 flex-col gap-y-[8px] p-[20px] border-l-[2px] border-b-[2px] border-r-[2px] bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700">
                                 <div>
                                     <h2 className="flex items-center justify-center w-[27px] h-[27px] md:w-[30px] md:h-[30px] rounded-full font-poppins font-semibold text-[14px] md:text-[16px] text-zinc-200 dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-50">
                                         5

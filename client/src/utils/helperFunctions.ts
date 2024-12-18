@@ -27,9 +27,8 @@ export const reorder = (list: labelType[], startIndex: number, endIndex: number)
 
 // Calculate percentage
 export const calculatePercentage = (marksObtained: number, maxMarks: number): number => {
-    if (maxMarks === 0) {
-        throw new Error("Maximum marks cannot be zero.");
-    }
+    if (maxMarks === 0) return 0;
+    // throw new Error("Maximum marks cannot be zero.");
     const percentage = (marksObtained / maxMarks) * 100;
     return percentage;
 }

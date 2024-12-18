@@ -158,6 +158,7 @@ const LoginVerificationRedirect = () => {
         if (!gli) {
             navigate("/");
         }
+        //eslint-disable-next-line
     }, []);
 
     return (

@@ -1,15 +1,15 @@
-import { createSection, deleteSection, UpdateSection } from "@/tanstack-query/api-functions/sections/sectionsApiFunctions";
-import { delSecsPayloadType, sectionType } from "@/types/playGroundTypes";
+import { createTask, deleteTask, updateTask } from "@/tanstack-query/api-functions/tasks/tasksApiFunctions";
+import { delTasksPayloadType, taskType } from "@/types/playGroundTypes";
 import { TQ_CBtype } from "@/types/tanstack-query/commonTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
-export const useCreateSection = (callbacks?: TQ_CBtype) => {
+export const useCreateTask = (callbacks?: TQ_CBtype) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationKey: ["createSection"],
-        mutationFn: (data: sectionType) => createSection(data),
+        mutationKey: ["createTask"],
+        mutationFn: (data: taskType) => createTask(data),
         onSuccess(data) {
             if (data.success) {
                 if (callbacks?.onSuccessCB) {
@@ -36,20 +36,20 @@ export const useCreateSection = (callbacks?: TQ_CBtype) => {
                 await queryClient.invalidateQueries({
                     queryKey: ["readMasterWorkspace"]
                 });
-                await queryClient.invalidateQueries({
-                    queryKey: ["readSections"]
-                });
+                // await queryClient.invalidateQueries({
+                //     queryKey: ["readSections"]
+                // });
             }
         },
     })
 }
 
-export const useUpdateSection = (callbacks?: TQ_CBtype) => {
+export const useUpdateTask = (callbacks?: TQ_CBtype) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationKey: ["updateSection"],
-        mutationFn: (data: sectionType) => UpdateSection(data),
+        mutationKey: ["updateTask"],
+        mutationFn: (data: taskType) => updateTask(data),
         onSuccess(data) {
             if (data.success) {
                 if (callbacks?.onSuccessCB) {
@@ -76,20 +76,20 @@ export const useUpdateSection = (callbacks?: TQ_CBtype) => {
                 await queryClient.invalidateQueries({
                     queryKey: ["readMasterWorkspace"]
                 });
-                await queryClient.invalidateQueries({
-                    queryKey: ["readSections"]
-                });
+                // await queryClient.invalidateQueries({
+                //     queryKey: ["readSections"]
+                // });
             }
         },
     })
 }
 
-export const useDeleteSection = (callbacks?: TQ_CBtype) => {
+export const useDeleteTask = (callbacks?: TQ_CBtype) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationKey: ["deleteSection"],
-        mutationFn: (data: delSecsPayloadType) => deleteSection(data),
+        mutationKey: ["deleteTask"],
+        mutationFn: (data: delTasksPayloadType) => deleteTask(data),
         onSuccess(data) {
             if (data.success) {
                 if (callbacks?.onSuccessCB) {
@@ -116,9 +116,9 @@ export const useDeleteSection = (callbacks?: TQ_CBtype) => {
                 await queryClient.invalidateQueries({
                     queryKey: ["readMasterWorkspace"]
                 });
-                await queryClient.invalidateQueries({
-                    queryKey: ["readSections"]
-                });
+                // await queryClient.invalidateQueries({
+                //     queryKey: ["readSections"]
+                // });
             }
         },
     })

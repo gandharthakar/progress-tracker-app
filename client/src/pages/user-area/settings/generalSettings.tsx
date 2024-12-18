@@ -134,6 +134,7 @@ const GeneralSettings = () => {
             const prs_guifls = JSON.parse(guifls);
             getUInfo.mutate({ token: prs_guifls, required_data_code: "824637" });
         }
+        //eslint-disable-next-line
     }, []);
 
     return (
