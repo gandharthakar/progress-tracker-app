@@ -117,6 +117,10 @@
         @apply inline-block mdl-1:block px-[15px] mdl-1:px-[20px] py-[7px] mdl-1:py-[10px] font-poppins text-[14px] md:text-[16px] text-zinc-900 bg-transparent hover:underline dark:text-zinc-200 rounded-[7px];
     }
 
+    .user-settings-nav li .nav-link.danger {
+        @apply text-red-600;
+    }
+
     .user-settings-nav li.active .nav-link {
         @apply bg-theme-grey-1 dark:bg-zinc-900 font-semibold hover:no-underline;
     }

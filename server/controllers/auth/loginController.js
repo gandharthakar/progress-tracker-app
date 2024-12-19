@@ -17,7 +17,7 @@ const loginUserController = async (req, res) => {
             if (userAlreadyExist !== null) {
                 const isPasswordMatch = await bcrypt.compare(user_password, userAlreadyExist.user_password);
                 if (isPasswordMatch) {
-                    const token = jwt.sign({ user_id: userAlreadyExist._id }, process.env.JWT_SECRET || "undefined", { expiresIn: "30d" });
+                    const token = jwt.sign({ user_id: userAlreadyExist._id }, process.env.JWT_SECRET || "undefined", { expiresIn: "30m" });
                     status = 200;
                     response = {
                         success: true,

@@ -25,6 +25,7 @@ import TokenChecker from "@/utils/tokenChecker";
 import ReVerifyEmail from "@/pages/auth-pages/reVerifyEmail";
 import LoginVerificationRedirect from "@/pages/auth-pages/loginVerificationRedirect";
 import ACLoginRedirect from "@/utils/acLoginRedirect";
+import DeleteAccount from "@/pages/user-area/settings/deleteAccount";
 
 // Layouts
 // import BaseLayout from "@/layouts/baseLayout";
@@ -107,6 +108,10 @@ const WebRoutes = createBrowserRouter([
             {
                 path: 'settings/theme/:user_id',
                 element: <TokenChecker><ThemeSettings /></TokenChecker>,
+            },
+            {
+                path: 'settings/delete-account/:user_id',
+                element: <TokenChecker><DeleteAccount /></TokenChecker>,
             },
             {
                 path: 'workspace/:workspace_id/:user_id',

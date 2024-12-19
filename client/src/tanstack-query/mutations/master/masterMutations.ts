@@ -34,10 +34,10 @@ export const useUpdateMasterWorkspace = (callbacks?: TQ_CBtype) => {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readMasterWorkspace"]
+                    queryKey: ["readMasterWorkspace", callbacks?.workspace_id]
                 })
                 await queryClient.invalidateQueries({
-                    queryKey: ["readSections"]
+                    queryKey: ["readSections", callbacks?.workspace_id]
                 });
             }
         },

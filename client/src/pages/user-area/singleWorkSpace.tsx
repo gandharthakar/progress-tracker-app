@@ -29,8 +29,6 @@ import { useUpdateMasterWorkspace } from "@/tanstack-query/mutations/master/mast
 
 const SingleWorkSpace = () => {
 
-    console.log("Re-Render.");
-    const isLoading = false;
     const { workspace_id, user_id } = useParams();
 
     let tkn = null;
@@ -149,10 +147,11 @@ const SingleWorkSpace = () => {
         }
     }
 
-    const { mutate } = useUpdateMasterWorkspace({
+    const { mutate, isPending } = useUpdateMasterWorkspace({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         onErrorCB: (resp) => callbackOnErr(resp),
-        errorCB: (resp) => callbackErr(resp)
+        errorCB: (resp) => callbackErr(resp),
+        workspace_id
     });
 
     const saveChangesButtonClick = () => {
@@ -364,12 +363,12 @@ const SingleWorkSpace = () => {
                             <div className="text-right px-[20px] pb-[20px] hidden mdl-1:block">
                                 <Button
                                     type="button"
-                                    title={isLoading ? "Saving ..." : "Save Changes"}
+                                    title={isPending ? "Saving ..." : "Save Changes"}
                                     onClick={saveChangesButtonClick}
-                                    disabled={isLoading}
+                                    disabled={isPending}
                                 >
                                     {
-                                        isLoading ?
+                                        isPending ?
                                             (<>
                                                 <Loader2 className="animate-spin" />
                                                 Saving ...
@@ -549,12 +548,12 @@ const SingleWorkSpace = () => {
                                     <Button
                                         type="button"
                                         size="sm"
-                                        title={isLoading ? "Saving ..." : "Save Changes"}
+                                        title={isPending ? "Saving ..." : "Save Changes"}
                                         onClick={saveChangesButtonClick}
-                                        disabled={isLoading}
+                                        disabled={isPending}
                                     >
                                         {
-                                            isLoading ?
+                                            isPending ?
                                                 (<>
                                                     <Loader2 className="animate-spin" />
                                                     Saving ...

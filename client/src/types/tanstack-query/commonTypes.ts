@@ -7,4 +7,5 @@ export interface TQ_CBtype {
     onSuccessCB?: (resp?: (CommonAPIResponse | undefined)) => void,
     errorCB?: (resp?: (CommonAPIResponse | undefined)) => void,
     onErrorCB?: (resp?: (CommonAPIResponse | undefined)) => void,
+    workspace_id?: string,
 }

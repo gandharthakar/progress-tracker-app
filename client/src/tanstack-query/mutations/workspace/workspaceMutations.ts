@@ -29,12 +29,12 @@ export const useCreateWorkspace = (callbacks?: TQ_CBtype) => {
                 }
             }
         },
-        onSettled: async (_, error) => {
+        onSettled: async (data, error) => {
             if (error) {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readAllWorkspaces"]
+                    queryKey: ["readAllWorkspaces", data?.workspace_id]
                 })
             }
         },
@@ -66,12 +66,12 @@ export const useUpdateWorkspace = (callbacks?: TQ_CBtype) => {
                 }
             }
         },
-        onSettled: async (_, error) => {
+        onSettled: async (data, error) => {
             if (error) {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readAllWorkspaces"]
+                    queryKey: ["readAllWorkspaces", data?.workspace_id]
                 })
             }
         },
@@ -103,12 +103,12 @@ export const useDeleteWorkspace = (callbacks?: TQ_CBtype) => {
                 }
             }
         },
-        onSettled: async (_, error) => {
+        onSettled: async (data, error) => {
             if (error) {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readAllWorkspaces"]
+                    queryKey: ["readAllWorkspaces", data?.workspace_id]
                 })
             }
         },

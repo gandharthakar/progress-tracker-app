@@ -11,7 +11,7 @@ const defConfig = {
     gcTime: 2 * (60 * 1000),
 }
 
-export const useReadAllWorkspaces = (token: string | null) => {
+export const useReadAllWorkspaces = (token: string) => {
     return useQuery({
         queryKey: ["readAllWorkspaces"],
         queryFn: () => readAllWorkspaces(token),
@@ -21,7 +21,7 @@ export const useReadAllWorkspaces = (token: string | null) => {
 
 export const useReadMasterWorkspace = (data: rdMastWkspPayloadType) => {
     return useQuery({
-        queryKey: ["readMasterWorkspace"],
+        queryKey: ["readMasterWorkspace", data.workspace_id],
         queryFn: () => readMasterWorkspace(data),
         ...defConfig
     });
@@ -29,7 +29,7 @@ export const useReadMasterWorkspace = (data: rdMastWkspPayloadType) => {
 
 export const useReadSections = (data: rdMastWkspPayloadType) => {
     return useQuery({
-        queryKey: ["readSections"],
+        queryKey: ["readSections", data.workspace_id],
         queryFn: () => readSections(data),
         ...defConfig
     });
@@ -37,7 +37,7 @@ export const useReadSections = (data: rdMastWkspPayloadType) => {
 
 export const useReadLables = (data: rdMastWkspPayloadType) => {
     return useQuery({
-        queryKey: ["readLabels"],
+        queryKey: ["readLabels", data.workspace_id],
         queryFn: () => readLabels(data),
         ...defConfig
     });

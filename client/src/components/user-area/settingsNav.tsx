@@ -4,7 +4,7 @@ const SettingsNav = (props: { user_id: string }) => {
 
     const { user_id } = props;
     const pathName = window.location.href;
-    const navLinks = [`/user/settings/${user_id}`, `/user/settings/password/${user_id}`, `/user/settings/theme/${user_id}`];
+    const navLinks = [`/user/settings/${user_id}`, `/user/settings/password/${user_id}`, `/user/settings/theme/${user_id}`, `/user/settings/delete-account/${user_id}`];
 
     return (
         <>
@@ -34,6 +34,15 @@ const SettingsNav = (props: { user_id: string }) => {
                         className="nav-link"
                     >
                         Theme
+                    </NavLink>
+                </li>
+                <li className={`${pathName.includes(navLinks[3]) ? 'active' : ''}`}>
+                    <NavLink
+                        to={`/user/settings/delete-account/${user_id}`}
+                        title="Theme"
+                        className="nav-link danger"
+                    >
+                        Delete Account
                     </NavLink>
                 </li>
             </ul>

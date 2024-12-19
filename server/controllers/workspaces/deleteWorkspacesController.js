@@ -2,6 +2,7 @@ const UsersModel = require("../../mongodb/models/usersModel");
 const WorkspacesModel = require('../../mongodb/models/workspacesModel');
 const TasksModel = require("../../mongodb/models/tasksModel");
 const SectionsModel = require("../../mongodb/models/sectionsModel");
+const LabelsModel = require("../../mongodb/models/labelsModel");
 const { isValidObjectIdString } = require("../../libs/helperFunctions");
 
 const deleteWorkspacesController = async (req, res) => {
@@ -24,6 +25,7 @@ const deleteWorkspacesController = async (req, res) => {
                         await WorkspacesModel.findByIdAndDelete({ _id: workspace_id });
                         await SectionsModel.deleteMany({ workspace_id });
                         await TasksModel.deleteMany({ workspace_id });
+                        await LabelsModel.deleteMany({ workspace_id });
                         status = 200;
                         response = {
                             success: true,

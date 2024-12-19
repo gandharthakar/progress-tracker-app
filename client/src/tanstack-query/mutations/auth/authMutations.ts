@@ -1,4 +1,4 @@
-import { registerUser, verifyUserEmail, loginUser, forgotPassword, resetPassword, authChecker, tokenChecker, reVerifyUserEmail, reVerifyEmailLinkByToken, reVerifyEmailLinkByOptEml } from "@/tanstack-query/api-functions/auth/authApiFunctions";
+import { registerUser, verifyUserEmail, loginUser, forgotPassword, resetPassword, authChecker, tokenChecker, reVerifyUserEmail, reVerifyEmailLinkByToken, reVerifyEmailLinkByOptEml, deleteAccount } from "@/tanstack-query/api-functions/auth/authApiFunctions";
 import { TQ_CBtype_Auth, TSQ_UserData, TSQ_EmailVerify, ResetUserPWDType, TQ_CBtype_AuthCheck, reVerEmlViaOptEmlPayloadType } from "@/types/tanstack-query/auth/authTypes";
 import { TQ_CBtype } from "@/types/tanstack-query/commonTypes";
 import { useMutation } from "@tanstack/react-query";
@@ -242,6 +242,32 @@ export const useReVerifyEmailLinkViaOptEmlAdrs = (callbacks?: TQ_CBtype) => {
     return useMutation({
         mutationKey: ["reVerifyEmailViaOptionalEmail"],
         mutationFn: (data: reVerEmlViaOptEmlPayloadType) => reVerifyEmailLinkByOptEml(data),
+        onSuccess(data) {
+            if (data.success) {
+                if (callbacks?.onSuccessCB) {
+                    callbacks.onSuccessCB(data);
+                }
+            } else {
+                if (callbacks?.errorCB) {
+                    callbacks.errorCB(data);
+                }
+            }
+        },
+        onError(error: (Error & { response: AxiosResponse; })) {
+            const resp = error.response.data;
+            if (!resp.success) {
+                if (callbacks?.onErrorCB) {
+                    callbacks.onErrorCB(resp);
+                }
+            }
+        },
+    })
+}
+
+export const useDeleteAccount = (callbacks?: TQ_CBtype) => {
+    return useMutation({
+        mutationKey: ["deleteAccount"],
+        mutationFn: (data: { token: string }) => deleteAccount(data),
         onSuccess(data) {
             if (data.success) {
                 if (callbacks?.onSuccessCB) {

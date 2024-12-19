@@ -4,6 +4,9 @@ import { TQ_CBtype } from "@/types/tanstack-query/commonTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
+// const currentDate = new Date();
+// const timestamp = currentDate.getTime();
+
 export const useCreateLabels = (callbacks?: TQ_CBtype) => {
     const queryClient = useQueryClient();
 
@@ -34,10 +37,10 @@ export const useCreateLabels = (callbacks?: TQ_CBtype) => {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readMasterWorkspace"]
+                    queryKey: ["readMasterWorkspace", callbacks?.workspace_id]
                 });
                 await queryClient.invalidateQueries({
-                    queryKey: ["readLabels"]
+                    queryKey: ["readLabels", callbacks?.workspace_id]
                 });
             }
         },
@@ -74,10 +77,10 @@ export const useUpdateLabels = (callbacks?: TQ_CBtype) => {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readMasterWorkspace"]
+                    queryKey: ["readMasterWorkspace", callbacks?.workspace_id]
                 });
                 await queryClient.invalidateQueries({
-                    queryKey: ["readLabels"]
+                    queryKey: ["readLabels", callbacks?.workspace_id]
                 });
             }
         },
@@ -114,10 +117,10 @@ export const useUpdateLabelOrder = (callbacks?: TQ_CBtype) => {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readMasterWorkspace"]
+                    queryKey: ["readMasterWorkspace", callbacks?.workspace_id]
                 });
                 await queryClient.invalidateQueries({
-                    queryKey: ["readLabels"]
+                    queryKey: ["readLabels", callbacks?.workspace_id]
                 });
             }
         },
@@ -154,10 +157,10 @@ export const useDeleteLabels = (callbacks?: TQ_CBtype) => {
                 console.log(error);
             } else {
                 await queryClient.invalidateQueries({
-                    queryKey: ["readMasterWorkspace"]
+                    queryKey: ["readMasterWorkspace", callbacks?.workspace_id]
                 });
                 await queryClient.invalidateQueries({
-                    queryKey: ["readLabels"]
+                    queryKey: ["readLabels", callbacks?.workspace_id]
                 });
             }
         },

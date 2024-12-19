@@ -41,6 +41,10 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setIsEditModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -49,12 +53,9 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsEditModalShown(false);
+                        clearTimeout(st);
                     }
                 });
-                const st = setTimeout(() => {
-                    setIsEditModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
             }
         }
     }
@@ -108,6 +109,10 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
     const callbackOnSuc_delWksp = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setIsDeleteModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -116,12 +121,9 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsDeleteModalShown(false);
+                        clearTimeout(st);
                     }
                 });
-                const st = setTimeout(() => {
-                    setIsDeleteModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
             }
         }
     }

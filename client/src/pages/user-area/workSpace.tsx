@@ -40,6 +40,12 @@ const WorkSpace = () => {
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setShowModal(false);
+                    setWorkspaceDscr("");
+                    reset();
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -47,15 +53,12 @@ const WorkSpace = () => {
                     timer: 4000
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        reset();
                         setShowModal(false);
+                        setWorkspaceDscr("");
+                        reset();
+                        clearTimeout(st);
                     }
                 });
-                const st = setTimeout(() => {
-                    setShowModal(false);
-                    reset();
-                    clearTimeout(st);
-                }, 4000);
             }
         }
     }

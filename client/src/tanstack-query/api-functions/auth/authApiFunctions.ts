@@ -41,3 +41,14 @@ export const reVerifyEmailLinkByToken = async (data: { token: string }) => {
 export const reVerifyEmailLinkByOptEml = async (data: reVerEmlViaOptEmlPayloadType) => {
     return (await axiosInstance.post<reVerEmlViaOptEmlPayloadType & CommonAPIResponse>('/api/auth/via-optional-email-verification', data)).data;
 }
+
+export const deleteAccount = async (data: { token: string }) => {
+    const resp = await axiosInstance.delete<CommonAPIResponse>('/api/auth/delete-account', {
+        data: JSON.stringify({ ...data }),
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }).then((pr: any) => pr.data);
+
+    return resp;
+}

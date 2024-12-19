@@ -61,6 +61,11 @@ const AddNewFuncs = () => {
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    rhfAddSection.reset();
+                    setIsSectionModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -70,13 +75,9 @@ const AddNewFuncs = () => {
                     if (result.isConfirmed) {
                         rhfAddSection.reset();
                         setIsSectionModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    rhfAddSection.reset();
-                    setIsSectionModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -110,7 +111,8 @@ const AddNewFuncs = () => {
     const crtSects = useCreateSection({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         onErrorCB: (resp) => callbackOnErr(resp),
-        errorCB: (resp) => callbackErr(resp)
+        errorCB: (resp) => callbackErr(resp),
+        workspace_id
     });
 
     const HFS_addSection: SubmitHandler<sectionFormVS> = (formData) => {
@@ -156,6 +158,14 @@ const AddNewFuncs = () => {
     const callbackOnSuc_tsk = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setTaskTitle("");
+                    setSectionListValue("");
+                    setSectionListBL("");
+                    setSectionListID("");
+                    setIsTaskModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -168,16 +178,9 @@ const AddNewFuncs = () => {
                         setSectionListBL("");
                         setSectionListID("");
                         setIsTaskModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    setTaskTitle("");
-                    setSectionListValue("");
-                    setSectionListBL("");
-                    setSectionListID("");
-                    setIsTaskModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -211,7 +214,8 @@ const AddNewFuncs = () => {
     const crtTasks = useCreateTask({
         onSuccessCB: (resp) => callbackOnSuc_tsk(resp),
         onErrorCB: (resp) => callbackOnErr_tsk(resp),
-        errorCB: (resp) => callbackErr_tsk(resp)
+        errorCB: (resp) => callbackErr_tsk(resp),
+        workspace_id
     });
 
     const HFS_addTask = (e: React.FormEvent<HTMLFormElement>) => {
@@ -289,6 +293,11 @@ const AddNewFuncs = () => {
     const callbackOnSuc_lbl = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    rhfAddLabel.reset();
+                    setIsLabelModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -298,13 +307,9 @@ const AddNewFuncs = () => {
                     if (result.isConfirmed) {
                         rhfAddLabel.reset();
                         setIsLabelModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    rhfAddLabel.reset();
-                    setIsLabelModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -338,7 +343,8 @@ const AddNewFuncs = () => {
     const crtLabels = useCreateLabels({
         onSuccessCB: (resp) => callbackOnSuc_lbl(resp),
         onErrorCB: (resp) => callbackOnErr_lbl(resp),
-        errorCB: (resp) => callbackErr_lbl(resp)
+        errorCB: (resp) => callbackErr_lbl(resp),
+        workspace_id
     });
 
     const HFS_addLabel: SubmitHandler<labelFormVS> = (formData) => {

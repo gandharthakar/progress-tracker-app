@@ -28,6 +28,10 @@ const LabelActions = (props: labelActionsType) => {
     const callbackOnSuc_del = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setIsLabelDeleteModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -36,12 +40,9 @@ const LabelActions = (props: labelActionsType) => {
                 }).then(result => {
                     if (result.isConfirmed) {
                         setIsLabelDeleteModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    setIsLabelDeleteModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -75,7 +76,8 @@ const LabelActions = (props: labelActionsType) => {
     const delLabels = useDeleteLabels({
         onSuccessCB: (resp) => callbackOnSuc_del(resp),
         onErrorCB: (resp) => callbackOnErr_del(resp),
-        errorCB: (resp) => callbackErr_del(resp)
+        errorCB: (resp) => callbackErr_del(resp),
+        workspace_id
     });
 
     const handleDeleteLable = () => {
@@ -100,6 +102,11 @@ const LabelActions = (props: labelActionsType) => {
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    rhfUpdateLabel.reset();
+                    setIsLabelModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -109,13 +116,9 @@ const LabelActions = (props: labelActionsType) => {
                     if (result.isConfirmed) {
                         rhfUpdateLabel.reset();
                         setIsLabelModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    rhfUpdateLabel.reset();
-                    setIsLabelModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -149,7 +152,8 @@ const LabelActions = (props: labelActionsType) => {
     const updLables = useUpdateLabels({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         onErrorCB: (resp) => callbackOnErr(resp),
-        errorCB: (resp) => callbackErr(resp)
+        errorCB: (resp) => callbackErr(resp),
+        workspace_id
     });
 
     const HFS_UpdateLabel: SubmitHandler<labelFormVS> = (formData) => {

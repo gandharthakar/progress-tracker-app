@@ -28,6 +28,10 @@ const SectionActions = (props: sectionActionType) => {
     const callbackOnSuc_del = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setIsDeleteModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -36,12 +40,9 @@ const SectionActions = (props: sectionActionType) => {
                 }).then(result => {
                     if (result.isConfirmed) {
                         setIsDeleteModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    setIsDeleteModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -75,7 +76,8 @@ const SectionActions = (props: sectionActionType) => {
     const delSects = useDeleteSection({
         onSuccessCB: (resp) => callbackOnSuc_del(resp),
         onErrorCB: (resp) => callbackOnErr_del(resp),
-        errorCB: (resp) => callbackErr_del(resp)
+        errorCB: (resp) => callbackErr_del(resp),
+        workspace_id
     });
 
     const handleDeleteSection = () => {
@@ -101,6 +103,11 @@ const SectionActions = (props: sectionActionType) => {
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    rhfUpdateSection.reset();
+                    setIsSectionModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -110,13 +117,9 @@ const SectionActions = (props: sectionActionType) => {
                     if (result.isConfirmed) {
                         rhfUpdateSection.reset();
                         setIsSectionModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    rhfUpdateSection.reset();
-                    setIsSectionModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -150,7 +153,8 @@ const SectionActions = (props: sectionActionType) => {
     const updSects = useUpdateSection({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         onErrorCB: (resp) => callbackOnErr(resp),
-        errorCB: (resp) => callbackErr(resp)
+        errorCB: (resp) => callbackErr(resp),
+        workspace_id
     });
 
     const HFS_UpdateSection: SubmitHandler<sectionFormVS> = (formData) => {

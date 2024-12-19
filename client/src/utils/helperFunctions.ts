@@ -59,7 +59,7 @@ export const getSelectedTaskIDs = (selected_tasks: string[], tasks: taskType[]) 
     const taskIds = selected_tasks.map(item => item.split('_')[0]);
 
     // Filter tasks based on the extracted task IDs
-    const filteredTasks = tasks.filter(task => taskIds.includes(task.task_id));
+    const filteredTasks = tasks.filter(task => taskIds.includes(task.task_id ?? ""));
 
     return filteredTasks.map((task) => task.task_id);
 }

@@ -14,6 +14,7 @@ const reBerifyEmailController = require("../controllers/auth/reVerifyController"
 const verifyTokenController = require("../controllers/auth/verifyTokenController");
 const viaTokenEmailVerificationController = require("../controllers/auth/viaTokenEmailVerificationController");
 const viaOptionalEmailVerificationController = require("../controllers/auth/viaOptionalEmailVerificationController");
+const deleteUserController = require("../controllers/auth/deleteUserController");
 
 // Users Controllers.
 const userInfoController = require("../controllers/user-area/userInfoController");
@@ -77,6 +78,7 @@ routes.post('/api/auth/re-verify-email', reBerifyEmailController);
 routes.post('/api/auth/check-token-validity', verifyTokenController);
 routes.post("/api/auth/via-token-email-verification", jwtTokenBodyMiddleware, viaTokenEmailVerificationController);
 routes.post("/api/auth/via-optional-email-verification", jwtTokenBodyMiddleware, isGmailUserMiddleware, viaOptionalEmailVerificationController);
+routes.delete("/api/auth/delete-account", jwtTokenBodyMiddleware, deleteUserController);
 
 // Users Routes.
 routes.post('/api/users/user-info', jwtTokenBodyMiddleware, userInfoController);

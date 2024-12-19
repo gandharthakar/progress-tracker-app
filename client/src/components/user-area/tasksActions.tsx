@@ -38,6 +38,10 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
     const callbackOnSuc_del = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setIsDeleteTaskModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -46,12 +50,9 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                 }).then(result => {
                     if (result.isConfirmed) {
                         setIsDeleteTaskModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    setIsDeleteTaskModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -85,7 +86,8 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
     const delTasks = useDeleteTask({
         onSuccessCB: (resp) => callbackOnSuc_del(resp),
         onErrorCB: (resp) => callbackOnErr_del(resp),
-        errorCB: (resp) => callbackErr_del(resp)
+        errorCB: (resp) => callbackErr_del(resp),
+        workspace_id
     });
 
     const handleDeleteTask = () => {
@@ -130,6 +132,14 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setTaskTitle("");
+                    setSectionListValue("");
+                    setSectionListBL("");
+                    setSectionListID("");
+                    setIsTaskModalShown(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -142,16 +152,9 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
                         setSectionListBL("");
                         setSectionListID("");
                         setIsTaskModalShown(false);
+                        clearTimeout(st);
                     }
-                })
-                const st = setTimeout(() => {
-                    setTaskTitle("");
-                    setSectionListValue("");
-                    setSectionListBL("");
-                    setSectionListID("");
-                    setIsTaskModalShown(false);
-                    clearTimeout(st);
-                }, 4000);
+                });
             }
         }
     }
@@ -185,7 +188,8 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
     const updTasks = useUpdateTask({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         onErrorCB: (resp) => callbackOnErr(resp),
-        errorCB: (resp) => callbackErr(resp)
+        errorCB: (resp) => callbackErr(resp),
+        workspace_id
     });
 
     const HFS_UpdateTask = (e: React.FormEvent<HTMLFormElement>) => {

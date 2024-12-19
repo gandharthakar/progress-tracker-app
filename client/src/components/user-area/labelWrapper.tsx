@@ -14,7 +14,6 @@ import { useUpdateLabelOrder } from "@/tanstack-query/mutations/labels/labelsMut
 
 const LabelWrapper = () => {
 
-    const isPending = false;
     const { workspace_id, user_id } = useParams();
     const [labelData, setLabelData] = useState<labelType[]>([]);
     const [isLabelOrderChanged, setIsLabelOrderChanged] = useState<boolean>(false);
@@ -32,6 +31,10 @@ const LabelWrapper = () => {
     const callbackOnSuc = (resp: (CommonAPIResponse | undefined)) => {
         if (resp) {
             if (resp.success) {
+                const st = setTimeout(() => {
+                    setIsLabelOrderChanged(false);
+                    clearTimeout(st);
+                }, 4000);
                 Swal.fire({
                     title: "Success!",
                     text: resp.message,
@@ -40,12 +43,9 @@ const LabelWrapper = () => {
                 }).then(result => {
                     if (result.isConfirmed) {
                         setIsLabelOrderChanged(false);
+                        clearTimeout(st);
                     }
                 });
-                const st = setTimeout(() => {
-                    setIsLabelOrderChanged(false);
-                    clearTimeout(st);
-                }, 4000);
             }
         }
     }
@@ -79,7 +79,8 @@ const LabelWrapper = () => {
     const updLableOrd = useUpdateLabelOrder({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         onErrorCB: (resp) => callbackOnErr(resp),
-        errorCB: (resp) => callbackErr(resp)
+        errorCB: (resp) => callbackErr(resp),
+        workspace_id
     });
 
     const saveLabelOrder = () => {
@@ -176,13 +177,13 @@ const LabelWrapper = () => {
                             <div className="w-full text-right py-[5px] px-[20px]">
                                 <Button
                                     type="button"
-                                    title={isPending ? "Saving ..." : "Save Changes"}
-                                    disabled={isPending}
+                                    title={updLableOrd.isPending ? "Saving ..." : "Save Changes"}
+                                    disabled={updLableOrd.isPending}
                                     size="sm"
                                     onClick={saveLabelOrder}
                                 >
                                     {
-                                        isPending ?
+                                        updLableOrd.isPending ?
                                             (<>
                                                 <Loader2 className="animate-spin" />
                                                 Saving ...

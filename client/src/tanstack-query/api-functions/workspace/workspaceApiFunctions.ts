@@ -2,7 +2,7 @@ import { axiosInstance } from "@/tanstack-query/fetcher";
 import { delWkspPayloadType, rdAlWkspPayloadType, workspaceType } from "@/types/playGroundTypes";
 import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 
-export const readAllWorkspaces = async (token: string | null) => {
+export const readAllWorkspaces = async (token: string) => {
     return (await axiosInstance.get<rdAlWkspPayloadType>(`/api/workspaces/read-all?token=${token}`)).data;
 }
 
