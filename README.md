@@ -4,7 +4,7 @@ This is very simple tool where you can track your dailly tasks & its progress vi
 
 ### Project Live Link
 
-Here is the link --> <a href="#" title="Click Here" target="_blank">Click Here</a>
+Here is the link --> <a href="https://progress-tracker-app.netlify.app" title="Click Here" target="_blank">Click Here</a>
 
 ### Major Technologies Used
 
