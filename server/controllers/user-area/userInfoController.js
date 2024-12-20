@@ -7,7 +7,7 @@ const userInfoController = async (req, res) => {
         message: ""
     }
     try {
-        const { token, required_data_code } = req.body;
+        const { token, required_data_code } = req.query;
 
         if (token) {
             const verTok = req.user.user_id;

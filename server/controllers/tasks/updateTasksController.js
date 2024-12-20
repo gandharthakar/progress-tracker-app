@@ -31,19 +31,20 @@ const updateTasksController = async (req, res) => {
                                     const taskAlreadyExist = await TasksModel.findOne({ _id: task_id });
                                     if (taskAlreadyExist !== null) {
                                         if (taskAlreadyExist.section_id == section_id) {
-                                            if (taskAlreadyExist.task_title == task_title) {
-                                                status = 200;
-                                                response = {
-                                                    success: false,
-                                                    message: "Task already exist."
-                                                }
-                                            } else {
-                                                await TasksModel.findByIdAndUpdate({ _id: task_id }, { task_title });
-                                                status = 200;
-                                                response = {
-                                                    success: true,
-                                                    message: "Task Updated successfully."
-                                                }
+                                            // if (taskAlreadyExist.task_title == task_title) {
+                                            //     status = 200;
+                                            //     response = {
+                                            //         success: false,
+                                            //         message: "Task already exist."
+                                            //     }
+                                            // } else {
+
+                                            // }
+                                            await TasksModel.findByIdAndUpdate({ _id: task_id }, { task_title });
+                                            status = 200;
+                                            response = {
+                                                success: true,
+                                                message: "Task Updated successfully."
                                             }
                                         } else {
                                             const newSection = await SectionsModel.findOne({ _id: section_id });

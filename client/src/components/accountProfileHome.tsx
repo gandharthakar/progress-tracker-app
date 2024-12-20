@@ -15,9 +15,7 @@ import { Box, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { UserLoginTokenType } from "@/types/tanstack-query/auth/authTypes";
-import { UserInfoAPIResponse } from "@/types/tanstack-query/user/userTypes";
-import Swal from "sweetalert2";
-import { useGetUserInfo } from "@/tanstack-query/mutations/user/userMutations";
+import { useGetUserInfo } from "@/tanstack-query/queries/queries";
 
 const AccountProfileHome = (props: { cb?: () => void }) => {
 
@@ -27,6 +25,17 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
     const [userID, setUserID] = useState<string>("");
     const [uNm, sUNM] = useState("a");
 
+    let tkn = null;
+    const lsi = localStorage.getItem("Auth");
+    if (lsi) {
+        tkn = JSON.parse(lsi);
+    }
+
+    const { data } = useGetUserInfo({
+        token: tkn,
+        required_data_code: "115521"
+    });
+
     const handleLogOut = () => {
         localStorage.removeItem("Auth");
         navigate("/");
@@ -34,57 +43,9 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
         setUserID("");
     }
 
-    const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (resp.success) {
-                if (resp.user) {
-                    if (resp.user.user_full_name) {
-                        sUNM(resp.user.user_full_name.charAt(0));
-                    }
-                }
-            }
-        }
-    }
-
-    const callbackOnErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const callbackErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const { mutate } = useGetUserInfo({
-        onSuccessCB: (resp) => callbackOnSuc_gui(resp),
-        errorCB: (resp) => callbackErr_gui(resp),
-        onErrorCB: (resp) => callbackOnErr_gui(resp)
-    });
-
     useEffect(() => {
-        const guifls = localStorage.getItem("Auth");
-        if (guifls) {
-            const prs_guifls = JSON.parse(guifls);
-            mutate({ token: prs_guifls, required_data_code: "115521" });
-        }
-    }, [mutate]);
+        sUNM(data?.user?.user_full_name?.charAt(0) ?? "a");
+    }, [data]);
 
     useEffect(() => {
         const gtCo = localStorage.getItem("Auth");
@@ -160,12 +121,12 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
                     (
 
                         <NavLink
-                            to="/auth/login"
-                            title="Sign In"
+                            to="/auth/register"
+                            title="Sign Up"
                             className={`${buttonVariants({ variant: "default" })} relative w-[40px] md:w-auto`}
                         >
                             <div className="hidden md:flex gap-x-[10px] items-center">
-                                Sign In
+                                Sign Up
                                 <LuArrowRight size={18} />
                             </div>
                             <div className="visible md:hidden">

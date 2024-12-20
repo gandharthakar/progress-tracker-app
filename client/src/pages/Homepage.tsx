@@ -20,7 +20,7 @@ const Homepage = () => {
                 <div className="flex flex-wrap items-center justify-center gap-x-[20px] gap-y-[10px]">
                     <div>
                         <NavLink
-                            to="/auth/register"
+                            to="/auth/login"
                             title="Get Started"
                             className={buttonVariants({ variant: "default" })}
                         >

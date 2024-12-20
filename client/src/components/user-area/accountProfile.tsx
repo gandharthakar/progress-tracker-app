@@ -10,9 +10,7 @@ import {
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Box, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useGetUserInfo } from "@/tanstack-query/mutations/user/userMutations";
-import { UserInfoAPIResponse } from "@/types/tanstack-query/user/userTypes";
-import Swal from "sweetalert2";
+import { useGetUserInfo } from "@/tanstack-query/queries/queries";
 
 const UserAreaAccountProfile = () => {
 
@@ -27,57 +25,20 @@ const UserAreaAccountProfile = () => {
         navigate("/");
     }
 
-    const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (resp.success) {
-                if (resp.user) {
-                    if (resp.user.user_full_name) {
-                        sUNM(resp.user.user_full_name.charAt(0));
-                    }
-                }
-            }
-        }
+    let tkn = null;
+    const lsi = localStorage.getItem("Auth");
+    if (lsi) {
+        tkn = JSON.parse(lsi);
     }
 
-    const callbackOnErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const callbackErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const { mutate } = useGetUserInfo({
-        onSuccessCB: (resp) => callbackOnSuc_gui(resp),
-        errorCB: (resp) => callbackErr_gui(resp),
-        onErrorCB: (resp) => callbackOnErr_gui(resp)
+    const { data } = useGetUserInfo({
+        token: tkn,
+        required_data_code: "115521"
     });
 
     useEffect(() => {
-        const guifls = localStorage.getItem("Auth");
-        if (guifls) {
-            const prs_guifls = JSON.parse(guifls);
-            mutate({ token: prs_guifls, required_data_code: "115521" });
-        }
-    }, [mutate]);
+        sUNM(data?.user?.user_full_name?.charAt(0) ?? "a");
+    }, [data]);
 
     return (
         <>

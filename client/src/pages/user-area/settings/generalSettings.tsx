@@ -17,10 +17,10 @@ import { updateUserGeneralSettingsFormVS, updateUserGeneralSettingsFormValidatio
 import { useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import SiteDialog from "@/components/SiteDialog";
-import { UserInfoAPIResponse } from "@/types/tanstack-query/user/userTypes";
 import Swal from "sweetalert2";
-import { useGetUserInfo, useUpdateGeneralSettings } from "@/tanstack-query/mutations/user/userMutations";
+import { useUpdateGeneralSettings } from "@/tanstack-query/mutations/user/userMutations";
 import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
+import { useGetUserInfo } from "@/tanstack-query/queries/queries";
 
 const GeneralSettings = () => {
 
@@ -71,7 +71,12 @@ const GeneralSettings = () => {
         }
     }
 
-    const { mutate, isPending } = useUpdateGeneralSettings({ onSuccessCB: (resp) => callbackOnSuc(resp), errorCB: (resp) => callbackErr(resp), onErrorCB: (resp) => callbackOnErr(resp) });
+    const { mutate, isPending } = useUpdateGeneralSettings({
+        onSuccessCB: (resp) => callbackOnSuc(resp),
+        errorCB: (resp) => callbackErr(resp),
+        onErrorCB: (resp) => callbackOnErr(resp),
+        required_data_code: "115521"
+    });
 
     const handleFormSubmit: SubmitHandler<updateUserGeneralSettingsFormVS> = (formdata) => {
         const glsi = localStorage.getItem("Auth");
@@ -85,57 +90,22 @@ const GeneralSettings = () => {
         }
     }
 
-    const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (resp.success) {
-                if (resp.user) {
-                    if (resp.user.user_full_name) {
-                        setValue("fullName", resp.user.user_full_name);
-                    }
-                    if (resp.user.user_email) {
-                        setValue("email", resp.user.user_email);
-                    }
-                }
-            }
-        }
+    let tkn = null;
+    const lsi = localStorage.getItem("Auth");
+    if (lsi) {
+        tkn = JSON.parse(lsi);
     }
 
-    const callbackOnErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const callbackErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const getUInfo = useGetUserInfo({ onSuccessCB: (resp) => callbackOnSuc_gui(resp), errorCB: (resp) => callbackErr_gui(resp), onErrorCB: (resp) => callbackOnErr_gui(resp) });
+    const gtUsrInfo = useGetUserInfo({
+        token: tkn,
+        required_data_code: "824637"
+    });
 
     useEffect(() => {
-        const guifls = localStorage.getItem("Auth");
-        if (guifls) {
-            const prs_guifls = JSON.parse(guifls);
-            getUInfo.mutate({ token: prs_guifls, required_data_code: "824637" });
-        }
+        setValue("fullName", gtUsrInfo.data?.user?.user_full_name ?? "");
+        setValue("email", gtUsrInfo.data?.user?.user_email ?? "");
         //eslint-disable-next-line
-    }, []);
+    }, [gtUsrInfo.data]);
 
     return (
         <>
@@ -231,15 +201,15 @@ const GeneralSettings = () => {
                                     </div>
                                     <div className="flex gap-x-[20px] items-center justify-between">
                                         {
-                                            getUInfo.isPending ? (<Loader2 className="animate-spin text-zinc-800 dark:text-zinc-100" />) : (<div></div>)
+                                            gtUsrInfo.isPending || isPending ? (<Loader2 className="animate-spin text-zinc-800 dark:text-zinc-100" />) : (<div></div>)
                                         }
                                         <Button
                                             type="submit"
-                                            title={isPending ? "Updating ..." : "Update"}
-                                            disabled={isPending}
+                                            title={gtUsrInfo.isPending || isPending ? "Updating ..." : "Update"}
+                                            disabled={gtUsrInfo.isPending || isPending}
                                         >
                                             {
-                                                isPending ?
+                                                gtUsrInfo.isPending || isPending ?
                                                     (<>
                                                         <Loader2 className="animate-spin" />
                                                         Updating ...
@@ -276,8 +246,6 @@ const GeneralSettings = () => {
                 <div className="pb-[15px] px-[20px] text-center max-w-[450px] mx-auto">
                     <p className="inline-block font-roboto_mono text-[12px] md:text-[14px] text-zinc-600 dark:text-zinc-400">
                         If you plan to change the email address then you need to re-verify yourself first via email just like before you registered to make continue use of our services. You will receive OTP & Verification link on your newly updated email address. after clicking "update" button you can able to login again only after you re-verify yourself.
-                        <br /> <br />
-                        Thank You.
                     </p>
                 </div>
                 <div className="flex justify-center items-center gap-x-[15px] gap-y-[10px] pb-[25px]">

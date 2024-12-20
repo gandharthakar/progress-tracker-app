@@ -9,11 +9,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 // import { SiteWorkspaceCompProps } from "@/types/componentsTypes";
 import WorkspaceBox from "@/components/user-area/workspaceBox";
 import { workspaceFormVS, workspaceFormValidationSchema } from "@/zod/schemas/userWorkspace";
-import { UserInfoAPIResponse } from "@/types/tanstack-query/user/userTypes";
 import Swal from "sweetalert2";
-import { useGetUserInfo } from "@/tanstack-query/mutations/user/userMutations";
 // import { useParams } from "react-router-dom";
-import { useReadAllWorkspaces } from "@/tanstack-query/queries/queries";
+import { useGetUserInfo, useReadAllWorkspaces } from "@/tanstack-query/queries/queries";
 import { CommonAPIResponse } from "@/types/tanstack-query/commonTypes";
 import { useCreateWorkspace } from "@/tanstack-query/mutations/workspace/workspaceMutations";
 
@@ -92,7 +90,8 @@ const WorkSpace = () => {
     const creWksp = useCreateWorkspace({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         errorCB: (resp) => callbackErr(resp),
-        onErrorCB: (resp) => callbackOnErr(resp)
+        onErrorCB: (resp) => callbackOnErr(resp),
+        token: tkn
     });
 
     const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
@@ -108,59 +107,14 @@ const WorkSpace = () => {
         }
     }
 
-    const callbackOnSuc_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (resp.success) {
-                if (resp.user) {
-                    if (resp.user.user_full_name) {
-                        setUserName(resp.user.user_full_name);
-                    }
-                }
-            }
-        }
-    }
-
-    const callbackOnErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const callbackErr_gui = (resp: (UserInfoAPIResponse | undefined)) => {
-        if (resp) {
-            if (!resp.success) {
-                Swal.fire({
-                    title: "Error!",
-                    text: resp.message,
-                    icon: "error",
-                    timer: 3000
-                });
-            }
-        }
-    }
-
-    const { mutate } = useGetUserInfo({
-        onSuccessCB: (resp) => callbackOnSuc_gui(resp),
-        errorCB: (resp) => callbackErr_gui(resp),
-        onErrorCB: (resp) => callbackOnErr_gui(resp)
+    const { data } = useGetUserInfo({
+        token: tkn,
+        required_data_code: "115521"
     });
 
     useEffect(() => {
-        const guifls = localStorage.getItem("Auth");
-        if (guifls) {
-            const prs_guifls = JSON.parse(guifls);
-            mutate({ token: prs_guifls, required_data_code: "115521" });
-        }
-        // setData(demo_workspaces);
-        // setData([]);
-    }, [mutate]);
+        setUserName(data?.user?.user_full_name ?? "");
+    }, [data]);
 
     return (
         <>

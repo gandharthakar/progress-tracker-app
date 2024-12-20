@@ -31,6 +31,12 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
     const [isDeleteModalShown, setIsDeleteModalShown] = useState<boolean>(false);
     const [workspaceDscr, setWorkspaceDscr] = useState<string>(workspace_description);
 
+    let tkn = null;
+    const lsi = localStorage.getItem("Auth");
+    if (lsi) {
+        tkn = JSON.parse(lsi);
+    }
+
     const { register, handleSubmit, formState: { errors } } = useForm<workspaceFormVS>({
         resolver: zodResolver(workspaceFormValidationSchema),
         defaultValues: {
@@ -89,7 +95,8 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
     const { mutate, isPending } = useUpdateWorkspace({
         onSuccessCB: (resp) => callbackOnSuc(resp),
         errorCB: (resp) => callbackErr(resp),
-        onErrorCB: (resp) => callbackOnErr(resp)
+        onErrorCB: (resp) => callbackOnErr(resp),
+        token: tkn
     })
 
     const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
@@ -157,7 +164,8 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
     const delWK = useDeleteWorkspace({
         onSuccessCB: (resp) => callbackOnSuc_delWksp(resp),
         onErrorCB: (resp) => callbackOnErr_delWksp(resp),
-        errorCB: (resp) => callbackErr_delWksp(resp)
+        errorCB: (resp) => callbackErr_delWksp(resp),
+        token: tkn
     });
 
     const handleDelete = () => {

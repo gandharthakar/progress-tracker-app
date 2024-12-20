@@ -81,7 +81,7 @@ routes.post("/api/auth/via-optional-email-verification", jwtTokenBodyMiddleware,
 routes.delete("/api/auth/delete-account", jwtTokenBodyMiddleware, deleteUserController);
 
 // Users Routes.
-routes.post('/api/users/user-info', jwtTokenBodyMiddleware, userInfoController);
+routes.get('/api/users/user-info', jwtTokenQueryMiddleware, userInfoController);
 routes.post("/api/users/settings/general", jwtTokenBodyMiddleware, generalSettingsController);
 routes.post("/api/users/settings/password", jwtTokenBodyMiddleware, passwordSettingController);
 

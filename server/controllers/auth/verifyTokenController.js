@@ -41,7 +41,7 @@ const verifyTokenController = async (req, res) => {
                 message: "Invalid information provided."
             }
         } else if (error.message == "jwt must be provided") {
-            sts = 400;
+            status = 400;
             response = {
                 success: false,
                 message: "Missing required fields."
@@ -52,7 +52,7 @@ const verifyTokenController = async (req, res) => {
                 message: error.message
             }
         }
-        res.status(sts).json(response);
+        res.status(status).json(response);
     }
 };
 
