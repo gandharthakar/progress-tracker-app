@@ -50,7 +50,7 @@ const HowItWorks = () => {
                                             width="560px"
                                             height="315px"
                                             className="absolute left-0 top-0 w-full h-full"
-                                            src="https://www.youtube.com/embed/e5KiAI2KT9U?si=B4eLgRQxffY719_Q"
+                                            src="https://www.youtube.com/embed/66oR9pssRMk?si=IOdP5QNma3pPyilC"
                                             title="YouTube video player"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             referrerPolicy="strict-origin-when-cross-origin"
