@@ -50,7 +50,7 @@ const getSectionsAndTasks = async (workspace_id, sequence) => {
             tasks: await TasksModel.find({ _id: { $in: ss.task_sequence } })
                 .exec()
                 .then(docs => {
-                    return docs.map((doc) => {
+                    return sortTasksBySequence(docs.map((doc) => {
                         return {
                             task_id: doc._id.toString(),
                             task_title: doc.task_title,
@@ -58,11 +58,12 @@ const getSectionsAndTasks = async (workspace_id, sequence) => {
                             workspace_id: doc.workspace_id,
                             user_id: doc.user_id
                         }
-                    })
+                    }), ss.task_sequence)
                 })
         }
         finalArr.push(obj);
     }
+    // console.dir(finalArr, { depth: null });
     return finalArr;
 }
 

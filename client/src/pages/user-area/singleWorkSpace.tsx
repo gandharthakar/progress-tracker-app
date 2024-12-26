@@ -301,7 +301,7 @@ const SingleWorkSpace = () => {
                                                 data: pieChartData,
                                                 paddingAngle: 0,
                                                 type: 'pie',
-                                                arcLabel: (item) => `${item.value}%`,
+                                                arcLabel: (item) => `${item.value.toFixed(2)}%`,
                                                 outerRadius: 120,
                                                 cx: 120,
                                                 startAngle: 0,

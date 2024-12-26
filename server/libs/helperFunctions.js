@@ -78,6 +78,23 @@ const insertValueAtIndex = (array, index, newValue) => {
     return updatedArray;
 }
 
+const updateArray = (arr, index, value) => {
+    // Check if the index is within the bounds of the array
+    if (index >= 0 && index <= arr.length) {
+        // If a value exists at the index, insert at the next index
+        if (arr[index] !== undefined) {
+            arr.splice(index + 1, 0, value);
+        } else {
+            // If no value exists at the index, insert at the current index
+            arr.splice(index, 0, value);
+        }
+    } else {
+        // If the index is out of bounds, append to the end of the array
+        arr.push(value);
+    }
+    return arr;
+}
+
 module.exports = {
     isGmail,
     generateOTP,
@@ -85,5 +102,6 @@ module.exports = {
     sortLabelsBySequence,
     sortSectionsBySequence,
     sortTasksBySequence,
-    insertValueAtIndex
+    insertValueAtIndex,
+    updateArray
 }
