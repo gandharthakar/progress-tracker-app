@@ -177,7 +177,7 @@ const GeneralSettings = () => {
                                                 id="uu_eml"
                                                 placeholder="example@test.com"
                                                 {...register("email")}
-                                                className="read-only:bg-theme-grey-1 read-only:!ring-0 dark:read-only:bg-zinc-900 pr-[75px]"
+                                                className="read-only:bg-theme-grey-1 read-only:!ring-0 dark:read-only:bg-zinc-900 pr-[110px]"
                                                 readOnly={isEmlWilChng}
                                                 autoComplete="off"
                                             />

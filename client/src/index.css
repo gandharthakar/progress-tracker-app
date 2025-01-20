@@ -44,8 +44,9 @@
 
     .grid-bg {
         --grid-color: #e4e4e7;
-        --grid-line-size: 0.5px;
+        --grid-line-size: 2px;
         background-image: linear-gradient(var(--grid-color) var(--grid-line-size), transparent var(--grid-line-size)), linear-gradient(to right, var(--grid-color) var(--grid-line-size), transparent var(--grid-line-size));
+        /* background-image: linear-gradient(#e4e4e7 0.5px, transparent 0.5px), linear-gradient(to right, #e4e4e7 0.5px, transparent 0.5px); */
         background-size: 55px 55px;
         background-color: rgba(71, 212, 255, 0);
     }
@@ -114,7 +115,7 @@
     }
 
     .user-settings-nav li .nav-link {
-        @apply inline-block mdl-1:block px-[15px] mdl-1:px-[20px] py-[7px] mdl-1:py-[10px] font-poppins text-[14px] md:text-[16px] text-zinc-900 bg-transparent hover:underline dark:text-zinc-200 rounded-[7px];
+        @apply inline-block whitespace-nowrap mdl-1:whitespace-normal mdl-1:block px-[15px] mdl-1:px-[20px] py-[7px] mdl-1:py-[10px] font-poppins text-[14px] md:text-[16px] text-zinc-900 bg-transparent hover:underline dark:text-zinc-200 rounded-[7px];
     }
 
     .user-settings-nav li .nav-link.danger {
