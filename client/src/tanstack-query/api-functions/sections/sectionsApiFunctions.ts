@@ -20,7 +20,7 @@ export const deleteSection = async (data: delSecsPayloadType) => {
         headers: {
             'Content-type': 'application/json'
         }
-    }).then((pr: any) => pr.data);
+    }).then((pr) => pr.data);
 
     return resp;
 }

@@ -73,6 +73,9 @@ export const useUpdateWorkspace = (callbacks?: TQ_CBtype) => {
                 await queryClient.invalidateQueries({
                     queryKey: ["readAllWorkspaces", callbacks?.token]
                 })
+                await queryClient.invalidateQueries({
+                    queryKey: ["readMasterWorkspace", callbacks?.workspace_id]
+                })
             }
         },
     })

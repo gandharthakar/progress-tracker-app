@@ -180,7 +180,7 @@ const LabelActions = (props: labelActionsType) => {
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger asChild={true}>
+                <DropdownMenuTrigger asChild={true} className="cursor-pointer">
                     <button
                         title="Menu"
                         type="button"

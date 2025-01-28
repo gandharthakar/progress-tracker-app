@@ -96,7 +96,8 @@ const LabelWrapper = () => {
         }
     }
 
-    const onDragEnd = (result: any) => {
+    //eslint-disable-next-line
+    const onDragEnd = (result: { source: any; destination: any; type: any; }) => {
         if (!labelData) return;
 
         const { source, destination } = result;

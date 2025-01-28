@@ -255,7 +255,7 @@ const TasksActions = (props: (taskType & sectionType & { sections: sectionApiTyp
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger asChild={true}>
+                <DropdownMenuTrigger asChild={true} className="cursor-pointer">
                     <button
                         title="Menu"
                         type="button"

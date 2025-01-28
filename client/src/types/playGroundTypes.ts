@@ -142,3 +142,10 @@ export interface delLblsPayloadType {
     labelIndex: string | number,
     user_id: string
 }
+
+export interface PiDataType {
+    id: number,
+    value: number,
+    color: string,
+    label: string
+}

@@ -57,7 +57,8 @@ const SingleWorkSpace = () => {
         }
     };
 
-    const onDragEnd = (result: any) => {
+    //eslint-disable-next-line
+    const onDragEnd = (result: { source: any; destination: any; type: any; }) => {
         if (!workspace) return;
 
         const { source, destination, type } = result;

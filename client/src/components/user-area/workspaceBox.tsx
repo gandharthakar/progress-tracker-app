@@ -96,7 +96,8 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
         onSuccessCB: (resp) => callbackOnSuc(resp),
         errorCB: (resp) => callbackErr(resp),
         onErrorCB: (resp) => callbackOnErr(resp),
-        token: tkn
+        token: tkn,
+        workspace_id
     })
 
     const handleFormSubmit: SubmitHandler<workspaceFormVS> = (formdata) => {
@@ -206,7 +207,7 @@ const WorkspaceBox = (props: SiteWorkspaceCompProps) => {
                             </div>
                             <div className="h-[15px]">
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger asChild={true}>
+                                    <DropdownMenuTrigger asChild={true} className="cursor-pointer">
                                         <button
                                             title="Menu"
                                             type="button"

@@ -24,7 +24,7 @@ export const deleteSection = async (data: delLblsPayloadType) => {
         headers: {
             'Content-type': 'application/json'
         }
-    }).then((pr: any) => pr.data);
+    }).then((pr) => pr.data);
 
     return resp;
 }

@@ -74,7 +74,7 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
                                     }
                                 }}>
                                     <DropdownMenuTrigger>
-                                        <div className="bg-white dark:bg-zinc-800 w-[40px] h-[40px] border border-solid border-zinc-200 dark:border-zinc-600 flex items-center justify-center rounded-full font-poppins text-[18px] font-semibold text-zinc-500 dark:text-zinc-300">
+                                        <div className="bg-white dark:bg-zinc-800 cursor-pointer w-[40px] h-[40px] border border-solid border-zinc-200 dark:border-zinc-600 flex items-center justify-center rounded-full font-poppins text-[18px] font-semibold text-zinc-500 dark:text-zinc-300">
                                             <span className="uppercase">{uNm}</span>
                                         </div>
                                     </DropdownMenuTrigger>
@@ -121,12 +121,12 @@ const AccountProfileHome = (props: { cb?: () => void }) => {
                     (
 
                         <NavLink
-                            to="/auth/register"
-                            title="Sign Up"
+                            to="/auth/login"
+                            title="Sign In"
                             className={`${buttonVariants({ variant: "default" })} relative w-[40px] md:w-auto`}
                         >
                             <div className="hidden md:flex gap-x-[10px] items-center">
-                                Sign Up
+                                Sign In
                                 <LuArrowRight size={18} />
                             </div>
                             <div className="visible md:hidden">

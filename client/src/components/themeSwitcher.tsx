@@ -77,13 +77,13 @@ const ThemeSwitcher = () => {
         <>
             <Tabs defaultValue={theme} className="w-[130px]">
                 <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="light" onClick={() => handleThemeChange('light')}>
+                    <TabsTrigger value="light" className="cursor-pointer" onClick={() => handleThemeChange('light')}>
                         <MdOutlineLightMode size={18} />
                     </TabsTrigger>
-                    <TabsTrigger value="system" onClick={() => handleThemeChange('system')}>
+                    <TabsTrigger value="system" className="cursor-pointer" onClick={() => handleThemeChange('system')}>
                         <FiMonitor size={18} />
                     </TabsTrigger>
-                    <TabsTrigger value="dark" onClick={() => handleThemeChange('dark')}>
+                    <TabsTrigger value="dark" className="cursor-pointer" onClick={() => handleThemeChange('dark')}>
                         <CiDark size={18} />
                     </TabsTrigger>
                 </TabsList>

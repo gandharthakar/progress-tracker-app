@@ -16,7 +16,7 @@ export const deleteTask = async (data: delTasksPayloadType) => {
         headers: {
             'Content-type': 'application/json'
         }
-    }).then((pr: any) => pr.data);
+    }).then((pr) => pr.data);
 
     return resp;
 }

@@ -48,7 +48,7 @@ export const deleteAccount = async (data: { token: string }) => {
         headers: {
             'Content-type': 'application/json'
         }
-    }).then((pr: any) => pr.data);
+    }).then((pr) => pr.data);
 
     return resp;
 }

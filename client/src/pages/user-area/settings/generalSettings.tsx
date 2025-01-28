@@ -185,7 +185,7 @@ const GeneralSettings = () => {
                                                 <button
                                                     type="button"
                                                     title="Change"
-                                                    className="uppercase inline-block font-roboto_mono font-bold text-[13px] text-zinc-900 dark:text-zinc-50"
+                                                    className="uppercase inline-block cursor-pointer font-roboto_mono font-bold text-[13px] text-zinc-900 dark:text-zinc-50"
                                                     onClick={() => setShowModal(true)}
                                                 >
                                                     <div className="flex gap-x-[5px] items-center">

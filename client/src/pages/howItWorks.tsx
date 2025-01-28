@@ -30,7 +30,7 @@ const HowItWorks = () => {
                                     <button
                                         type="button"
                                         title="Watch Demo"
-                                        className="flex justify-center items-center gap-x-[5px] text-zinc-900 dark:text-zinc-200"
+                                        className="flex justify-center cursor-pointer items-center gap-x-[5px] text-zinc-900 dark:text-zinc-200"
                                     >
                                         <h4 className="font-poppins font-semibold text-[14px] md:text-[16px]">
                                             Watch Demo

@@ -1,7 +1,9 @@
+import React, { Dispatch, SetStateAction } from 'react';
+
 export interface SiteDialogProps {
     open_modal_on_page_load?: boolean,
     openState: boolean,
-    setOpenState: any,
+    setOpenState: Dispatch<SetStateAction<boolean>>,
     modal_heading: string,
     backdrop?: boolean,
     hide_modal_on_backdrop_click?: boolean,

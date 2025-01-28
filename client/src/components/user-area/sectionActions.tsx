@@ -181,7 +181,7 @@ const SectionActions = (props: sectionActionType) => {
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger asChild={true}>
+                <DropdownMenuTrigger asChild={true} className="cursor-pointer">
                     <button
                         title="Menu"
                         type="button"

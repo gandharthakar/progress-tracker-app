@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import { useGlobalCheckboxStore } from "@/zustand/store";
 import { calculatePercentage } from "@/utils/helperFunctions";
+import { PiDataType } from "@/types/playGroundTypes";
 
 const dataDes = {
     user_id: "user_1",
@@ -71,7 +72,7 @@ const Trial = () => {
     const [unchecked, setUnchecked] = useState<number>(100);
     const [fin, setFin] = useState<number>(0);
     const [fin2, setFin2] = useState<number>(0);
-    const [piData, setPiData] = useState<any>([]);
+    const [piData, setPiData] = useState<PiDataType[]>([]);
 
     const { checkedCount } = useGlobalCheckboxStore();
     const { incrementCount, decrementCount } = useGlobalCheckboxStore();

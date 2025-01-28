@@ -3,6 +3,7 @@ require('dotenv').config();
 const routes = require("./routes/routes");
 const gtprotrcapp_mdb = require("./mongodb/dbconfig/dbconfig");
 const cors = require('cors');
+const sanitizeBodyMiddleware = require("./middleware/sanitizeBodyMiddleware");
 
 const port = process.env.PORT || 48256;
 gtprotrcapp_mdb();
@@ -13,6 +14,7 @@ app.use(cors({
     origin: ["http://localhost:5173", "http://localhost:4173", "https://progress-tracker-app.netlify.app", "https://progress-tracker-app.onrender.com"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
 }))
+app.use(sanitizeBodyMiddleware);
 app.use(routes);
 
 app.listen(port, () => {

@@ -6,6 +6,7 @@ import { GripVertical } from 'lucide-react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { calculatePercentage } from "@/utils/helperFunctions";
+import { PiDataType } from "@/types/playGroundTypes";
 
 interface Label {
     _id: string;
@@ -43,7 +44,7 @@ const TrialAdvance: React.FC = () => {
     const [unchecked, setUnchecked] = useState<number>(0);
     const [fin, setFin] = useState<number>(0);
     const [fin2, setFin2] = useState<number>(0);
-    const [piData, setPiData] = useState<any>([]);
+    const [piData, setPiData] = useState<PiDataType[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -136,7 +137,8 @@ const TrialAdvance: React.FC = () => {
         }
     };
 
-    const onDragEnd = (result: any) => {
+    //eslint-disable-next-line
+    const onDragEnd = (result: { source: any; destination: any; type: any; }) => {
         if (!workspace) return;
 
         const { source, destination, type } = result;

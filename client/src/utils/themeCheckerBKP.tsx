@@ -5,7 +5,7 @@ const ThemeCheckerBKP = () => {
 
     const { theme, setTheme } = useThemeStore();
 
-    const handleChange = ({ matches }: any) => {
+    const handleChange = ({ matches }: { matches: boolean }) => {
         const docHTML = document.querySelector('html');
         if (matches) {
             // setTheme('dark');
@@ -48,9 +48,8 @@ const ThemeCheckerBKP = () => {
             setTheme('system');
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", handleChange);
         }
-
         return () => {
-            window.removeEventListener("change", handleChange);
+            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener("change", handleChange);
         };
         //eslint-disable-next-line
     }, []);
@@ -84,7 +83,7 @@ const ThemeCheckerBKP = () => {
         }
 
         return () => {
-            window.removeEventListener("change", handleChange);
+            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener("change", handleChange);
         };
 
     }, [theme, setTheme]);
